@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>vue.directive自定义指令</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>vue.directive</h1>
+    <hr>
+    <div id="app">
+        <p v-jsp="color">{{count}}</p>
+        <button @click="add" value="add">add</button>
+    </div>
+    <script type="text/javascript">
+    Vue.directive("jsp",function(el,binding){
+        // console.log(el);
+        // console.log(binding);
+        el.style="color:"+binding.value;
+    });
+        var app = new Vue({
+            el:'#app',
+            data:{
+                count:10,
+                color:'red'
+            },
+            methods:{
+                add:function(){
+                    this.count++;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

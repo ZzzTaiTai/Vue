@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <h1 class="text-center">Vue</h1>
+    <hr>
+    </hr>
+    <ol>
+        <li><a href="./example/helloworld.html">hello word </a></li>
+        <li><a href="./example/v-for.html">v-for </a></li>
+        <li><a href="./example/v-html.html">v-html </a></li>
+        <li><a href="./example/v-on.html">v-on </a></li>
+        <li><a href="./example/v-model.html">v-model </a></li>
+        <li><a href="./example/v-bind.html">v-bind </a></li>
+        <li><a href="./example/v-pre.html">v-pre </a></li>
+        <li><a href="./example/jiuhe.html">jiuhe </a></li>
+    </ol>
+    <h1 class="text-center">API</h1>
+    <hr>
+    </hr>
+    <ol>
+        <li><a href="./example/vue.directive.html">directive </a></li>
+        <li><a href="./example/vue.extend.html">vueextend </a></li>
+        <li><a href="./example/vue.set.html">vue.set </a></li>
+        <li><a href="./example/vue.smzq.html">vue生命周期</a></li>
+        <li><a href="./example/vue.template.html">template模板</a></li>
+        <li><a href="./example/vue.component.html">component组件</a></li>
+        <li><a href="./example/vue.component-2.html">component组件props</a></li>
+        <li><a href="./example/vue.component-3.html">component父子组件</a></li>
+        <li><a href="./example/vue.component-4.html">Component 标签</a></li>
+    </ol>
+    
+    <h1 class="text-center">构造器选项</h1>
+    <hr>
+    </hr>
+    <ol>
+        <li><a href="./example/propsData.html">propsData Option 全局扩展的数据传递 </a></li>
+        <li><a href="./example/computed.html">computed Option 计算选项 </a></li>
+        <li><a href="./example/propsData.html">Methods Option 方法选项 </a></li>
+        <li><a href="./example/propsData.html">Watch 选项 监控数据 </a></li>
+        <li><a href="./example/propsData.html">Mixins 混入选项操作 </a></li>
+        <li><a href="./example/propsData.html">Extends Option 扩展选项 </a></li>
+    </ol>
+    <hr>
+    <h1 class="text-center">JS</h1>
+    <hr>
+    </hr>
+    <ol>
+        <li><a href="./example/js-practice.html">directive </a></li>
+
+    </ol>
+    <hr>
+    </hr>
+    <h2>生命周期</h2>
+    <p>methods：里面是用来定义函数的，很显然，它需要手动调用才能执行</p>
+    <p>watch和computed都是以Vue的依赖追踪机制为基础的，它们都试图处理这样一件事情：当某一个数据（称它为依赖数据）发生变化的时候，所有依赖这个数据的“相关”数据“自动”发生变化，也就是自动调用相关的函数去实现数据的变动。
+    </p>
+    <p>每个钩子函数都在啥时间触发</p>
+    <p> beforeCreate </p>
+    <p> 在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。</p>
+    <p> created</p>
+    <p> 实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算， watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。</p>
+    <p> beforeMount</p>
+    <p> 在挂载开始之前被调用：相关的 render 函数首次被调用。</p>
+    <p> mounted</p>
+    <p> el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。</p>
+    <p> beforeUpdate</p>
+    <p> 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。 你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。</p>
+    <p>updated</p>
+    <p>由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。</p>
+    <p>当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。然而在大多数情况下，你应该避免在此期间更改状态，因为这可能会导致更新无限循环。</p>
+    <p>该钩子在服务器端渲染期间不被调用。</p>
+    <p>beforeDestroy</p>
+    <p>实例销毁之前调用。在这一步，实例仍然完全可用。</p>
+    <p>destroyed</p>
+    <p>Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。</p>
+    <p>该钩子在服务器端渲染期间不被调用。</p>
+    <img src="https://ws1.sinaimg.cn/large/6aedb651gy1fmncxvp4doj20xc2cfaim.jpg" alt="">
+
+
+</body>
+<!-- jQuery -->
+<script  type=”text/javascript src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Bootstrap JavaScript -->
+<script  type=”text/javascript src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</html>

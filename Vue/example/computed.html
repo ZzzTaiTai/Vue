@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>propsData</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>computed</h1>
+    <hr>
+    <div id="app">
+        <p>{{newPrice}}</p>
+        <ul>
+            <li v-for="i in reverseList">{{i.title}}--{{i.data}}</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var newList=[
+            {title:'双11餐厨百货预售优惠攻略 超值实用',data:'2019/4/7'},
+            {title:'预售定金全免 家纺家饰多重优惠叠加直降',data:'2019/4/9'},
+            {title:'天猫双11手机&配件预售会场满减大促',data:'2019/4/1'},
+            {title:'微漫酱访谈第三期：超萌舞见弥音音！',data:'2019/4/2'}
+        ]
+        var app = new Vue({
+            el:'#app',
+            data:{
+                price:100,
+                newList:newList
+            },
+            computed: {
+                newPrice:function(){
+                    return this.price='$'+this.price+'美元'
+                },
+                reverseList:function(){
+                    return this.newList.reverse()
+                }
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css"> -->
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>vue.extend构造器的延伸</h1>
+    <hr>
+    <div id="app">
+        <hr></hr>
+        <div id="author"></div>
+        <author></author>
+    </div>
+    <script type="text/javascript">
+        var authorExtend =Vue.extend({
+            template:"<p><a  :href='authorurl'>{{authorName}}</a></p>",
+            data:function(){
+                return {
+                    authorName:'Tai',
+                    authorurl:'http://127.0.0.1:8080/example/vue.extend.html'
+                }
+            }
+        });
+        new authorExtend().$mount('author');
+        new authorExtend().$mount('#author');
+
+        // var app = new Vue({
+        //     el:'#app',
+        //     data:{
+
+        //     }
+        // })
+    </script>
+</body>
+</html>

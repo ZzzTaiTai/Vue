@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>component</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>component</h1>
+    <hr>
+    <div id="app">
+        <component :is="message"></component>
+        <button @click="change">change</button>
+    </div>  
+    <script type="text/javascript">
+        var cityA ={
+                    template:`
+                    <p style="color:red">pangzi from cityA</>
+                    `
+        }
+        var cityB ={
+                    template:`
+                    <p style="color:blue">pangzi from cityB</>
+                    `
+        }
+        var cityC ={
+                    template:`
+                    <p style="color:pink">pangzi from cityC</>
+                    `
+        }
+        
+        var app = new Vue({
+            el:'#app',
+            data:{
+                message:'cityA'
+            },
+            components:{
+                "cityA":cityA,
+                "cityB":cityB,
+                "cityC":cityC
+            },
+            methods: {
+                change:function(){
+                    this.message=="cityA"?this.message="cityB":(this.message=='cityB'?this.message='cityC':(this.message=="cityC"?this.message='cityA':null));
+                }
+            },
+        })
+    </script>
+</body>
+</html>

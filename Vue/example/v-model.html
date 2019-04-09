@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>v-model</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>v-model</h1>
+    <hr>
+    <div id="app">
+        <p>{{message}}</p>
+    <p>v-model:<input type="text" name="" id="" v-model="message"></p>
+    <p>v-model.lazy:<input type="text" name="" id="" v-model.lazy="message"></p>
+    <p>v-model.number:<input type="text" name="" id="" v-model.number="message"></p>
+    <p>v-model.trim:<input type="text" name="" id="" v-model.trim="message"></p>
+    <h3>文本域</h3>
+        <textarea name="" id="" cols="30" rows="10" v-model="message"></textarea>
+        <hr>
+        <h3>多选框绑定一个值</h3>
+        <input type="checkbox" id="isTrue" v-model="isTrue">
+        <label for="isTrue">{{ isTrue }}</label>
+        <hr>
+        h3>多选框绑定数组</h3>
+        <input type="checkbox" id="jsb" value="jsb" v-model="webNames">
+        <label for="isTrue">jsb</label>
+        <input type="checkbox" id="pd" value="pd" v-model="webNames">
+        <label for="isTrue">pd</label>
+        <input type="checkbox" id="pp" value="pp" v-model="webNames">
+        <label for="isTrue">pp </label>
+        <p>{{webNames}}</p>
+        <hr>
+        <h3>单选框绑定</h3>
+        <p>
+            <input type="radio" name="" id="sexOne" value="男" v-model="sex">
+            <label for="sexOne">男</label>
+            <input type="radio" name="" id="sexTwo" value="女" v-model="sex">
+            <label for="sexTwo">女</label>
+            <p>你选择的性别是：{{ sex }}</p>
+        </p>
+</div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:'#app',
+            data:{
+                message:"Hello",
+                isTrue:true,
+                webNames:[],
+                sex:'男'
+            },
+            methods:{
+            
+            }
+        })
+    </script>
+</body>
+</html>

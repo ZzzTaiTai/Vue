@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>v-on</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>v-on</h1>
+    <hr>
+    <div id="app">
+    本场比赛得分：{{count}}
+    <p>
+        <button v-on:click="add">加分</button>
+        <button @click="jian">减分</button><br>
+        <input type="text" @keyup.enter="onEnter" v-model="count2" name="" id="">
+    </p>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:'#app',
+            data:{
+                count:0,
+                count2:1,
+            },
+            methods:{
+                add:function(){
+                    this.count++;
+                },
+                jian:function(){
+                    this.count--;
+                },
+                onEnter:function(){
+                    this.count=this.count+parseInt(this.count2);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

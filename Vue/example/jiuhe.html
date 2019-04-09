@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../assets/css/index.css">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+    <div class="rightButton">
+        <ul>
+            <li class="active"><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+        </ul>
+    </div>
+    <div class="header ">
+        <div class="headerWarp ">
+            <div class="logo">
+            <a href="javascript:;"><img src="../assets/images/logo.png" alt="九河科技"></a>
+            <a href="javascript:;"><img src="../assets/images/logo1.png" alt="九河科技"></a>
+            </div>
+            <ul class="headerList ">
+                    <li><a href="">案例</a></li>
+                    <li><a href="">服务</a></li>
+                    <li><a href="">关于</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="banner">
+            <div class="bannerText">
+                    <h2 >以信聚人  天下信之</h2>
+                    <p class="bannerListP">聚信，专注企业社交</p>
+                    <a href="#">了解详情</a>
+                    </div>
+            <div class="bannerList" id="bannerList" style="left:0px;color:#ffffff">
+                <div><img src="../assets/images/banner.jpg" ></img></div>    
+                <div><img src="../assets/images/banner2.jpg"  ></img></div>   
+                <div><img src="../assets/images/banner3.jpg" ></img></div> 
+        </div>
+
+        <div class="buttons" id="buttons">
+            <ul>
+                <li class="active" @click="prev"></li>
+                <li @click="next" ></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="petal">
+        </div>
+        
+    </div>
+    <div class="service">
+        <div class="serviceWarp">
+            <h2>服务范围</h2>
+            <ul >
+                <li><a href=""><img src="../assets/images/server_1.png" alt=""><p>大中型网站建设</p></a></li>
+                <li><a href=""><img src="../assets/images/server_2.png" alt=""><p>智能检索</p></a></li>
+                <li><a href=""><img src="../assets/images/server_3.png" alt=""><p>网上客服系统</p></a></li>
+                <li><a href=""><img src="../assets/images/server_4.png" alt=""><p>大中型网站建设</p></a></li>
+                <li><a href=""><img src="../assets/images/server_5.png" alt=""><p>微信管理平台</p></a></li>
+                <li><a href=""><img src="../assets/images/server_6.png" alt=""><p>网站运维服务</p></a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        </div>
+        <div class="case">
+            <div class="caseWarp">
+                <h2>案例展示</h2>
+                <div class="casePhoto">
+                    <span class="triangle"></span>
+                    <span class="round"></span>
+                    <span class="man"></span>
+                </div>
+                <div class="caseList">
+                        <a href="" >
+                            <dl>
+                                <dt>中国横琴新区门户网</dt>
+                                <dd><img src="../assets/images/case_4.jpg" alt=""></dd>
+                            </dl>
+                        </a>
+                        <a href="" >
+                            <dl>
+                                <dt>智慧坪山-手机APP版</dt>
+                                <dd><img src="../assets/images/case_3.jpg" alt=""></dd>
+                            </dl>
+                        </a>
+                        <a href="" >
+                            <dl>
+                                <dt>罗湖电子政务网</dt>
+                                <dd><img src="../assets/images/case_2.jpg" alt=""></dd>
+                            </dl>
+                        </a>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="customer">
+                    <div class="customerWarp">
+                        <h2>我们的客户</h2>
+                        <ul class="customerListTop">
+                            <li><a href=""><img src="../assets/images/Customer_1.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_2.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_3.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_4.png" alt=""></a></li>
+                        </ul>
+                        <ul class="customerListDown">
+                            <li><a href=""><img src="../assets/images/Customer_5.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_6.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_7.png" alt=""></a></li>
+                            <li><a href=""><img src="../assets/images/Customer_8.png" alt=""></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="footerTop">
+                    <p><a href="">联系方式</a></p>
+                    <p class="qq"><a href="">1259919087</a></p>
+                    <p class="eamil"><a href="">fenght@jiuhe.biz</a></p>
+                </div>
+                </div>
+                <!-- <div class="clear"></div> -->
+                <div class="bottom">
+                    <div class="bottomWarp">
+                        <span>Copyright © 2017 广东九河科技有限公司 版权所有 粤ICP备17030744号</span>
+                        <ul class="bottomR">
+                            <li><a href="">案例</a></li>
+                            <li><a href="">服务</a></li>
+                            <li><a href="">关于</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+     window.onload = function(){
+          var buttons = document.getElementById("buttons");
+            var oLi = buttons.getElementsByTagName("li");/* 圆点数列*/
+            var bannerList = document.getElementById("bannerList");
+};
+        var app = new Vue({
+            el:'#app',
+            data:{
+                w :-1920,
+                time : null,
+                index : 0,
+
+            },
+            methods: {
+            buttonShown:function(){
+                for(var i = 0;i<oLi.length;i++){
+                    oLi[i].className="";
+                }
+                oLi[index].className="active";
+            },
+            animate:function(obj,target){
+                // clearInterval(this.time)
+         
+                this.time=setInterval(function(){
+                    // console.log(this.time)
+                var step = 30;
+                var current=parseInt(obj.style.left);
+                step = current >= target ? -step : step;
+                current+=step;
+                // console.log(current)
+                if(Math.abs(target-current)>Math.abs(step)){
+                    obj.style.left=current+"px";
+                    console.log(obj.style.left)
+                }else{
+                    // clearInterval(this.time);
+                    obj.style.left=target+"px";
+                }
+            },10)},
+            next:function(){
+                var bannerList = document.getElementById("bannerList");
+                index=this.index;
+                index++;
+                if(index>2){
+                    index=0;
+                }
+                console.log(index)
+            //    this.$options.methods.buttonShown();
+                this.$options.methods.animate(bannerList,-this.w*index);
+            },
+            prev:function(){
+                var bannerList = document.getElementById("bannerList");
+                index=this.index;
+                index--;
+                if(index<=-1){
+                    index=2;
+                }
+                console.log(index)
+                // this.$options.methods.buttonShown();
+                this.$options.methods.animate(bannerList,this.w*index);
+            },
+            autoStop:function(){ 
+                clearInterval(this.time);
+            }
+        }
+        })
+        
+        // bannerList.onmouseover= autoStop;
+        // window.onscroll=function(){
+        // var scrolltop=document.documentElement.scrollTop||document.body.scrollTop;
+        // if(scrolltop>0){
+        // $('.header').addClass('headeractive');
+        //     }else{
+        // $('.header').removeClass('headeractive');
+        //     }}
+
+ 
+    </script>
+</body>
+</html>

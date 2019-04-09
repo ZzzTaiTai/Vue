@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>URL地址问号传参</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>URL地址问号传参</h1>
+    <hr>
+    <div id="app">
+       <p>{{str}}</p>
+       <p>{{url}}</p>
+       <!-- <button @click="Intercept" value="Intercept">Intercept</button> -->
+
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:'#app',
+            data:{
+                str:'https://sports.qq.com/kbsweb/game.htm?mid=5&name=Tai&age=18#haha',
+                url:{},
+               
+            },
+            mounted:function() {
+                var ary;
+                    var str=this.str;
+                    var indexASK=str.indexOf('?');
+                        indexWell=str.indexOf('#');
+                        if(indexWell>-1){
+                            ary=str.substring(indexASK+1,indexWell);
+                            console.log(ary);
+                        }else{
+                            ary=str.substring(indexASK+1);
+                            console.log(ary);
+                        }
+                        this.str=ary;
+                        this.Group(ary);
+            },
+            methods:{
+                Group:function(arry){
+                    var obj={};
+                    var ary=arry.split('&');
+                    console.log(ary);
+                    for(var j=0;j<ary.length;j++){
+                        var item=ary[j];
+                            itemAry=item.split('=');
+                            var key=itemAry[0];
+                                value=itemAry[1];
+                            obj[key]=value;
+                    }
+                    this.url=obj;
+                    console.log(this.url);
+                }  
+            }
+        })
+    </script>
+</body>
+</html>
