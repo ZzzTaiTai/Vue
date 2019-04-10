@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>example methods Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>example methods Demo</h1>
+    <hr>
+    <div id="app"></div>
+    <p><button onclick="destroy()">destory</button></p>
+    <p><button onclick="updated()">updated</button></p>
+    <p><button onclick="Tick()">Tick</button></p>
+    <script type="text/javascript">
+    var Tai=Vue.extend({
+        template:`<p>{{num}}</p>`,
+        data:function(){
+            return{
+                num:'Hello! I am Tai'
+            }
+        },
+        mounted:function(){
+            console.log("mounted生命周期 被创建")
+        },
+        destroyed:function(){
+            console.log("destoryed 被销毁")
+        },
+        updated:function(){
+            console.log("Updated 被更新")
+        }
+    });
+
+    var vm = new Tai().$mount("#app");
+    function destroy(){
+        vm.$destroy();
+    }
+    function updated(){
+        vm.$forceUpdate();
+    }
+    function Tick(){
+        vm.num="update num ";
+        vm.$nextTick(function(){
+            console.log('message更新后我被调用了');
+    })
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>slot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <h1>example slot Demo</h1>
+    <hr>
+    <div id="app">
+        <Tai>
+            <span slot="Url">{{Taidata.Url}}</span>
+            <span slot="Name">{{Taidata.Name}}</span>
+            <span slot="Skill">{{Taidata.Skill}}</span>
+        </Tai>
+    </div>
+    <template id="tep">
+        <div>
+        <p>github地址：<slot name="Url"></slot></p>
+        <p>名字：<slot name="Name"></slot></p>
+        <p>技能：<slot name="Skill"></slot></p>
+        </div>
+    </template> 
+       
+    <script type="text/javascript">
+    var Tai = {
+        template:"#tep"
+    }
+        var app = new Vue({
+            el:'#app',
+            data:{
+                Taidata:{
+                    Url:"http://mytai.ooo/",
+                    Name:"Tai",
+                    Skill:"HTML"
+                }
+            },
+            components:{
+                "Tai":Tai
+            },
+        });
+        
+    </script>
+</body>
+</html>
