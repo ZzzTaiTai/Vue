@@ -1,16 +1,16 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <!-- <router-view></router-view> -->
+    页面不存在
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Hi',
+  name: 'HelloWorld',
   data () {
     return {
-      msg: 'Hi I am Hi.vue Page'
+      msg: 'Error :404'
     }
   }
 }

@@ -1,18 +1,28 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <!-- <router-view></router-view> -->
+    <p>newId:{{ $route.params.newId }}</p>
+    <p>newTitle:{{ $route.params.newTitle }}</p>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Hi',
+  name:"params",
   data () {
     return {
-      msg: 'Hi I am Hi.vue Page'
+      msg: 'params Page'
     }
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log("准备进入params路由模板");
+    next();
+  },
+  beforeRouteLeave (to, from, next) {
+  console.log("准备离开params路由模板")
+    next();
+  } 
 }
 </script>
 

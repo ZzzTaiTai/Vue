@@ -1,18 +1,31 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-
+   <h2>{{msg}}</h2><hr>
+   <h3>{{count}}</h3>
+   <p>
+   <button @click="add(10)">add</button>
+   <button @click="reduce">reduce</button>
+   </p>
   </div>
 </template>
 
 <script>
+import store from '@/vuex/store'
+import { mapState,mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to My Vue.js App'
+      msg: 'Hello Vuex'
     }
-  }
+  },
+  computed:{
+    ...mapState(['count']),
+    ...mapGetters(['count'])
+ 
+  },
+  methods: mapMutations(['add','reduce']),
+  store
 }
 </script>
 
