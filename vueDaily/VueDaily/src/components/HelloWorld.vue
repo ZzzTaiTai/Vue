@@ -13,7 +13,7 @@
     <div class="swiper">
       <swiper :options="swiperOption" ref="mySwiper" >
     <!-- slides -->
-    <swiper-slide v-for="item in swiperlist"><img :src="item.image" class="swiper-img"><span class="title">{{item.title}}</span></swiper-slide>
+    <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image" class="swiper-img"><span class="title">{{item.title}}</span></swiper-slide>
     <!-- Optional controls -->
     <div class="swiper-pagination"  slot="pagination"></div>
   </swiper>
@@ -103,7 +103,6 @@ export default {
     align-items: center;
     position: fixed;
     top:0;
-    /*left: 0;*/
     height:50px;
     max-width: 768px;
     width:100%;
@@ -117,7 +116,6 @@ export default {
     font-size:20px;
     text-align: center;
     flex:0 0 50px;
-    /* padding:20px 0; */
 }
 .header .home{
     flex:1;
@@ -143,13 +141,7 @@ export default {
 }
  .swiper{
    margin-top:50px;
-    /* overflow:hidden;
-     width:100%;
-     height:0;
-      padding-bottom:30.48%; 
-     background: #eee; */
 } 
-
 h1, h2 {
   font-weight: normal;
 }
