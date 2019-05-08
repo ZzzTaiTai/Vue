@@ -13,28 +13,24 @@
     <div class="swiper">
       <swiper :options="swiperOption" ref="mySwiper" >
     <!-- slides -->
-    <swiper-slide v-for="item in swiperlist"><img :src="item.images[0]" class="swiper-img">{{item.title}}</swiper-slide>
-
+    <swiper-slide v-for="item in swiperlist"><img :src="item.image" class="swiper-img"><span class="title">{{item.title}}</span></swiper-slide>
     <!-- Optional controls -->
     <div class="swiper-pagination"  slot="pagination"></div>
-    <!-- <div class="swiper-button-prev" slot="button-prev"></div>
-    <div class="swiper-button-next" slot="button-next"></div>
-    <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
   </swiper>
     </div>
-
-
-  
+    <NewsList :NewsL='NewsList'></NewsList>
   </div>
 </template>
 
 <script>
+import NewsList from '@/components/NewsList'
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       swiperlist:[],
+      NewsList:[],
       swiperOption:{
           // some swiper options/callbacks
           // 所有的参数同 swiper 官方 api 参数
@@ -46,9 +42,12 @@ export default {
       }
     }
   },
+  components:{
+    "NewsList":NewsList
+  },
   created(){
     var url = '/api/4/news/latest'; // 这里就是刚才的config/index.js中的/api
-    let _this = this;
+    // let _this = this;
     // this.$axios.get(url)
     // .then(function(response) {
     //   console.log(response.data.stories);
@@ -60,8 +59,9 @@ export default {
     // });
     this.$axios.get(url)
     .then(response => {
-      this.swiperlist = response.data.stories
-      console.log(this.swiperlist);
+      this.swiperlist = response.data.top_stories
+      this.NewsList = response.data.stories
+      // console.log(this.swiperlist);
     })
     .catch(error =>{
       console.log(error);
@@ -85,22 +85,25 @@ export default {
                     return url[0].replace(/http\w{0,1}:\/\/p/g,'https://images.weserv.nl/?url=p');
                 }
             }
-  
-}
+    }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea,th,td{margin:0;padding:0}body{font-size:12px;font-style:normal;font-family:"\5FAE\8F6F\96C5\9ED1",Helvetica,sans-serif}small{font-size:12px}h1{font-size:18px}h2{font-size:16px}h3{font-size:14px}h4,h5,h6{font-size:100%}ul,ol{list-style:none}a{text-decoration:none;background-color:transparent}a:hover,a:active{outline-width:0;text-decoration:none}table{border-collapse:collapse;border-spacing:0}hr{border:0;height:1px}img{border-style:none}img:not([src]){display:none}svg:not(:root){overflow:hidden}html{-webkit-touch-callout:none;-webkit-text-size-adjust:100%}input,textarea,button,a{-webkit-tap-highlight-color:rgba(0,0,0,0)}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]),video:not([controls]){display:none;height:0}progress{vertical-align:baseline}mark{background-color:#ff0;color:#000}sub,sup{position:relative;font-size:75%;line-height:0;vertical-align:baseline}sub{bottom:-0.25em}sup{top:-0.5em}button,input,select,textarea{font-size:100%;outline:0}button,input{overflow:visible}button,select{text-transform:none}textarea{overflow:auto}button,html [type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}.clear:after{display:block;height:0;content:"";clear:both}
-
+.hello{
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
+    background: hsla(0,0%,94%,.8);
+}
 .header{
     display: flex;
     display: -webkit-flex;
     align-items: center;
     position: fixed;
     top:0;
-    left: 0;
+    /*left: 0;*/
     height:50px;
     max-width: 768px;
     width:100%;
@@ -118,6 +121,7 @@ body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea,t
 }
 .header .home{
     flex:1;
+        text-align: left;
 }
 .header .more{
     display:flex;
@@ -137,17 +141,15 @@ body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea,t
     flex:0 0 50px;
     text-align: center;
 }
-/* .swiper{
-    overflow:hidden;
+ .swiper{
+   margin-top:50px;
+    /* overflow:hidden;
      width:100%;
      height:0;
       padding-bottom:30.48%; 
-     background: #eee;
-} */
-.swiper-img{width:100%;}
-.swiper-pagination-bullet-active{
-    background:#fff
-    }
+     background: #eee; */
+} 
+
 h1, h2 {
   font-weight: normal;
 }
@@ -163,3 +165,39 @@ a {
   color: #42b983;
 }
 </style>
+<style>
+.swiper-img{width:100%;}
+.swiper .swiper-container .swiper-slide{
+  position: relative;
+}
+.swiper .swiper-container .swiper-slide .swiper-img{
+    position: absolute;
+    top:-20%;
+    left:0;
+        
+}
+.swiper .swiper-container .swiper-slide .title{
+  position: absolute;
+  bottom:25px;
+  left:0;
+  color:#fff;
+  font-size:18px;
+  line-height:20px;
+  padding:0 10px;
+  text-align: left;
+}
+.swiper .swiper-pagination-bullet-active{
+    background:#fff
+    }
+    @media (max-width: 520px) and (min-width: 320px){
+      .swiper .swiper-container {
+     height: 200px;
+    }
+    }
+    @media (min-width: 640px){
+    .swiper .swiper-container {
+    height: 280px;}
+    }
+
+</style>
+
