@@ -25,5 +25,9 @@ body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea,t
     margin: 0;
     padding: 0;
 }
+.NewsDetails .content-wrapper .main-wrap .headline{
+    display: none;
+    height: 0;
+}
 
 </style>

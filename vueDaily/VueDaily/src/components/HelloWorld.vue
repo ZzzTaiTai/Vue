@@ -28,7 +28,8 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      isLoading: false,
+      scrollNum: 0,
       swiperlist:[],
       NewsList:[],
       swiperOption:{
@@ -43,30 +44,19 @@ export default {
     }
   },
   components:{
-    "NewsList":NewsList
+    "NewsList":NewsList,
   },
   created(){
     var url = '/api/4/news/latest'; // 这里就是刚才的config/index.js中的/api
-    // let _this = this;
-    // this.$axios.get(url)
-    // .then(function(response) {
-    //   console.log(response.data.stories);
-    //   console.log(this);//这个this和_thi
-    //   console.log(_this.swiperlist)
-    // })
-    // .catch(function(error) {
-    //   console.log(error);
-    // });
     this.$axios.get(url)
     .then(response => {
       this.swiperlist = response.data.top_stories
       this.NewsList = response.data.stories
-      // console.log(this.swiperlist);
+      // console.log(this.NewsList)
     })
     .catch(error =>{
       console.log(error);
     });
-
   },
   computed: {
     swiper(){
@@ -74,17 +64,57 @@ export default {
     }
   },
   mounted() {
-    console.log('this is current swiper instance object', this.swiper)
-    this.swiper.slideTo(3,1000,false)
+    this.swiper.slideTo(3,1000,false);
+    this.scroll(this.NewsList);
   },
   methods:{
-    getImage(url){
-                console.log(url);
-                // 把现在的图片连接传进来，返回一个不受限制的路径
-                if(url !== undefined){
-                    return url[0].replace(/http\w{0,1}:\/\/p/g,'https://images.weserv.nl/?url=p');
-                }
-            }
+    Appendzero(obj) {
+      //添0操作
+      {
+        if (obj < 10) {
+          return "0" + "" + obj;
+        } else {
+          return obj;
+        }
+      }
+    },
+    getTimes(n) {
+      let date = new Date();
+      let date2 = date.setDate(date.getDate() - n);
+      let ajaxDate =
+        date.getFullYear() +
+        this.Appendzero(date.getMonth() + 1) +
+        this.Appendzero(date.getDate());
+      return ajaxDate;
+      },
+    scroll(num) {
+      // let isLoading = false;
+      window.onscroll = () => {
+        let bottomWindow =document.documentElement.offsetHeight -
+            document.documentElement.scrollTop -
+            window.innerHeight <=10;
+        if (bottomWindow && this.isLoading == false) {
+          this.isLoading = true;//正在加载
+          ++this.scrollNum;
+          this.getNews(this.getTimes(this.scrollNum));
+        }
+        
+      };
+    },
+    getNews(date) {
+      let url = "/api/4/news/before/" + date;
+      this.$axios.get(url)
+        .then(response => {
+          for (let i = 0; i < response.data.stories.length; i++) {
+            this.NewsList.push(response.data.stories[i]);
+          }
+          this.isLoading = false; //取消正在加载
+          // console.log(this.NewsList);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     }
 }
 </script>
@@ -119,7 +149,7 @@ export default {
 }
 .header .home{
     flex:1;
-        text-align: left;
+    text-align: left;
 }
 .header .more{
     display:flex;
@@ -158,7 +188,9 @@ a {
 }
 </style>
 <style>
-.swiper-img{width:100%;}
+.swiper-img{
+    width:100%;
+}
 .swiper .swiper-container .swiper-slide{
   position: relative;
 }
@@ -166,7 +198,6 @@ a {
     position: absolute;
     top:-20%;
     left:0;
-        
 }
 .swiper .swiper-container .swiper-slide .title{
   position: absolute;
@@ -178,6 +209,7 @@ a {
   padding:0 10px;
   text-align: left;
 }
+
 .swiper .swiper-pagination-bullet-active{
     background:#fff
     }
