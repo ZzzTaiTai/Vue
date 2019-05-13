@@ -1,12 +1,17 @@
 <template>
   <div class="NewsList">
-    <div class="newsItem">
-      <div class="list" v-for="item in nList" id="item.id">
+    <div class="piece" v-for="(itemL,indexL) in nList">
+      <p class="time" v-if ="!itemL[0].time">今日新聞</p>
+      <p class="time" v-else>{{itemL[0].time}}</p>
+      <div class="clear"></div>
+    <div class="newsItem" id="newsItem" v-for="(item,index) in nList[indexL]">
+      <div class="list">
         <router-link v-bind:to="{name:'Details',params:{NewsId:item.id}}">
         <img :src="item.images[0]" alt>
         <span class="text">{{item.title}}</span>
         </router-link>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -23,9 +28,11 @@ export default {
   watch: {
     NewsL(val) {
       this.nList = val;
+      console.log(this.nList)
     },
   },
   created() {
+    
   },
   methods: {
   },
@@ -34,9 +41,10 @@ export default {
 </script>
 
 <style scoped>
+.newsItem{
+
+}
 .newsItem .list {
-  position: relative;
-  top: -20px;
   margin: 0 auto;
   width: 90%;
   border-radius: 5px;
@@ -56,10 +64,15 @@ export default {
     align-items: center;
 }
 .newsItem .list img {
-  height: 80px;
+  height: 70px;
 }
 .newsItem .list span.text {
   font-size: 14px;
   margin-left: 15px;
+}
+.NewsList .time{
+  float: left;
+  margin: 10px 25px
+
 }
 </style>
