@@ -3,14 +3,14 @@
       <div class="nav">
         <div>
           <i class="fa fa-chevron-left fa-inverse "  @click="back"></i>
-          <span>{{totalnum}}条评论</span>
+          <span>{{total}} 条评论</span>
         </div>
           <i class="fa fa-chevron-left fa-inverse"></i>
         </div>
         <div class="commentsct" >
           <div class="longComments">
             <div class="commentsHead">
-              <span>{{longComments.length}}条长评</span>
+              <span>{{longComments.length}} 条长评</span>
               <i class="fa fa-angle-double-down arrow"></i>
             </div>
             <div class="commentsContent" v-for="(item,index) in longComments">
@@ -34,7 +34,7 @@
           </div>
           <div class="shortComments">
             <div class="commentsHead">
-              <span>{{shortComments.length}}条短评</span>
+              <span>{{shortComments.length}} 条短评</span>
               <i class="fa fa-angle-double-down arrow"></i>
             </div>
               <div class="commentsContent" v-for="(item,index) in shortComments">
@@ -68,7 +68,7 @@ export default {
     return {
       longComments: [],
       shortComments:[],
-      totalnum:'0'
+      // totalnum:'0'
     };
   },
   created(){
@@ -77,6 +77,7 @@ export default {
     this.$axios.get(longurl)
     .then(response => {
       this.longComments =response.data.comments;
+      // console.log("1")
     })
     .catch(error => {
       console.log(error);
@@ -89,15 +90,15 @@ export default {
       console.log(error);
     })
   },
-  mounted() {
+  computed:{
+    total(){
+      return this.longComments.length+this.shortComments.length;
+    }
   },
   methods: {
       back(){
         this.$router.go(-1)
       },
-      total(x,y){
-        return x+y;
-  }
   }
 };
 </script>

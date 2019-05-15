@@ -30,6 +30,7 @@
   </swiper>
     </div>
     <NewsList :NewsL='NewsList'></NewsList>
+    <div class="hideNav">
     <div class="Navdask" @click="showthemeList"></div>
     <div class="sideNavleft ">
     <div class="sideNav-header">
@@ -54,10 +55,12 @@
   </div>
   </div>
   </div>
+  </div>
   
 </template>
 
 <script>
+import $ from 'jquery'
 import NewsList from '@/components/NewsList'
 export default {
   name: 'HelloWorld',
@@ -118,17 +121,8 @@ export default {
         }
       }
     },
-    showthemeList(){
-      let dask = document.getElementsByClassName('Navdask')[0];
-      let Navleft = document.getElementsByClassName('sideNavleft')[0];
-      if(dask.className.indexOf("isactive")>0){
-        dask.classList.remove("isactive");
-        Navleft.classList.remove("isactive");
-      }else{
-        dask.classList.add("isactive");
-        Navleft.classList.add("isactive");
-      }
-      
+    showthemeList(){ 
+        $('.hideNav').toggle();
     },
     getTimes(n) {
       let date = new Date();
@@ -174,7 +168,6 @@ export default {
     },
     handleScroll(){
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      // var cHeight=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;
       var offsetTopList = document.querySelectorAll('.piece')
       // console.log(offsetTopList)
       for(let i = 0;i<offsetTopList.length;i++){
@@ -182,9 +175,6 @@ export default {
       }
       // document.querySelectorAll('.piece')[0].scrollTop
       // document.querySelectorAll('.piece')[1].offsetTop,
-      // document.querySelectorAll('.piece')[2].offsetTop,
-      // document.querySelectorAll('.piece')[3].offsetTop,
-     
     }
     }
 }
@@ -192,6 +182,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+h1, h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  cursor: pointer;
+}
 .hello{
     width: 100%;
     max-width: 768px;
@@ -240,9 +244,8 @@ export default {
     flex:0 0 50px;
     text-align: center;
 }
-
 .sideNavleft{
-  display: none;
+  display: block;
   position: fixed;
   top: 0;
   left:0;
@@ -252,24 +255,25 @@ export default {
   background: #fff;
 }
  .Navdask{
-  display: none;
+  display: block;
   position: fixed;
   top: 0;
   left:0;
   width: 100%;
   height: 100%;
   z-index:9;
-   background: #000;
-    opacity:0.15; filter: alpha(opacity=15);
+  background: #000;
+  opacity:0.15; filter: alpha(opacity=15);
   
+}
+.hideNav{
+  display:none;
 }
 .sideNavleft .sideNav-header{
     padding: 20px 0 20px 10px;
     width: 100%;
     box-sizing: border-box;
     background: #359dda;
-   
-    
 }
 .sideNavleft .sideNav-header .user{ 
     display:inline-block; 
@@ -298,13 +302,6 @@ export default {
 }
 .themeList{
   background: hsla(0,0%,94%,.9);
-  /* background: rgba(0,0,0,.2);
-  z-index: 5;
-  position: fixed;
-  top: 0;
-  left:0;
-  width: 100%;
-  height: 100%; */
 }
 .themeList .lists{ 
     padding: 0px 10px;
@@ -322,81 +319,5 @@ export default {
  .swiper{
    margin-top:50px;
 } 
-
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  cursor: pointer;
-}
-</style>
-<style>
-.clear{
-  clear: both;
-}
-.dask{
-   background: #000;
-    opacity:0.05; filter: alpha(opacity=5);
-    height: 100%;
-    width: 100%;
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.swiper-img{
-    width:100%;
-}
-.swiper .swiper-container .swiper-slide{
-  position: relative;
-}
-.swiper .swiper-container .swiper-slide .swiper-img{
-    position: absolute;
-    top:-20%;
-    left:0;
-}
-.swiper .swiper-container .swiper-slide .title-swiper{
-  position: absolute;
-  top:60%;
-  right:5%;
-  width: 65%;
-  text-align: right;
-
-}
-.swiper .swiper-container .swiper-slide .title-swiper .title{
-  color:#fff;
-  font-size:18px;
-  display: inline-block;
-  line-height: 25px;
-  
-}
-.swiper .swiper-container .swiper-slide .title-swiper .blue-swiper{
-  margin-top:5px;
-  border:2px solid #359dda;
-  width:120px;
-  border-radius: 5px;
-  float: right;
-}
-.swiper .swiper-pagination-bullet-active{
-    background:#fff
-    }
-    @media (max-width: 520px) and (min-width: 320px){
-      .swiper .swiper-container {
-     height: 220px;
-    }
-    }
-    @media (min-width: 640px){
-    .swiper .swiper-container {
-    height: 300px;}
-    }
-
 </style>
 

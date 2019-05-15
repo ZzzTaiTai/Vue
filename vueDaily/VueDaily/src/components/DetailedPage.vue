@@ -2,7 +2,7 @@
   <div class="NewsDetails">
       <div class="nav">
           <i class="fa fa-chevron-left fa-inverse " @click="back()"></i>
-         <div class="navR">
+         <div class="navR" >
             <span><i class="fa fa-share-alt fa-inverse"></i></span>
             <span><i class="fa fa-star fa-inverse"></i></span>
             <router-link v-bind:to="{name:'Comments',params:{NewsId:NewsDetails.id}}">
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
 export default {
   name: "NewsDetails",
   data() {
@@ -37,11 +38,7 @@ export default {
     this.$axios.get(url)
     .then(response => {
       this.NewsDetails = response.data;
-      let link = document.createElement('link')
-      link.type = 'text/css'
-      link.rel = 'stylesheet'
-      link.href = this.NewsDetails.css
-      document.head.appendChild(link)
+      // this.isCss();
     })
     .catch(error =>{
       console.log(error);
@@ -53,19 +50,33 @@ export default {
     .catch(error =>{
       console.log(error);
     });
-  },
-  mounted() {
-       
+    
   },
   methods: {
       back(){
           this.$router.go(-1)
+      },
+      isCss(){
+      //是否已存在对应的CSS
+      let link = document.createElement('link');
+      link.rel = "stylesheet";
+      link.type="text/css";
+      link.href = this.NewsDetails.css;
+      link.id ="page"
+      if(!$('#page').length>0){
+        //jq选择器返回一个Object对象，当长度大于零则存在
+         $("head").append(link);
+      }
       }
   }
 };
 </script>
 
+<style src='../assets/css/news_qa.css' >
+</style>
 <style scoped>
+
+a{color: #fff;}
 .NewsDetails{
     width: 100%;
     max-width: 768px;
@@ -132,9 +143,6 @@ export default {
     right:10px;
     font-size:16px;
     color:rgb(212, 211, 211);
-     z-index: 3;
+    z-index: 3;
 }
-
-
-
 </style>

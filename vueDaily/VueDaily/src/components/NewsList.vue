@@ -1,13 +1,13 @@
 <template>
   <div class="NewsList">
-    <div class="piece" v-for="(itemL,indexL) in nList">
+    <div class="piece" v-for="(itemL,indexL) in nList" :key="indexL">
       <p class="time" v-if ="!itemL[0].time">今日新聞</p>
       <p class="time" v-else>{{itemL[0].time}}</p>
       <div class="clear"></div>
-    <div class="newsItem" id="newsItem" v-for="(item,index) in nList[indexL]">
-      <div class="list">
+    <div class="newsItem" id="newsItem" v-for="(item,index) in nList[indexL]" :key="index">
+      <div class="list" >
         <router-link v-bind:to="{name:'Details',params:{NewsId:item.id}}">
-        <img :src="item.images[0]" alt>
+        <img :src="item.images[0]" alt="">
         <span class="text">{{item.title}}</span>
         </router-link>
       </div>
@@ -28,7 +28,6 @@ export default {
   watch: {
     NewsL(val) {
       this.nList = val;
-      console.log(this.nList)
     },
   },
   created() {
@@ -41,9 +40,6 @@ export default {
 </script>
 
 <style scoped>
-.newsItem{
-
-}
 .newsItem .list {
   margin: 0 auto;
   width: 90%;
@@ -70,9 +66,9 @@ export default {
   font-size: 14px;
   margin-left: 15px;
 }
-.NewsList .time{
+.NewsList p.time{
   float: left;
-  margin: 10px 25px
+  margin: 10px 25px!important;
 
 }
 </style>

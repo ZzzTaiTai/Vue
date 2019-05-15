@@ -4,9 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import 'font-awesome/css/font-awesome.min.css'
+import $ from 'jquery'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 
 Vue.config.productionTip = false

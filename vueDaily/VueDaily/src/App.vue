@@ -32,5 +32,64 @@ body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea,t
     display: none;
     height: 0;
 }
+.clear{
+  clear: both;
+}
+.dask{
+   background: #000;
+    opacity:0.05; filter: alpha(opacity=5);
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.swiper-img{
+    width:100%;
+}
+.swiper .swiper-container .swiper-slide{
+  position: relative;
+}
+.swiper .swiper-container .swiper-slide .swiper-img{
+    position: absolute;
+    top:-20%;
+    left:0;
+}
+.swiper .swiper-container .swiper-slide .title-swiper{
+  position: absolute;
+  top:60%;
+  right:5%;
+  width: 65%;
+  text-align: right;
+
+}
+.swiper .swiper-container .swiper-slide .title-swiper .title{
+  color:#fff;
+  font-size:18px;
+  display: inline-block;
+  line-height: 25px;
+  
+}
+.swiper .swiper-container .swiper-slide .title-swiper .blue-swiper{
+  margin-top:5px;
+  border:2px solid #359dda;
+  width:120px;
+  border-radius: 5px;
+  float: right;
+}
+.swiper .swiper-pagination-bullet-active{
+    background:#fff
+    }
+    @media (max-width: 520px) and (min-width: 320px){
+      .swiper .swiper-container {
+     height: 220px;
+    }
+    }
+    @media (min-width: 640px){
+    .swiper .swiper-container {
+    height: 300px;}
+    }
+
 
 </style>
