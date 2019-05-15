@@ -5,7 +5,7 @@
          <div class="navR" >
             <span><i class="fa fa-share-alt fa-inverse"></i></span>
             <span><i class="fa fa-star fa-inverse"></i></span>
-            <router-link v-bind:to="{name:'Comments',params:{NewsId:NewsDetails.id}}">
+            <router-link v-bind:to="{name:'Comments',params:{NewsId:NewsDetails.id}}" v-if="NewsDetails.id">
             <span><i class="fa fa-commenting fa-inverse"></i>{{Newsextra.comments}}</span>
             </router-link>
             <span><i class="fa fa-thumbs-up fa-inverse"></i>{{Newsextra.popularity}}</span>
@@ -38,7 +38,7 @@ export default {
     this.$axios.get(url)
     .then(response => {
       this.NewsDetails = response.data;
-      // this.isCss();
+
     })
     .catch(error =>{
       console.log(error);

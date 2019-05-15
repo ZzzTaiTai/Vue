@@ -3,7 +3,7 @@
       <div class="nav">
         <div>
           <i class="fa fa-chevron-left fa-inverse "  @click="back"></i>
-          <span>{{total}} 条评论</span>
+          <span @click="timeChange(1557923377)">{{total}} 条评论</span>
         </div>
           <i class="fa fa-chevron-left fa-inverse"></i>
         </div>
@@ -27,7 +27,7 @@
                     {{item.content}}
                   </span>
                   <span class="time">
-                    {{item.time}}
+                    {{timeChange(item.time)}}
                   </span>
                   </div>
               </div>
@@ -51,7 +51,7 @@
                       {{item.content}}
                       </span>
                       <span class="time">
-                       {{item.time}}
+                       {{timeChange(item.time)}}
                       </span>
                   </div>
               </div>
@@ -99,7 +99,29 @@ export default {
       back(){
         this.$router.go(-1)
       },
-  }
+      Appendzero(obj) {
+      //添0操作
+      {
+        if (obj < 10) {
+          return "0" + "" + obj;
+        } else {
+          return obj;
+        }
+      }
+    },
+      timeChange(data){
+        let _this =this.Appendzero;
+        let currentTime= new Date(data*1000);
+        let commentsTime = (currentTime.getMonth()+1)+'-'+
+        _this(currentTime.getDate())+' '+
+        _this(currentTime.getHours())+':'
+        +_this(currentTime.getMinutes());
+        // let a =this.$emit('Appendzero','1')
+        // console.log(a)
+        return commentsTime;
+        
+      }
+  } 
 };
 </script>
 
@@ -126,10 +148,6 @@ export default {
     padding: 0 15px 0 10px;
     box-sizing: border-box
 }
-.nav i.fa{
-    /* margin-left:15px; */
-}
-
 .comments .commentsct{
   margin-top: 50px;
 }

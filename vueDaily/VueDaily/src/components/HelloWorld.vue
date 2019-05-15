@@ -173,8 +173,6 @@ export default {
       for(let i = 0;i<offsetTopList.length;i++){
          console.log(offsetTopList[i].offsetTop)
       }
-      // document.querySelectorAll('.piece')[0].scrollTop
-      // document.querySelectorAll('.piece')[1].offsetTop,
     }
     }
 }
