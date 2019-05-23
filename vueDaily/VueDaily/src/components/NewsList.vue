@@ -1,10 +1,10 @@
 <template>
-  <div class="NewsList">
-    <div class="piece" v-for="(itemL,indexL) in nList" :key="indexL">
+  <div class="NewsList wrapper" >
+    <div class="piece" v-for="(itemL,indexL) in nList" :key="indexL" >
       <p class="time" v-if ="!itemL[0].time">今日新聞</p>
       <p class="time" v-else>{{itemL[0].time}}</p>
       <div class="clear"></div>
-    <div class="newsItem" id="newsItem" v-for="(item,index) in nList[indexL]" :key="index">
+    <div class="newsItem" id="newsItem" v-for="(item,index) in nList[indexL]" :key="index" >
       <div class="list" >
         <router-link v-bind:to="{name:'Details',params:{NewsId:item.id}}">
         <img :src="item.images[0]" alt="">
@@ -13,12 +13,16 @@
       </div>
     </div>
     </div>
+    <div v-if="isLoading == true">
+      <p class="isLoading">加载中 <i class="fa fa-spinner fa-spin"></i></p>
+    </div>
   </div>
 </template>
 <script>
+import $ from 'jquery'
 export default {
   name: "NewsList",
-  props: ["NewsL"],
+  props: ["NewsL","isLoading",'getscroll'],
   data() {
     return {
       nList: [],
@@ -28,18 +32,29 @@ export default {
   watch: {
     NewsL(val) {
       this.nList = val;
+      this.$nextTick(()=>{
+        this.$emit('getscroll');
+      })
     },
   },
-  created() {
+  updated(){
+    
+  },
+  created(){
     
   },
   methods: {
-  },
- 
+
+  }
 };
 </script>
 
 <style scoped>
+.isLoading{
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
 .newsItem .list {
   margin: 0 auto;
   width: 90%;

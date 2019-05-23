@@ -3,7 +3,7 @@
     <div class="header">
         <i class="icon-menu fa fa-align-left fa-inverse" @click="showthemeList"></i>
         <div class="home">
-            <span class="text" @click="handleScroll" >首页</span>
+            <span class="text" >{{NewsDate}}</span>
         </div>
         <div class="more">
             <i class="icon-bell fa fa-bell fa-inverse " ></i>
@@ -29,7 +29,7 @@
     <div class="swiper-pagination"  slot="pagination"></div>
   </swiper>
     </div>
-    <NewsList :NewsL='NewsList'></NewsList>
+    <NewsList :NewsL='NewsList' :isLoading='isLoading' @getscroll='getscroll'></NewsList>
     <div class="hideNav">
     <div class="Navdask" @click="showthemeList"></div>
     <div class="sideNavleft ">
@@ -48,7 +48,7 @@
     <div class="themeList">
     <ul>
         <li class="lists">
-          <span class="text">首页</span>
+          <span class="text" >首页</span>
           <i class="fa fa-plus"></i>
         </li>
     </ul>
@@ -71,6 +71,9 @@ export default {
       swiperlist:[],
       NewsList:[],
       testList:[],
+      scrollList:[0],//屏幕顶部高度默认从零开始
+      NewsDateList:['首页','今日新闻'],//页面默认为首页，超出banner为今日新闻
+      NewsDate:'首页',
       swiperOption:{
         loop: true,
         height:280,
@@ -92,10 +95,8 @@ export default {
     var url = '/api/4/news/latest'; // 这里就是刚才的config/index.js中的/api
     this.$axios.get(url)
     .then(response => {
-      this.swiperlist = response.data.top_stories
-      this.NewsList.push(response.data.stories)
-      // console.log(this.NewsList)
-      
+      this.swiperlist = response.data.top_stories;
+      this.NewsList.push(response.data.stories);
     })
     .catch(error =>{
       console.log(error);
@@ -104,6 +105,10 @@ export default {
   mounted() {
     this.swiper.slideTo(0,1000,false);
     this.scroll(this.NewsList);
+
+  },
+  updated(){
+    
   },
   computed: {
     swiper(){
@@ -143,6 +148,7 @@ export default {
     scroll(num) {
       // let isLoading = false;
       window.onscroll = () => {
+        let scrollTop = document.documentElement.scrollTop;
         let bottomWindow =document.documentElement.offsetHeight -
             document.documentElement.scrollTop -
             window.innerHeight <=10;
@@ -150,31 +156,54 @@ export default {
           this.isLoading = true;//正在加载
           ++this.scrollNum;
           this.getNews(this.getTimes(this.scrollNum));
-        }   
+        }
+          //滑动新闻时，改变导航显示日期
+          this.NewsDate=this.NewsDateList[this.binarySearch(this.scrollList,scrollTop)];
       };
     },
+    //加载日期较旧的新闻
     getNews(date) {
       let url = "/api/4/news/before/" + date;
       this.$axios.get(url)
         .then(response => {
           this.NewsList.push(response.data.stories)
-          // console.log(this.NewsList)
           this.NewsList[this.NewsList.length - 1][0].time = this.getTitleTimes(this.scrollNum)
-          this.isLoading = false; //取消正在加载
+          //添加时间到时间标题数组
+          this.NewsDateList.push(this.getTitleTimes(this.scrollNum))
+          //取消正在加载
+          this.isLoading = false; 
         })
         .catch(error => {
           console.log(error);
         });
     },
-    handleScroll(){
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      var offsetTopList = document.querySelectorAll('.piece')
-      // console.log(offsetTopList)
-      for(let i = 0;i<offsetTopList.length;i++){
-         console.log(offsetTopList[i].offsetTop)
+    getscroll(){
+      let $piece = $(".piece");
+      let len = $piece.length;
+      if(len){
+         this.scrollList.push(parseInt($piece.eq(len-1).offset().top-50));
       }
-    }
-    }
+     
+    },
+    //二分法查找
+    binarySearch(arr,obj){
+        let left = 0;
+        let right = arr.length;
+        //判断如果超出数组最大的数则返回最大数的下标
+        if(obj>arr[right-1]){
+            return right-1;
+        };
+        while(left <= right){
+            let center = Math.floor((left+right)/2); 
+            if(obj<arr[center]){
+                right = center - 1;
+            }else{
+                left = center + 1;
+            }
+        }
+        return right;
+    },
+  }
 }
 </script>
 

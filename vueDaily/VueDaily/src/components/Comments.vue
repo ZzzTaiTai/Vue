@@ -3,16 +3,17 @@
       <div class="nav">
         <div>
           <i class="fa fa-chevron-left fa-inverse "  @click="back"></i>
-          <span @click="timeChange(1557923377)">{{total}} 条评论</span>
+          <span>{{total}} 条评论</span>
         </div>
-          <i class="fa fa-chevron-left fa-inverse"></i>
+          <i class="fa fa-pencil-square-o fa-inverse"></i>
         </div>
         <div class="commentsct" >
           <div class="longComments">
             <div class="commentsHead">
               <span>{{longComments.length}} 条长评</span>
-              <i class="fa fa-angle-double-down arrow"></i>
+              <i class="fa fa-angle-double-down arrow iconTransformStart" @click="iconChange"></i>
             </div>
+            <div class="contentList">
             <div class="commentsContent" v-for="(item,index) in longComments">
                 <div class="author">
                   <img class="authorImg" :src="item.avatar" alt="">
@@ -31,12 +32,14 @@
                   </span>
                   </div>
               </div>
+              </div>
           </div>
           <div class="shortComments">
             <div class="commentsHead">
               <span>{{shortComments.length}} 条短评</span>
-              <i class="fa fa-angle-double-down arrow"></i>
+              <i class="fa fa-angle-double-down arrow iconTransformStart" @click="iconChange"></i>
             </div>
+            <div class="contentList hide">
               <div class="commentsContent" v-for="(item,index) in shortComments">
                   <div class="author">
                     <img class="authorImg" :src="item.avatar" alt="">
@@ -55,20 +58,19 @@
                       </span>
                   </div>
               </div>
-       
+            </div>
           </div>
         </div>
       </div>
 </template>
 <script>
+import $ from 'jquery'
 export default {
   name: "comments",
-  // props: ["NewsDetails"],
   data() {
     return {
       longComments: [],
       shortComments:[],
-      // totalnum:'0'
     };
   },
   created(){
@@ -77,7 +79,6 @@ export default {
     this.$axios.get(longurl)
     .then(response => {
       this.longComments =response.data.comments;
-      // console.log("1")
     })
     .catch(error => {
       console.log(error);
@@ -89,10 +90,18 @@ export default {
     .catch(error => {
       console.log(error);
     })
+   
   },
   computed:{
+    //获取短评论加长评论的总数
     total(){
       return this.longComments.length+this.shortComments.length;
+    },
+    //判断长评论为零时，显示短评论数列
+    islongComments(){
+       if(!this.longComments.length){
+        // $('.shortComments').children[1].remove('');
+      }
     }
   },
   methods: {
@@ -110,22 +119,29 @@ export default {
       }
     },
       timeChange(data){
-        let _this =this.Appendzero;
+        let Appendzero =this.Appendzero;
         let currentTime= new Date(data*1000);
         let commentsTime = (currentTime.getMonth()+1)+'-'+
-        _this(currentTime.getDate())+' '+
-        _this(currentTime.getHours())+':'
-        +_this(currentTime.getMinutes());
-        // let a =this.$emit('Appendzero','1')
-        // console.log(a)
+        Appendzero(currentTime.getDate())+' '+
+        Appendzero(currentTime.getHours())+':'+
+        Appendzero(currentTime.getMinutes());
         return commentsTime;
-        
+      },
+      iconChange(e){
+        let that = e.target;
+        let contentList = that.parentNode.parentNode.children[1];
+        that.classList.toggle("iconTransformEnd");
+        that.classList.toggle('iconTransformStart');
+        contentList.classList.toggle("hide")
       }
   } 
 };
 </script>
 
 <style scoped>
+.hide{
+  display: none;
+}
 .comments{
     width: 100%;
     max-width: 768px;
@@ -214,5 +230,23 @@ font-size: 14px;
   width: 75%;
   margin: 0 auto ;
   padding: 15px 0;
+}
+.iconTransformEnd {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s; /* Firefox 4 */
+  -webkit-transition-duration: 0.5s; /* Safari 和 Chrome */
+  -o-transition-duration: 0.5s; /* Opera */
+}
+.iconTransformStart {
+  transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s; /* Firefox 4 */
+  -webkit-transition-duration: 0.5s; /* Safari 和 Chrome */
+  -o-transition-duration: 0.5s; /* Opera */
 }
 </style>
