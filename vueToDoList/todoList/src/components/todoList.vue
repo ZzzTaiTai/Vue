@@ -2,13 +2,21 @@
   <div class="app">
     <div class="box">
       <h1>{{ msg }}</h1>
-      <input type="text" value="" id="todoBox" v-model="todo" @keyup.enter="add"/>
-      <button id="addButton" @click="add" >添加</button>
+      <todoInputText 
+        :todo="todo"
+        @addTodo="addTodo"
+      ></todoInputText>
       <div class="todoContent">
       <transition name="bounce">
       <ul v-if="lists.length>0">
       <transition-group name='fade'>
-        <li v-for="(list,index) in lists" :key="'id'+index"><input id="check" value="check" type="checkbox" @click="del(index)"/>{{list.title}}</li>
+      <todoListItem
+        v-for="(item,index) in lists"
+        :key="'id'+index"
+        :item='item'
+        :index='index'
+        @delTodo="delTodo"
+      ></todoListItem>
       </transition-group>
       </ul>
       <p v-else>无todo内容，请添加</p>
@@ -19,29 +27,50 @@
 </template>
 
 <script>
+import todoListItem from './todoListItem'
+import todoInputText from './todoInputText'
+let newTodoId = 1;
 export default {
+  components:{
+    todoListItem,todoInputText
+  },
   name: 'app',
   data () {
     return {
       msg: 'todo List',
       todo:'',
       lists:[
-        {title:'今天要做的事情'},
-        {title:'现在要做的事情'}
+        {
+          id:newTodoId++,
+          title:'今天要做的事情'
+        },
+        {
+          id:newTodoId++,
+          title:'现在要做的事情'
+        }
       ]
     }
   },
   methods: {
-    add:function(){
-      this.lists.push({
-        title:this.todo.trim(),
-        checked:false
+    addTodo:function(curTodo){
+      const trimedText = curTodo.trim();
+      if(trimedText){
+        this.lists.push({
+        id:newTodoId++,
+        title:trimedText
       });
-      this.todo='';
+        this.todo='';
+      }else{
+        alert("内容不能为空，请输入内容")
+      }
+      
     },
-    del:function(index){
-      this.lists.splice(index,1)
+    delTodo:function(curTodoId){
+      this.lists = this.lists.filter( item =>{
+        return item.id !==curTodoId
+      })
     }
+
   },
 }
 </script>
