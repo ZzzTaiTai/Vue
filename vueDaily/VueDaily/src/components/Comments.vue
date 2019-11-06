@@ -28,7 +28,7 @@
                     {{item.content}}
                   </span>
                   <span class="time">
-                    {{timeChange(item.time)}}
+                    {{item.time | formatTime}}
                   </span>
                   </div>
               </div>
@@ -54,7 +54,7 @@
                       {{item.content}}
                       </span>
                       <span class="time">
-                       {{timeChange(item.time)}}
+                       {{item.time | formatTime}}
                       </span>
                   </div>
               </div>
@@ -69,9 +69,27 @@ export default {
   name: "comments",
   data() {
     return {
-      longComments: [],
+      longComments:[],
       shortComments:[],
     };
+  },
+  filters:{
+    formatTime:function(value){
+    if(!value)return;
+    function Appendzero(obj){
+        if (obj < 10) {
+            return "0" + "" + obj;
+          } else {
+            return obj;
+          }
+      };
+    var time =new Date(value*1000);
+    var m = time.getMonth() + 1;
+    var d = time.getDay();
+    var h = time.getHours();
+    var mm = time.getMinutes();
+    return Appendzero(m)+'-'+Appendzero(d)+' '+Appendzero(h)+':'+Appendzero(mm)
+    }
   },
   created(){
     let longurl = "api/4/story/" + this.$route.params.NewsId+'/long-comments',
@@ -79,6 +97,7 @@ export default {
     this.$axios.get(longurl)
     .then(response => {
       this.longComments =response.data.comments;
+      console.log(this.longComments);
     })
     .catch(error => {
       console.log(error);
@@ -86,11 +105,14 @@ export default {
     this.$axios.get(shorturl)
     .then(response =>{
        this.shortComments =response.data.comments;
+       console.log(this.shortComments);
     })
     .catch(error => {
       console.log(error);
     })
-   
+    
+  },
+  mounted:function(){
   },
   computed:{
     //获取短评论加长评论的总数
@@ -100,7 +122,7 @@ export default {
     //判断长评论为零时，显示短评论数列
     islongComments(){
        if(!this.longComments.length){
-        // $('.shortComments').children[1].remove('');
+        $('.shortComments').children[1]
       }
     }
   },
@@ -108,33 +130,15 @@ export default {
       back(){
         this.$router.go(-1)
       },
-      Appendzero(obj) {
-      //添0操作
-      {
-        if (obj < 10) {
-          return "0" + "" + obj;
-        } else {
-          return obj;
-        }
-      }
-    },
-      timeChange(data){
-        let Appendzero =this.Appendzero;
-        let currentTime= new Date(data*1000);
-        let commentsTime = (currentTime.getMonth()+1)+'-'+
-        Appendzero(currentTime.getDate())+' '+
-        Appendzero(currentTime.getHours())+':'+
-        Appendzero(currentTime.getMinutes());
-        return commentsTime;
+      iconChange(){
+        // $(function(){
+        //   console.log($(this));
+        //   $(this).find('i').toggleClass("iconTransformEnd");
+        //   $(this).find('i').toggleClass('iconTransformStart');
+        // })
       },
-      iconChange(e){
-        let that = e.target;
-        let contentList = that.parentNode.parentNode.children[1];
-        that.classList.toggle("iconTransformEnd");
-        that.classList.toggle('iconTransformStart');
-        contentList.classList.toggle("hide")
-      }
-  } 
+      
+  }
 };
 </script>
 

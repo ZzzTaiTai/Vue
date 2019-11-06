@@ -1,5 +1,9 @@
 <template>
-  <li><input id="check" value="check" type="checkbox" @change="$emit('delTodo',item.id)"/>{{item.title}}</li>
+<div>
+  <h2>首页</h2>
+  <router-link to="/todoList">todoList程序</router-link>
+  <router-link to="/appHome">appHome</router-link>
+   </div>
 </template>
 <script>
 export default {

@@ -21,6 +21,12 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
+  // const px2remLoader = {
+  //   loader: 'px2rem-loader',
+  //   options: {
+  //     remUnit: 75 // 这里设置html根字体，vant-UI的官方根字体大小是37.5
+  //   }
+  // }
 
   const postcssLoader = {
     loader: 'postcss-loader',
