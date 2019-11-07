@@ -24,6 +24,26 @@
       </swiper-slide>
     </swiper>
   </div>
+  <div class="floor">
+    <div class="floor-three">
+      <div class="floor-left">
+        <img :src="floor[0].image" alt="">
+      </div>
+      <div class="floor-right">
+        <div>
+          <img :src="floor[1].image" alt="">
+        </div>
+        <div>
+          <img :src="floor[2].image" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="floor-two">
+      <div v-for="(item,index) in floor.slice(3)" :key="index">
+        <img :src="item.image" alt="">
+      </div>
+    </div>
+  </div>
     <tabBar :active='0'></tabBar>
    </div>
 </template>
@@ -85,31 +105,53 @@ export default {
         'mallPrice':29,
         'Price':50
       },{
-        'goodsId':0,
+        'goodsId':1,
         'goodsName':'90分户外双肩包',
         'image':'https://img.youpin.mi-img.com/800_pic/afa221dd282bbf89c79b8bd93f4adfc0.jpg',
         'mallPrice':102,
         'Price':500
       },{
-        'goodsId':0,
+        'goodsId':2,
         'goodsName':'平仄原味茶饮料',
         'image':'https://img.youpin.mi-img.com/800_pic/a003eb4e5aa6b0046bba141c518968d2.jpg',
         'mallPrice':29,
         'Price':50
       },{
-        'goodsId':0,
+        'goodsId':3,
         'goodsName':'90分户外双肩包',
         'image':'https://img.youpin.mi-img.com/800_pic/afa221dd282bbf89c79b8bd93f4adfc0.jpg',
         'mallPrice':102,
         'Price':500
       },{
-        'goodsId':0,
+        'goodsId':4,
         'goodsName':'夜光单日历机械表',
         'image':'https://img.youpin.mi-img.com/shopmain/a80fded35301e48cac68096d1b6f2b03.jpg',
         'mallPrice':178,
         'Price':423
       }],
       value:'',
+      floor:[{
+        'floorImgId':1,
+        'image':'https://img.youpin.mi-img.com/shopmain/2bf8aa7d49d4768b797aecc699ebcccf.png@base@tag=imgScale&w=800&h=800&F=webp?0_0',
+      },{
+        'floorImgId':2,
+        'image':'https://img.youpin.mi-img.com/jianyu/fab3799f4693a9ab89d3e9d862fee3d7.jpeg?w=720&h=360',
+      },{
+        'floorImgId':3,
+        'image':'https://img.youpin.mi-img.com/jianyu/fab3799f4693a9ab89d3e9d862fee3d7.jpeg?w=720&h=360',
+      },{
+        'floorImgId':4,
+        'image':'https://img.youpin.mi-img.com/800_pic/ebce20609707fc72e2d8384767bcd79a.png@base@tag=imgScale&F=webp?0_0',
+      },{
+        'floorImgId':5,
+        'image':'https://img.youpin.mi-img.com/800_pic/2294bf49eb849642246cb099ae2604f0.png@base@tag=imgScale&F=webp?0_0',
+      },{
+        'floorImgId':6,
+        'image':'https://img.youpin.mi-img.com/800_pic/ebce20609707fc72e2d8384767bcd79a.png@base@tag=imgScale&F=webp?0_0',
+      },{
+        'floorImgId':7,
+        'image':'https://img.youpin.mi-img.com/800_pic/2294bf49eb849642246cb099ae2604f0.png@base@tag=imgScale&F=webp?0_0',
+      }],
       swiperOption:{
         slidesPerView:3
       }
@@ -176,5 +218,19 @@ export default {
     }
     img{max-width:100%;}
     }
+}
+.floor{
+  img{max-width:100%;}
+  .floor-three{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; 
+     }
+  .floor-two{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    div{width:50%;}
+  }
 }
 </style>
