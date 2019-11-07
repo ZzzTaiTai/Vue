@@ -44,6 +44,7 @@
       </div>
     </div>
   </div>
+  <hotGoods  :hotGoods="hotGoods"></hotGoods>
     <tabBar :active='0'></tabBar>
    </div>
 </template>
@@ -53,6 +54,7 @@ import tabBar from "../base/tabBar"
 import {getSlidesData} from "../../api/index"
 import slides from "../base/slides"
 import search from "../base/search"
+import hotGoods from "../base/hotGoods"
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
@@ -152,6 +154,43 @@ export default {
         'floorImgId':7,
         'image':'https://img.youpin.mi-img.com/800_pic/2294bf49eb849642246cb099ae2604f0.png@base@tag=imgScale&F=webp?0_0',
       }],
+      hotGoods:[{
+        'goodsId':0,
+        'goodsName':'夜光单日历机械表',
+        'image':'https://img.youpin.mi-img.com/shopmain/a80fded35301e48cac68096d1b6f2b03.jpg',
+        'mallPrice':178,
+        'Price':423
+      },{
+        'goodsId':1,
+        'goodsName':'平仄原味茶饮料',
+        'image':'https://img.youpin.mi-img.com/800_pic/a003eb4e5aa6b0046bba141c518968d2.jpg',
+        'mallPrice':29,
+        'Price':50
+      },{
+        'goodsId':2,
+        'goodsName':'90分户外双肩包',
+        'image':'https://img.youpin.mi-img.com/800_pic/afa221dd282bbf89c79b8bd93f4adfc0.jpg',
+        'mallPrice':102,
+        'Price':500
+      },{
+        'goodsId':3,
+        'goodsName':'平仄原味茶饮料',
+        'image':'https://img.youpin.mi-img.com/800_pic/a003eb4e5aa6b0046bba141c518968d2.jpg',
+        'mallPrice':29,
+        'Price':50
+      },{
+        'goodsId':4,
+        'goodsName':'90分户外双肩包',
+        'image':'https://img.youpin.mi-img.com/800_pic/afa221dd282bbf89c79b8bd93f4adfc0.jpg',
+        'mallPrice':102,
+        'Price':500
+      },{
+        'goodsId':5,
+        'goodsName':'夜光单日历机械表',
+        'image':'https://img.youpin.mi-img.com/shopmain/a80fded35301e48cac68096d1b6f2b03.jpg',
+        'mallPrice':178,
+        'Price':423
+      }],
       swiperOption:{
         slidesPerView:3
       }
@@ -163,7 +202,8 @@ export default {
     slides,
     search,
     swiper,
-    swiperSlide
+    swiperSlide,
+    hotGoods
     },
   created() {
     // getSlidesData().then(res=>{

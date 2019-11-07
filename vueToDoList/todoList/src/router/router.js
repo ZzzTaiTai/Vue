@@ -6,6 +6,7 @@ import appHome from '@/components/page/appHome'
 import appList from '@/components/page/List'
 import appCar from '@/components/page/Car'
 import appPersonal from '@/components/page/Personal'
+import Detail from '@/components/page/detail'
 Vue.use(VueRouter)
 const router = new VueRouter({
     mode: 'history',
@@ -16,6 +17,7 @@ const router = new VueRouter({
      {path: '/appList',name:'appList',component:appList},
      {path: '/appCar',name:'appCar',component:appCar},
      {path: '/appPersonal',name:'appPersonal',component:appPersonal},
+     {path:'/hotGoods/:goodsId',name:'detail',component:Detail},
      {path: '/*',redirect:'/home'},
     ]
    })
