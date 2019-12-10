@@ -1,7 +1,7 @@
 <template>
   <div class="headers">
     <div class="content-wrapper">
-      <div class="avatar">
+      <div class="avatar" >
         <img :src="seller.avatar" width="64" height="64" alt />
       </div>
       <div class="info">
@@ -87,7 +87,6 @@ export default {
     showHideDetail(){
       this.detailShow = !this.detailShow;
     },
-
   },
 };
 </script>

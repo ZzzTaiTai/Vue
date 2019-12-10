@@ -1,8 +1,8 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper" ref="menuWrapper">
+    <div class="menu-wrapper" ref="menuWrapper" >
       <ul>
-        <li v-for="(item,index) in goods" class="menuItem" :class="{current: currentIndex === index}">
+        <li v-for="(item,index) in goods" class="menuItem"  :class="{current: currentIndex === index}"  @click="menuSelect(index,$event)">
           <span class="text ">
             <span v-show="item.type > 0 " :class="classMap[item.type]" class="icon" ></span>
             {{item.name}}
@@ -62,6 +62,7 @@ export default {
         this._initScroll();
         this._calculateHeight();
       })
+      
     });
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
   },
@@ -79,7 +80,9 @@ export default {
   },
   methods: {
     _initScroll(){
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+        click:true
+      });
       this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
         probeType:3
       });
@@ -91,11 +94,20 @@ export default {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let height = 0;
       this.listHeight.push(height);
-      for(let i = 0;i<foodList.length;i++){
+      for(let i = 0;i < foodList.length;i++){
         let item = foodList[i];
         height+=item.clientHeight
         this.listHeight.push(height);
       }
+    },
+    menuSelect(curIndex,event){
+     if(!event._constructed){
+       return
+     }
+     let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+     let el = foodList[curIndex];
+     this.foodsScroll.scrollToElement(el,300)
+
     }
 
   }
@@ -157,10 +169,7 @@ export default {
         display: table-cell;
         width: 56px;
         vertical-align: middle;
-
         font-size: 12px;
-
-
       }
     }
   }
