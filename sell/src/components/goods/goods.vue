@@ -36,17 +36,18 @@
           </li>
         </ul>
     </div>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+import shopcart from '../shopcart/shopcart'
 
 export default {
-  props: {
-    seller: {
-      type: Object
-    }
+  props: ["seller"],
+  components:{
+    shopcart:shopcart
   },
   data() {
     return {
@@ -61,6 +62,7 @@ export default {
       this.$nextTick(() =>{
         this._initScroll();
         this._calculateHeight();
+
       })
       
     });
