@@ -1,12 +1,13 @@
 <template>
   <div class="shopcart">
-      <div class="content ">
+      <div class="content" @click="tiggerList">
           <div class="content-left " :class="{'highlight':totalCount > 0}" >
               <div class="logo-warpper ">
                   <div class="logo">
                       <span class="icon-gouwuche iconfont"></span>
                   </div>
                   <div class="totalNum" v-show="totalCount > 0">{{totalCount}}</div>
+                
               </div>
               <div class="price">￥{{totalPrice}}</div>
               <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
@@ -17,11 +18,47 @@
                   ￥{{price}}起送
               </div>
           </div>
+    
       </div>
+                <div class="ball-container">
+            <div v-for="ball in balls">
+                    <transition  
+                        @before-enter="beforeEnter"
+                        @enter="enter"
+                        @after-enter="afterEnter"
+                        name='drop'>
+                    <div class="ball" v-show="ball.show">
+                        <div class="inner inner-hook"></div>
+                    </div>
+                    </transition>
+            </div> 
+          </div>
+          <transition name="fold">
+            <div class="shopcart-lists" v-show="listShow">
+                <div class="list-header">
+                    <h1 class="title">购物车</h1>
+                    <span class="empty">清空</span>
+                </div>
+                <div class="list-content">
+                    <ul>
+                        <li class="food" v-for="food in selectFoods">
+                            <span class="name">{{food.name}}</span>
+                            <div class="price">
+                                <span>￥{{food.price*food.count}}</span>
+                            </div>
+                            <div class="cartcontrol-wrapper">
+                                <cartcontrol :food="food" @cartAdd="handlecartAdd"></cartcontrol>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </transition>
   </div>
 </template>
 
 <script>
+import cartcontrol from '../cartcontrol/cartcontrol'
 export default {
     props:{
         selectFoods:{
@@ -39,9 +76,15 @@ export default {
             default: 0
         }
     },
+    components:{
+        cartcontrol:cartcontrol
+    },
     data() {
         return {
-            cartShow:false
+            cartShow:false,
+            balls: [{show: false}, {show: false}, {show: false}, {show: false}, {show: false}],
+            dropBalls: [], // 用dropBalls来存放掉落的小球
+            fold:true
         }
     },
     computed: {
@@ -61,18 +104,80 @@ export default {
         },
         price(){
             let price = this.minPrice; 
-            console.log(price)
             this.selectFoods.forEach(food => {
                 price = price-(food.price *food.count);
             })
             return price
+        },
+        listShow(){
+            if(!this.totalCount){
+                this.fold = true;
+                return false;
+            }
+            let show = !this.fold;
+            return show;
         }
     },
-
+    methods: {
+        drop(el){
+            for(let i = 0; i<this.balls.length;i++){
+                let ball = this.balls[i];
+                if(!ball.show){
+                    ball.show = true;
+                    ball.el = el;
+                    this.dropBalls.push(ball);
+                    return
+                }
+            }
+        },
+        beforeEnter(el) {
+          let count = this.balls.length;
+          while(count--){
+              let ball = this.balls[count];
+              if(ball.show){
+                  let rect = ball.el.getBoundingClientRect();
+                  let x = rect.left-32;
+                  let y = -(window.innerHeight-rect.top-22);
+                  el.style.display = '';
+                el.style.webkitTransform = 'translate3d(0,' + y + 'px,0)';
+                el.style.transform = 'translate3d(0,' + y + 'px,0)';
+                let inner = el.getElementsByClassName('inner-hook')[0];
+                inner.style.webkitTransform = 'translate3d(' + x + 'px,0, 0)';
+                inner.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+              }
+          }
+        },
+        enter(el){
+            let rf = el.offsetHeight;
+            this.$nextTick(()=>{
+                el.style.webkitTransform = 'translate3d(0,0,0)';
+                el.style.transform = 'translate3d(0,0,0)';
+                let inner = el.getElementsByClassName('inner-hook')[0];
+                inner.style.webkitTransform = 'translate3d(0,0,0)';
+                inner.style.transform = 'translate3d(0,0,0)';
+            })
+        },
+        afterEnter(el){
+            console.log(this.dropBalls)
+            let ball =this.dropBalls.shift();
+            console.log(ball)
+            if(ball){
+                ball.show=false;
+                el.style.display="none"
+            }
+        },
+        tiggerList(){
+            if(!this.totalCount){
+                return
+            }
+            this.fold =!this.fold;
+        }   
+    },
 }
 </script>
 
 <style lang="less">
+@import "../../common/css/mixin";
     .shopcart{
         position: fixed;
         left: 0;
@@ -83,6 +188,7 @@ export default {
         line-height: 48px;
 
         .content{
+            position: relative;
             display: flex;
             background: #141d27; 
             font-size: 0;
@@ -169,6 +275,88 @@ export default {
                 }
             }
         }
+                    .ball-container{
+                .ball{
+                    position: fixed;
+                    left:32px;
+                    bottom:22px;
+                    z-index: 200;
+                    &.drop-enter,&.drop-enter-active{
+                        transition:all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)
+                    }
+                    .inner{
+                        width:16px;
+                        height: 16px;
+                        border-radius: 50%;
+                        background: rgb(0,160,220);
+                        transition: all 0.4s linear;
+                        }
+                    }
+            }
+            .shopcart-lists{
+                position: absolute;
+                bottom:48px;
+                left: 0;
+                z-index: -1;
+                width: 100%;
+                &.fade-enter-active, &.fade-leave-active{
+                    transition: all .5s;
+                    transform:translate3d(0,-100%,0);
+                }
+                &.fade-enter, &.fade-leave{
+                     transform:translate3d(0,0,0);
+                }
+                .list-header{
+                    padding:0 18px;
+                    height: 40px;
+                    line-height: 40px;
+                    background: #f3f5f7;
+                    border-bottom: 1px solid rgba(7, 17, 27, .1);
+                    .title{
+                        float: left;
+                        font-size: 14px;
+                        color:rgb(7,17,27)
+                    }
+                    .empty{
+                        float: right;
+                        font-size: 12px;
+                        color: rgb(0, 160, 220)
+                    }
+                }
+                .list-content{
+                    padding:0 18px;
+                    max-height: 217px;
+                    overflow: hidden;
+                    background: #ffffff;
+                    .food{
+                        position: relative;
+                        box-sizing: border-box;
+                        padding:12px 0;
+                        .border-1px(rgba(7, 17, 27, .1));
+                        line-height: 100%;
+                        .name{
+                            line-height: 24px;
+                            font-size: 14px;
+                            color:rgb(7,17,27);
+                        }
+                        .price{
+                           position: absolute;
+                           right: 90px;
+                           bottom: 12px;
+                           line-height: 24px;
+                           font-size: 14px;
+                           font-weight: 700;
+                           color:rgb(240, 20, 20);
+                        }
+                        .cartcontrol-wrapper{
+                            position: absolute;
+                            right: 0;
+                            bottom:0;
+                        }
+                    }
+
+                }
+            }
 
     }
 </style>

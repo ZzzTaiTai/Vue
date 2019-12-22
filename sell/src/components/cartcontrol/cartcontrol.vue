@@ -10,7 +10,7 @@
           {{food.count}}
       </div>
       </transition>
-      <div class="cart-add iconfont icon-jiahao" @click="addCart">
+      <div class="cart-add iconfont icon-jiahao" @click="addCart" >
       </div>
   </div>
 
@@ -36,20 +36,17 @@ export default {
             }
             if(!this.food.count){
                 Vue.set(this.food, 'count', 1);
-       
             }else{
                 this.food.count++;
             }
+           
+            this.$emit('cartAdd', event.target) 
         },
         decreaseCart(event){
             if(!event._constructed){
                 return
             }
-            if(this.food.count === 1){
-                Vue.set(this.food, 'count', 0);
-            }else{
-                this.food.count--;
-            }
+            this.food.count--;
         }
     },
 
@@ -68,11 +65,14 @@ export default {
                 color: rgb(0, 160, 220);
             }
             &.fade-enter-active, &.fade-leave-active {
-                transition: opacity .3s;
+                transform: rotate3d(0,0,1,180deg);
+                transition: all .5s ease;
             }
-            &.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            &.fade-enter, &.fade-leave-to{
+                transform: translateX(30px);
                 opacity: 0;
             }
+            
         }
         .cart-count{
             display: inline-block;
@@ -84,9 +84,9 @@ export default {
             font-size: 12px;
             color:rgb(7, 17, 27);
             &.fade-enter-active, &.fade-leave-active {
-                transition: opacity .3s;
+                transition: opacity .1s;
             }
-            &.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            &.fade-enter, .fade-leave-to {
                 opacity: 0;
             }
 
