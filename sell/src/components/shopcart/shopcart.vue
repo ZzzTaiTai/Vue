@@ -20,8 +20,8 @@
           </div>
     
       </div>
-                <div class="ball-container">
-            <div v-for="ball in balls">
+    <div class="ball-container">
+        <div v-for="ball in balls">
                     <transition  
                         @before-enter="beforeEnter"
                         @enter="enter"
@@ -31,15 +31,15 @@
                         <div class="inner inner-hook"></div>
                     </div>
                     </transition>
-            </div> 
-          </div>
-          <transition name="fold">
-            <div class="shopcart-lists" v-show="listShow">
+        </div> 
+    </div>
+    <transition name="fold">
+            <div class="shopcart-lists"  v-show="listShow">
                 <div class="list-header">
                     <h1 class="title">购物车</h1>
-                    <span class="empty">清空</span>
+                    <span class="empty" @click="empty">清空</span>
                 </div>
-                <div class="list-content">
+                <div class="list-content" ref="listContent">
                     <ul>
                         <li class="food" v-for="food in selectFoods">
                             <span class="name">{{food.name}}</span>
@@ -47,17 +47,20 @@
                                 <span>￥{{food.price*food.count}}</span>
                             </div>
                             <div class="cartcontrol-wrapper">
-                                <cartcontrol :food="food" @cartAdd="handlecartAdd"></cartcontrol>
+                                <cartcontrol :food="food" ></cartcontrol>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-          </transition>
+    </transition>
+
   </div>
+  
 </template>
 
 <script>
+import BScroll from 'better-scroll'
 import cartcontrol from '../cartcontrol/cartcontrol'
 export default {
     props:{
@@ -115,6 +118,19 @@ export default {
                 return false;
             }
             let show = !this.fold;
+            if(show) {
+                this.$nextTick(() => {
+                    if(!this.scroll) {
+                        this.scroll = new BScroll(this.$refs.listContent, {
+                            click:true
+                        })
+                    }else{
+                        this.scroll.refresh();
+                    }
+                    
+                })
+            }
+            this.$emit('func',show)
             return show;
         }
     },
@@ -171,7 +187,12 @@ export default {
                 return
             }
             this.fold =!this.fold;
-        }   
+        },
+        empty(){
+            this.selectFoods.forEach((food) =>{
+                food.count = 0;
+            })
+        } 
     },
 }
 </script>
@@ -182,11 +203,10 @@ export default {
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 50;
         width: 100%;
         height: 48px;
         line-height: 48px;
-
+        z-index: 50;
         .content{
             position: relative;
             display: flex;
@@ -275,7 +295,7 @@ export default {
                 }
             }
         }
-                    .ball-container{
+            .ball-container{
                 .ball{
                     position: fixed;
                     left:32px;
@@ -295,16 +315,23 @@ export default {
             }
             .shopcart-lists{
                 position: absolute;
-                bottom:48px;
                 left: 0;
+                bottom:48px;
                 z-index: -1;
                 width: 100%;
-                &.fade-enter-active, &.fade-leave-active{
+                &.fold-enter-active{
                     transition: all .5s;
-                    transform:translate3d(0,-100%,0);
+                    transform:translate3d(0,0,0);
                 }
-                &.fade-enter, &.fade-leave{
-                     transform:translate3d(0,0,0);
+                 &.fold-leave-active{
+                    transition: all .5s;
+                    transform:translate3d(0,100%,0);
+                 }
+                &.fold-enter{
+                     transform:translate3d(0,100%,0);
+                }
+                &.fold-leave{
+                    transform:translate3d(0,0,0);
                 }
                 .list-header{
                     padding:0 18px;
@@ -355,8 +382,8 @@ export default {
                         }
                     }
 
+
                 }
             }
-
     }
 </style>
