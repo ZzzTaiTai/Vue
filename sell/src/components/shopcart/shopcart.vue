@@ -14,11 +14,11 @@
               
           </div>
           <div class="content-right">
-              <div class="minPrice">
-                  ￥{{price}}起送
+              <div class="minPrice" :class="{reachPrice:reachPrice}">
+                  <span v-show="!reachPrice">还差￥{{price}}起送</span>
+                  <span class="settlement" v-show="reachPrice">去结算</span>
               </div>
           </div>
-    
       </div>
     <div class="ball-container">
         <div v-for="ball in balls">
@@ -110,7 +110,7 @@ export default {
             this.selectFoods.forEach(food => {
                 price = price-(food.price *food.count);
             })
-            return price
+             return price
         },
         listShow(){
             if(!this.totalCount){
@@ -132,6 +132,14 @@ export default {
             }
             this.$emit('func',show)
             return show;
+        },
+        reachPrice(){
+            let price = this.price;
+            if(price>0){
+                return false
+            }else{
+                return true
+            }
         }
     },
     methods: {
@@ -174,9 +182,7 @@ export default {
             })
         },
         afterEnter(el){
-            console.log(this.dropBalls)
             let ball =this.dropBalls.shift();
-            console.log(ball)
             if(ball){
                 ball.show=false;
                 el.style.display="none"
@@ -192,6 +198,8 @@ export default {
             this.selectFoods.forEach((food) =>{
                 food.count = 0;
             })
+            this.$emit('func',this.fold)
+
         } 
     },
 }
@@ -292,6 +300,10 @@ export default {
                     line-height: 48px;
                     background: rgba(255, 255, 255, .2);
                     text-align: center;
+                    &.reachPrice{
+                        background: rgb(1, 156, 55);
+                        color:#ffffff;
+                    }
                 }
             }
         }

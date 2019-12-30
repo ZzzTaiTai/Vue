@@ -21,10 +21,10 @@
           <h1 class="title">{{ item.name }}</h1>
           <ul>
             <li v-for="(food, index) in item.foods" class="food-item">
-              <div class="icon">
+              <div class="icon" @click="selectFood(food,$event)">
                 <img :src="food.icon" alt width="57" height="57" />
               </div>
-              <div class="content">
+              <div class="content" @click="selectFood(food,$event)">
                 <h2 class="name">{{ food.name }}</h2>
                 <p class="desc" v-show="food.description">{{ food.description }}</p>
                 <div class="extra">
@@ -38,10 +38,10 @@
                   </span>
                   <span class="oldPrice" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
                 </div>
-                <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food" @cartAdd="handlecartAdd"></cartcontrol>
-                </div>
               </div>
+               <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
+                </div>
             </li>
           </ul>
         </li>
@@ -57,26 +57,30 @@
     <transition name="fade">
       <div class="maskBg"  v-show="listShow"></div>
     </transition>
+    <food :food="selectedFood" ref="selectedFood"></food>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import BScroll from "better-scroll";
 import shopcart from "../shopcart/shopcart";
 import cartcontrol from "../cartcontrol/cartcontrol";
-
+import food from "../food/food";
 export default {
   props: ["seller"],
   components: {
     shopcart: shopcart,
-    cartcontrol: cartcontrol
+    cartcontrol: cartcontrol,
+    food:food
   },
   data() {
     return {
       goods: [],
       listHeight: [],
       scrollY: 0,
-      listShow: null
+      listShow: null,
+      selectedFood:{}
     };
   },
   created() {
@@ -150,14 +154,29 @@ export default {
       let el = foodList[curIndex];
       this.foodsScroll.scrollToElement(el, 300);
     },
-    handlecartAdd(target) {
+    handlecartAdd(target,current) {
       this._drop(target);
+      if(!current.count){
+        Vue.set(current, 'count', 1);
+      }else{
+        current.count++;
+      }
+    },
+    cartDecrease(current){
+      current.count--;
     },
     _drop(target) {
       this.$refs.shopCart.drop(target);
     },
     getListShow(data){
       this.listShow = data;
+    },
+    selectFood(food,evnet){
+      if(!evnet._constructed){
+        return
+      }
+      this.selectedFood = food
+      this.$refs.selectedFood.show();
     }
   },
 };
@@ -273,18 +292,18 @@ export default {
             font-size: 14px;
             color: rgb(240, 20, 20);
           }
-          .old {
+          .oldPrice {
             text-decoration: line-through;
             font-size: 10px;
             color: rgb(147, 153, 159);
           }
         }
-        .cartcontrol-wrapper {
+      }
+             .cartcontrol-wrapper {
           position: absolute;
           bottom: 0;
           right: 0;
         }
-      }
     }
   }
   .maskBg {

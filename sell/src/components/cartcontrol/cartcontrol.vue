@@ -24,29 +24,18 @@ export default {
            type:Object
        }
     },
-    data() {
-        return {
-            
-        }
-    },
     methods: {
         addCart(event){
             if(!event._constructed){
                 return
             }
-            if(!this.food.count){
-                Vue.set(this.food, 'count', 1);
-            }else{
-                this.food.count++;
-            }
-           
-            this.$emit('cartAdd', event.target) 
+            this.$emit('cartAdd', event.target,this.food) 
         },
         decreaseCart(event){
             if(!event._constructed){
                 return
             }
-            this.food.count--;
+            this.$emit('cartDecrease',this.food) 
         }
     },
 
