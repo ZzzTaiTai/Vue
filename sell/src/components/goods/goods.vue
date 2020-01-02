@@ -57,7 +57,7 @@
     <transition name="fade">
       <div class="maskBg"  v-show="listShow"></div>
     </transition>
-    <food :food="selectedFood" ref="selectedFood"></food>
+    <food :food="selectedFood" ref="selectedFood" @cartAdd="handlecartAdd"></food>
   </div>
 </template>
 
@@ -73,6 +73,12 @@ export default {
     shopcart: shopcart,
     cartcontrol: cartcontrol,
     food:food
+  },
+  provide(){
+    return{
+      handlecartAdd:this.handlecartAdd,
+      cartDecrease:this.cartDecrease
+    }
   },
   data() {
     return {

@@ -47,7 +47,7 @@
                                 <span>￥{{food.price*food.count}}</span>
                             </div>
                             <div class="cartcontrol-wrapper">
-                                <cartcontrol :food="food" ></cartcontrol>
+                                <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
                             </div>
                         </li>
                     </ul>
@@ -82,6 +82,7 @@ export default {
     components:{
         cartcontrol:cartcontrol
     },
+    inject:['handlecartAdd','cartDecrease'],
     data() {
         return {
             cartShow:false,
@@ -103,6 +104,7 @@ export default {
             this.selectFoods.forEach(food => {
                 count += food.count;
             })
+            console.log(count)
             return count
         },
         price(){
@@ -115,6 +117,7 @@ export default {
         listShow(){
             if(!this.totalCount){
                 this.fold = true;
+                this.$emit('func',false)
                 return false;
             }
             let show = !this.fold;
@@ -199,8 +202,8 @@ export default {
                 food.count = 0;
             })
             this.$emit('func',this.fold)
+        },
 
-        } 
     },
 }
 </script>

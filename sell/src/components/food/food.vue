@@ -24,9 +24,9 @@
             >
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food"></cartcontrol>
+            <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
           </div>
-          <div class="buy" v-show="!food.count || food.count === 0">
+          <div class="buy" v-show="!food.count || food.count === 0" @click="cartAdd">
             加入购物车
           </div>
         </div>
@@ -44,6 +44,7 @@ export default {
       type: Object
     }
   },
+  inject:['handlecartAdd','cartDecrease'],
   components: {
     cartcontrol
   },
@@ -67,6 +68,12 @@ export default {
     },
     hide() {
       this.showFlag = false;
+    },
+    cartAdd(event) {
+      if(!event._constructed){
+          return
+        }
+      this.$emit('cartAdd', event.target,this.food) 
     }
   }
 };
