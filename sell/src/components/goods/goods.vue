@@ -40,7 +40,7 @@
                 </div>
               </div>
                <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
+                  <cartcontrol :food="food" ></cartcontrol>
                 </div>
             </li>
           </ul>
@@ -57,7 +57,7 @@
     <transition name="fade">
       <div class="maskBg"  v-show="listShow"></div>
     </transition>
-    <food :food="selectedFood" ref="selectedFood" @cartAdd="handlecartAdd"></food>
+    <food :food="selectedFood" ref="selectedFood"></food>
   </div>
 </template>
 
@@ -76,13 +76,12 @@ export default {
   },
   provide(){
     return{
-      handlecartAdd:this.handlecartAdd,
-      cartDecrease:this.cartDecrease
+      handlecartAdd:this.handlecartAdd
     }
   },
   data() {
     return {
-      goods: [],
+      goods: [], 
       listHeight: [],
       scrollY: 0,
       listShow: null,
@@ -91,7 +90,7 @@ export default {
   },
   created() {
     this.$axios.get("../../static/data.json").then(response => {
-      this.goods = response.data.goods;
+      this.goods =  response.data.goods
       this.$nextTick(() => {
         this._initScroll();
         this._calculateHeight();
@@ -160,16 +159,9 @@ export default {
       let el = foodList[curIndex];
       this.foodsScroll.scrollToElement(el, 300);
     },
-    handlecartAdd(target,current) {
+    handlecartAdd(target) {
+      //加入购物车的球动画
       this._drop(target);
-      if(!current.count){
-        Vue.set(current, 'count', 1);
-      }else{
-        current.count++;
-      }
-    },
-    cartDecrease(current){
-      current.count--;
     },
     _drop(target) {
       this.$refs.shopCart.drop(target);

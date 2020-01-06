@@ -47,7 +47,7 @@
                                 <span>￥{{food.price*food.count}}</span>
                             </div>
                             <div class="cartcontrol-wrapper">
-                                <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
+                                <cartcontrol :food="food"></cartcontrol>
                             </div>
                         </li>
                     </ul>
@@ -82,7 +82,6 @@ export default {
     components:{
         cartcontrol:cartcontrol
     },
-    inject:['handlecartAdd','cartDecrease'],
     data() {
         return {
             cartShow:false,

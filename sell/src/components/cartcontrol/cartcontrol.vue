@@ -17,25 +17,30 @@
 </template>
 
 <script>
-import Vue from 'vue';
+
+import {cartAdd,cartDecrease} from '@/common/js/util.js'
 export default {
     props:{
        food:{
            type:Object
        }
     },
+    inject:['handlecartAdd'],
     methods: {
         addCart(event){
             if(!event._constructed){
                 return
             }
-            this.$emit('cartAdd', event.target,this.food) 
+            //添加商品数量
+            cartAdd(this.food)
+            //调用添加球
+            this.handlecartAdd(event.target) 
         },
         decreaseCart(event){
             if(!event._constructed){
                 return
             }
-            this.$emit('cartDecrease',this.food) 
+           cartDecrease(this.food) 
         }
     },
 

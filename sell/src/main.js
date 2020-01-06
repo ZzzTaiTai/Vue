@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import { Button, Select, Tabs, TabPane } from 'element-ui'
+import store from './store'
 
 import '@/common/css/index.less'
 import '@/common/css/iconfont.css'
@@ -18,5 +19,6 @@ new Vue({
   el: '#app',
   router,
   axios,
+  store,
   render: h => h(App)
 })

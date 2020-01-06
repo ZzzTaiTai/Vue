@@ -24,10 +24,56 @@
             >
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food" @cartAdd="handlecartAdd" @cartDecrease="cartDecrease"></cartcontrol>
+            <cartcontrol :food="food"></cartcontrol>
           </div>
-          <div class="buy" v-show="!food.count || food.count === 0" @click="cartAdd">
+          <div
+            class="buy"
+            v-show="!food.count || food.count === 0"
+            @click="cartAdd"
+          >
             加入购物车
+          </div>
+        </div>
+        <split v-show="food.info"></split>
+        <div class="info-content" v-show="food.info">
+          <h1 class="title">商品介绍</h1>
+          <p class="info">{{ food.info }}</p>
+        </div>
+        <split v-show="food.ratings"></split>
+        <div class="ratings-content">
+          <h1 class="title">商品评价</h1>
+          <ratingselect
+            :select-type="selectType"
+            :only-content="onlyContent"
+            :desc="desc"
+            :ratings="food.ratings"
+            @changes-type="changesType"
+            @changes-only="changesOnly"
+          ></ratingselect>
+          <div class="ratings">
+            <div class="time"></div>
+            <div class="user">
+              <span class="name"></span>
+              <img src="" alt="" />
+            </div>
+            <div class="rating-warpper">
+              <ul v-show="food.ratings && food.ratings.length">
+                <li  class="item" v-for="(item,index) in food.ratings">
+                  <div class="user">
+                    <span class="userName">{{item.username}}</span>
+                    <img class="avatar" :src="item.avatar" alt="" width="12" height="12">
+                  </div>
+                  <div class="time">{{item.rateTime}}</div>
+                  <p class="text">
+                    <i class="iconfont" :class="{'icon-haoping':item.rateType === 0,'icon-chaping:':item.rateType === 1}"></i>
+                    <span>{{item.text}}</span>
+                  </p>
+                </li>
+              </ul>
+              <div class="no-rating" v-show="!food.ratings || !food.ratings.length">
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -36,26 +82,51 @@
 </template>
 
 <script>
+import { cartAdd } from "@/common/js/util.js";
 import BScroll from "better-scroll";
 import cartcontrol from "../cartcontrol/cartcontrol";
+import split from "../split/split";
+import ratingselect from "../ratingselect/ratingselect";
+
+const POSITIVE = 0;
+const NEGATIVE = 1;
+const ALL = 2;
+
 export default {
   props: {
     food: {
       type: Object
     }
   },
-  inject:['handlecartAdd','cartDecrease'],
+  inject: ["handlecartAdd"],
   components: {
-    cartcontrol
+    cartcontrol,
+    ratingselect,
+    split
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+        all: "全部",
+        positive: "推荐",
+        negative: "吐槽"
+      }
     };
   },
   methods: {
+    changesType(type) {
+        this.selectType = type;
+    },
+    changesOnly() {
+      this.onlyContent = !this.onlyContent;
+    },
     show() {
       this.showFlag = true;
+      this.selectType = ALL;
+      this.onlyContent = true;
       this.$nextTick(() => {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.food, {
@@ -70,16 +141,18 @@ export default {
       this.showFlag = false;
     },
     cartAdd(event) {
-      if(!event._constructed){
-          return
-        }
-      this.$emit('cartAdd', event.target,this.food) 
+      if (!event._constructed) {
+        return;
+      }
+      cartAdd(this.food);
+      this.handlecartAdd(event.target);
     }
   }
 };
 </script>
 
 <style lang="less">
+@import "../../common/css/mixin";
 .food {
   position: fixed;
   left: 0;
@@ -125,6 +198,7 @@ export default {
   .content {
     position: relative;
     padding: 18px;
+    .border-1px(rgba(7, 17, 27, 0.1));
     .title {
       line-height: 14px;
       margin-bottom: 8px;
@@ -177,6 +251,76 @@ export default {
       border-radius: 12px;
       color: #fff;
       background: rgb(0, 160, 220);
+    }
+  }
+  .info-content {
+    padding: 18px;
+    .title {
+      line-height: 14px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: rgb(7, 17, 27);
+    }
+    .info {
+      line-height: 24px;
+      padding: 0 8px;
+      font-size: 12px;
+      color: rgb(77, 85, 93);
+    }
+  }
+  .ratings-content {
+    padding-top: 18px;
+    .title {
+      line-height: 14px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: rgb(7, 17, 27);
+    }
+    .rating-warpper{
+      padding: 0 18px;
+      .item{
+        position: relative;
+        padding: 16px 0;
+        .border-1px(rgba(7,17,27,.1));
+        .user{
+          position: absolute;
+          right: 0;
+          top: 16px;
+          line-height: 12px;
+          font-size: 0;
+          .userName{
+            display: inline-block;
+            color: rgb(147, 153, 159);
+            vertical-align: top;
+            font-size: 10px;
+            margin-right:6px;
+          }
+          .avatar{
+            border-radius: 50%;
+          }
+        }
+        .time{
+          margin-bottom: 6px;
+          line-height: 12px;
+          font-size: 10px;
+          color: rgb(147, 153, 159);
+
+        }
+        .text{
+          font-size: 12px;
+          line-height: 16px;
+          color: rgb(7, 17, 27);
+          .iconfont{
+            margin-right: 4px;
+            line-height: 16px;
+            font-size: 12px;
+            &.icon-haoping{
+              color:rgb(0, 160, 220);
+            }
+          }
+        }
+
+      }
     }
   }
 }
