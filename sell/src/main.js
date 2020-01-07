@@ -15,6 +15,21 @@ Vue.config.productionTip = false
 Vue.use(Button).use(Select).use(Tabs).use(TabPane)
 Vue.prototype.$axios = axios
 /* eslint-disable no-new */
+
+Vue.filter('dateFormat',function(value) {
+  if(!value)return;
+  value = new Date(value);
+  var Y = value.getFullYear();
+  var M = value.getMonth();
+  var D = value.getDate();
+  var h = value.getHours();
+  var m = value.getMinutes(); 
+
+  return Y+"-"+zero(M)+"-"+zero(D)+"  "+zero(h)+":"+zero(m)
+  function zero(num){
+    return num>10?num:"0"+num;
+  }
+})
 new Vue({
   el: '#app',
   router,

@@ -51,27 +51,23 @@
             @changes-only="changesOnly"
           ></ratingselect>
           <div class="ratings">
-            <div class="time"></div>
-            <div class="user">
-              <span class="name"></span>
-              <img src="" alt="" />
-            </div>
             <div class="rating-warpper">
               <ul v-show="food.ratings && food.ratings.length">
-                <li  class="item" v-for="(item,index) in food.ratings">
+                <li class="item" v-for="(item,index) in food.ratings" :key="index" v-show="needShow(item.rateType,item.text)" >
                   <div class="user">
                     <span class="userName">{{item.username}}</span>
                     <img class="avatar" :src="item.avatar" alt="" width="12" height="12">
                   </div>
-                  <div class="time">{{item.rateTime}}</div>
-                  <p class="text">
-                    <i class="iconfont" :class="{'icon-haoping':item.rateType === 0,'icon-chaping:':item.rateType === 1}"></i>
-                    <span>{{item.text}}</span>
+                  <div class="time">{{item.rateTime | dateFormat}}</div>
+                  <p class="text" >
+                    <i class="iconfont" :class="{'icon-haoping':item.rateType === 0,'icon-chaping':item.rateType === 1}"></i>
+                    <span v-show="item.text">{{item.text}}</span>
+                    <span v-show="!item.text">无评价内容</span>
                   </p>
                 </li>
               </ul>
               <div class="no-rating" v-show="!food.ratings || !food.ratings.length">
-
+                  <span>暂无评价</span>
               </div>
             </div>
           </div>
@@ -126,7 +122,7 @@ export default {
     show() {
       this.showFlag = true;
       this.selectType = ALL;
-      this.onlyContent = true;
+      this.onlyContent = false;
       this.$nextTick(() => {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.food, {
@@ -146,8 +142,18 @@ export default {
       }
       cartAdd(this.food);
       this.handlecartAdd(event.target);
+    },
+    needShow(type,text){
+      if(this.onlyContent && !text){
+        return false
+      }else if(this.selectType === ALL){
+        return true
+      }else{
+        return type === this.selectType 
+      }
     }
   }
+
 };
 </script>
 
@@ -272,9 +278,9 @@ export default {
     padding-top: 18px;
     .title {
       line-height: 14px;
-      margin-bottom: 6px;
+      margin: 0 18px 6px;
       font-size: 14px;
-      color: rgb(7, 17, 27);
+      color: rgb(7, 17, 27); 
     }
     .rating-warpper{
       padding: 0 18px;
@@ -320,6 +326,10 @@ export default {
           }
         }
 
+      }
+      .no-rating{
+        text-align: center;
+        font-size: 18px;
       }
     }
   }

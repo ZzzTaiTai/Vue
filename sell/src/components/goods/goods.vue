@@ -7,6 +7,7 @@
           class="menuItem"
           :class="{current: currentIndex === index}"
           @click="menuSelect(index,$event)"
+          :key="index"
         >
           <span class="text">
             <span v-show="item.type > 0 " :class="classMap[item.type]" class="icon"></span>
@@ -20,7 +21,7 @@
         <li v-for="(item, index) in goods" :key="index" class="food-list food-list-hook">
           <h1 class="title">{{ item.name }}</h1>
           <ul>
-            <li v-for="(food, index) in item.foods" class="food-item">
+            <li v-for="(food, index) in item.foods" class="food-item" :key="index">
               <div class="icon" @click="selectFood(food,$event)">
                 <img :src="food.icon" alt width="57" height="57" />
               </div>
@@ -68,7 +69,6 @@ import shopcart from "../shopcart/shopcart";
 import cartcontrol from "../cartcontrol/cartcontrol";
 import food from "../food/food";
 export default {
-  props: ["seller"],
   components: {
     shopcart: shopcart,
     cartcontrol: cartcontrol,
@@ -85,12 +85,14 @@ export default {
       listHeight: [],
       scrollY: 0,
       listShow: null,
-      selectedFood:{}
+      selectedFood:{},
+      seller:[]
     };
   },
   created() {
     this.$axios.get("../../static/data.json").then(response => {
-      this.goods =  response.data.goods
+      this.goods =  response.data.goods;
+      this.seller = response.data.seller;
       this.$nextTick(() => {
         this._initScroll();
         this._calculateHeight();
