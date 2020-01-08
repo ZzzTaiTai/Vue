@@ -14,13 +14,14 @@ Vue.config.productionTip = false
 
 Vue.use(Button).use(Select).use(Tabs).use(TabPane)
 Vue.prototype.$axios = axios
+Vue.prototype.$store = store
 /* eslint-disable no-new */
 
 Vue.filter('dateFormat',function(value) {
   if(!value)return;
   value = new Date(value);
   var Y = value.getFullYear();
-  var M = value.getMonth();
+  var M = value.getMonth()+1;
   var D = value.getDate();
   var h = value.getHours();
   var m = value.getMinutes(); 

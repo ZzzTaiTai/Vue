@@ -82,6 +82,7 @@ export default {
   },
   created() {
     this.classMap = ["decrease", "discount", "guarantee", "invoice", "special"];
+
   },
   methods: {
     showHideDetail(){

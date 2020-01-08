@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <headers :seller='seller'></headers>
+    <headers :seller="this.$store.state.seller"></headers>
     <div class="tab border-1px">
         <router-link class="tab-item" to="goods">商品</router-link>
         <router-link class="tab-item" to="ratings">评论</router-link>
@@ -18,19 +18,16 @@ export default {
   data() {
     return {
       activeName: 'first',
-      seller:[]
     }
   },
   created() {
       //get seller
     this.$axios.get('../../static/data.json').then((response) => {
-      this.seller = response.data.seller;
+       this.$store.commit('save_seller',response.data.seller);
     })
+    
   },
    methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
-      }
     },
   components: {
     headers,
