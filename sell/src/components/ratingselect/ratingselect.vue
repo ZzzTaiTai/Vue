@@ -88,7 +88,7 @@ export default {
             padding:8px 12px;
             background: rgba(0, 160, 220,.2);
             border-radius: 1px;
-            &:first-child{margin: 0}
+            &:first-child{margin:0 4px 0 0;}
             em{
                 font-size: 8px;
             }

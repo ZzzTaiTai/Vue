@@ -103,7 +103,6 @@ export default {
             this.selectFoods.forEach(food => {
                 count += food.count;
             })
-            console.log(count)
             return count
         },
         price(){

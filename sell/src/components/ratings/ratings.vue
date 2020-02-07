@@ -32,6 +32,55 @@
       @changes-type="changesType"
       @changes-only="changesOnly"
     ></ratingselect>
+    <div class="ratings">
+      <div class="rating-warpper">
+        <ul v-show="ratings && ratings.length">
+          <li
+            class="item"
+            v-for="(item, index) in ratings"
+            :key="index"
+            v-show="needShow(item.rateType, item.text)"
+          >
+            <div class="avatar">
+              <img :src="item.avatar" alt="" width="28" height="28" />
+            </div>
+            <div class="user">
+              <h1 class="userName">{{ item.username }}</h1>
+              <star :size="24" :score="item.score"></star>
+              <span class="deliveryTime" v-show="item.deliveryTime">{{ item.deliveryTime }}分钟送达</span>
+                          <div class="text">
+              <p v-show="item.text">{{ item.text }}</p>
+              <p v-show="!item.text">无评价内容</p>
+              <div class="foodList">
+              <ul class="foods"  v-show="item.recommend">
+                <i
+                class="iconfont"
+                :class="{
+                  'icon-haoping': item.rateType === 0,
+                  'icon-chaping': item.rateType === 1
+                }"
+              ></i>
+                <li
+                  class="food"
+                  v-for="(recommend, index) in item.recommend"
+                  :key="index"
+                >
+                  {{ recommend }}
+                </li>
+              </ul>
+              </div>
+              
+            </div>
+            </div>
+
+            <!-- <div class="time">{{ item.rateTime | dateFormat }}</div> -->
+          </li>
+        </ul>
+        <div class="no-rating" v-show="!ratings || !ratings.length">
+          <span>暂无评价</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,7 +96,7 @@ const ALL = 2;
 export default {
   data() {
     return {
-      ratings:[],
+      ratings: [],
       selectType: ALL,
       onlyContent: true,
       desc: {
@@ -65,22 +114,38 @@ export default {
   created() {
     this.$axios.get("../../static/data.json").then(response => {
       this.ratings = response.data.ratings;
+      console.log(this.ratings);
     });
   },
   computed: {
-    seller(){
-      return this.$store.state.seller
+    seller() {
+      return this.$store.state.seller;
     }
   },
   methods: {
-    sellerss(){
-      this.sellers()
+    sellers() {
+      this.sellers();
+    },
+    changesType(type) {
+      this.selectType = type;
+    },
+    changesOnly() {
+      this.onlyContent = !this.onlyContent;
+    },
+    needShow(type, text) {
+      if (this.onlyContent && !text) {
+        return false;
+      } else if (this.selectType === ALL) {
+        return true;
+      } else {
+        return type === this.selectType;
+      }
     }
-  },
+  }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .rating {
   .rating-content {
     display: flex;
@@ -132,6 +197,84 @@ export default {
           color: rgb(147, 153, 159);
         }
       }
+    }
+  }
+  .rating-warpper {
+    padding: 0 18px;
+    .item {
+      position: relative;
+      display: flex;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+      .avatar {
+        flex: 0;
+        margin-right: 12px;
+        img {
+           border-radius: 50%;
+          }
+      }
+      .user{
+        font-size: 0;
+        vertical-align: top;
+        .userName{
+          display: block;
+          margin-bottom: 4px;
+          font-size: 10px;
+          color: rgb(7, 17, 27);
+          line-height: 12px;
+        }
+        .star{
+          display: inline-block;
+        }
+        .deliveryTime{
+          display: inline-block;
+          margin-left: 6px;
+          font-size: 10px;
+          font-weight: 200;
+          color: rgb(147, 153, 159);
+          line-height: 12px;
+        }
+        .text{
+
+          margin: 6px 0 8px;
+          font-size: 12px;
+          line-height: 18px;
+          color: rgb(7, 17, 27);
+          .foodList{
+             display: flex;
+            i{
+              position: absolute;
+              left: 0;
+              top: 8px;
+              }
+            .foods{
+              position: relative;
+              font-size: 0;
+              padding-left: 15px;
+              .food{
+                display: inline-block;
+                width: 70px;
+                margin: 4px 0 0 8px;
+                line-height: 16px;
+                padding: 6px;
+                font-size: 9px;
+                border-radius: 2px;
+                border: 1px solid rgba(7, 17, 27, 0.1);
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                // overflow: hidden;
+                text-align: center;
+              }
+            }
+          }
+          
+        }
+      }
+      .time{
+          position: absolute;
+          right: 0;
+          top: 0; 
+        }
     }
   }
 }

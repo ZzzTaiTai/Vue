@@ -1,0 +1,5 @@
+@import "./mixin.sass";
+@import "./base.sass";
+.tab{
+    @include border-1px(#E1E1E1);
+}

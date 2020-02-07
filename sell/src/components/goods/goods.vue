@@ -182,7 +182,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "../../common/css/mixin";
 .goods {
   display: flex;
@@ -243,7 +243,6 @@ export default {
   }
   .foods-wrapper {
     flex: 1;
-
     h1.title {
       padding-left: 14px;
       border-left: 2px solid #d9dde1;
