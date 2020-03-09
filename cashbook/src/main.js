@@ -4,13 +4,13 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import mainfilters from './common/js/filters.js'
-import { Icon, DatePicker, Menu,MenuItem} from 'element-ui'
+import { Icon, DatePicker, Menu, MenuItem, Button} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../src/common/css/iconfont.css'
 
 Vue.config.productionTip = false
 
-Vue.use(Icon).use(DatePicker).use(Menu).use(MenuItem);
+Vue.use(Icon).use(DatePicker).use(Menu).use(MenuItem).use(Button);
 Vue.prototype.$axios = axios;
 
 for(let key in mainfilters){

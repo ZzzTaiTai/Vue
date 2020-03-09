@@ -4,37 +4,54 @@
       <h1>记账本</h1>
     </div>
     <div class="headBox">
-          <div class="dateSelect">
-      <h2 class="year">2020年</h2>
-      <div class="month">
-        <em class="num">01</em>
-        <span class="unit">月<i class="tri"></i></span>
-        
+      <div class="dateSelect" @click="dateToggle">
+        <h2 class="year">{{getDateObj.year}}年</h2>
+        <div class="month">
+          <em class="num">{{getDateObj.month}}</em>
+          <span class="unit">月<i class="tri"></i></span>
+        </div>
+        <selectDate :showDate="showDate" :year="getDateObj.year" :month="getDateObj.month" v-show="showDate"></selectDate>
       </div>
-    </div>
-    <div class="info">
-      <div class="infoL">
-        <h2 class="title">支出(元)</h2>
-        <p class="num" :class="{pay: isPay}">{{ Num | numFormat }}</p>
+      <div class="info">
+        <div class="infoL">
+          <h2 class="title">{{getHeader.headLeftTitle}}</h2>
+          <p class="num" :class="{pay: isPay === getHeader.headLeftTitle}">{{ getHeader.headLeftValue | numFormat }}</p>
+        </div>
+        <div class="infoR">
+          <h2 class="title">{{getHeader.headRightTitle}}</h2>
+          <p class="num">{{getHeader.headRightValue | numFormat}}</p>
+        </div>
       </div>
-      <div class="infoR">
-        <h2 class="title">收入(元)</h2>
-        <p class="num">999</p>
-      </div>
-    </div>
     </div>
 
   </div>
 </template>
 
 <script>
+import selectDate from './selectDate'
+import { mapGetters } from 'vuex'
 export default {
   name: 'headers',
   data() {
     return {
-      isPay:true,//是否是显示支付
-      Num:1230000.12
+      isPay:'支出(元)',//是否是显示支付
+      showDate:false
     }
+  },
+  components:{
+    selectDate
+  },
+  computed: {
+    ...mapGetters([
+      'getHeader',
+      'getDateObj'
+    ])
+  },
+  methods: {
+    dateToggle() {
+      this.showDate = !this.showDate
+    }
+    
   },
 }
 </script>

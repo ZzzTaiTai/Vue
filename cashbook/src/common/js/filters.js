@@ -24,7 +24,7 @@ const mainfilters ={
         return valueDay+"-"+weekDate;
     },
     IntegerFormat:function(value){
-        if(value <= 0)return;
+        if(value <= 0)return value;
         return "+"+value
     }
 }

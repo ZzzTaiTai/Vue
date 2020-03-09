@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <headers></headers>
+     <headers></headers>
     <div id="nav">
       <el-menu
         :default-active="activeIndex"
@@ -16,13 +16,13 @@
       </el-menu>
     </div>
     <router-view />
-    <addCash></addCash>
+    <addCash></addCash> 
   </div>
 </template>
 
 <script>
 import headers from "./components/headers";
-import addCash from "@/components/addCash.vue";
+import addCash from "./components/addCash";
 export default {
   data() {
     return {
@@ -35,7 +35,6 @@ export default {
   },
   methods: {
      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
       }
   }
 };
