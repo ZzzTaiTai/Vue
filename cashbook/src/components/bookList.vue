@@ -1,6 +1,6 @@
 <template>
   <div class="book-List">
-    <dl v-for="items in bookList.data">
+    <dl v-for="items in bookList.data" :key="items.id">
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
@@ -221,15 +221,15 @@ export default {
       "xuexi",
       "qian"
     ];
-    this.$axios
-      .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
-      .then(response => {
-        // this.bookList = response.data.data.course_list;
-        // console.log(this.bookList);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // this.$axios
+    //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
+    //   .then(response => {
+    //     // this.bookList = response.data.data.course_list;
+    //     // console.log(this.bookList);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   },
   computed: {
     // dateFiltersList() {
@@ -294,11 +294,11 @@ export default {
     },
     dateObj(ary) {
       let timeAry = this.getTimeNum(ary.data[0].time,'-'),
-          newYear = timeAry[0],
-          newMonth = timeAry[1],
+          newYear = parseInt(timeAry[0]),
+          newMonth = parseInt(timeAry[1]),
           curDateObj = this.$store.getters.getDateObj,
           newDateObj = {}
-      if(newYear == curDateObj.year && newMonth == curDateObj.month ) return
+      // if(newYear == curDateObj.year && newMonth == curDateObj.month ) return false
       return newDateObj = {
         "year":newYear,
         "month":newMonth

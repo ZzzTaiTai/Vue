@@ -2,15 +2,15 @@
   <div class="dateBox">
       <h3 class="title">选择月份</h3>
       <div class="date">
-          <div class="yearBox">
-            <a href="javascript:;">+</a>
-            <p class="yearValue">{{curYear}}</p>
-            <a href="javascript:;">-</a>
+          <div class="yearBox box">
+            <a href="javascript:;" @click="addNum(curDateObj,'year')">+</a>
+            <p class="yearValue">{{curDateObj.year}}</p>
+            <a href="javascript:;" @click="addNum(curDateObj,'year')">-</a>
           </div>
-          <div class="dayBox">
-            <a href="javascript:;">+</a>
-            <p class="monthValue">{{curMonth}}</p>
-            <a href="javascript:;">-</a>
+          <div class="dayBox box">
+            <a href="javascript:;" @click="addNum(curDateObj,'month')" >+</a>
+            <p class="monthValue" >{{curDateObj.month}}</p>
+            <a href="javascript:;" @click="addNum(curDateObj,'month')">-</a>
           </div>
       </div>
       <el-button-group>
@@ -21,20 +21,32 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'selectDate',
-  props: ['showDate','year','month'],
+  props: ['showDate','dateObj'],
   data() {
     return {
       isShow:this.showDate,
-      curYear:this.year,
-      curMonth:this.month
+      curDateObj:{},
+      year:"year",
+      month:"month",
     }
   },
-  
+  created() {
+  },
+  watch: {
+    dateObj: {
+    deep: true,
+     handler(val) {
+       this.curDateObj = JSON.parse(JSON.stringify(val));
+     },
+     immediate: true,
+    }
+  },
   methods: {
     confirm() {
-      
+
 
       this.hideSelect();
     },
@@ -43,7 +55,28 @@ export default {
     },
     hideSelect() {
       this.$emit('dateToggle');
-    }
+    },
+    addNum(obj,key){
+      let maxNum = new Date().getFullYear() + 5,
+          minNum = new Date().getFullYear() - 5;
+      if(key === this.month){
+        maxNum = 12;
+        minNum = 0;
+        if(obj[key] == maxNum){
+          obj[key] = minNum;
+        }else if(obj[key] == minNum){
+          obj[key] = maxNum
+        }
+        obj[key]++;
+        return
+      }
+      if(obj[key] === maxNum)return
+      obj[key]++;
+    },
+    reduce(val) {
+      return --val;
+    },
+
   },
 }
 </script>
@@ -55,10 +88,46 @@ export default {
   top:50%;
   left:50%;
   width: 250px;
-  height: 160px;
+  height: auto;
   margin-top: -80px;
   margin-left: -125px;
-  background: #fff;
+  background: #f0f0f0;
   z-index: 9999;
+  border-radius: 10px;
+  .title{
+    padding:15px 5px;
+    font-size: 16px;
+    color: rgb(80, 124, 245);
+    border-bottom:2px solid rgb(80, 124, 245);
+  }
+  .date{
+    display: flex;
+    justify-content: center; 
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
+    font-size:16px;
+    .box{
+      a{
+        display: inline-block;
+        width: 45px;
+        margin: 5px;
+        height: 35px;
+        line-height: 35px;
+        color: #000;
+        border:1px solid #666;
+        background-color: #999;
+      }
+    }
+  }
+    .el-button-group{
+      display: block;
+      margin-top: 10px;
+      border-radius: 10px;
+      .el-button{
+        width: 50%;
+        
+      }
+    }
 }
 </style>

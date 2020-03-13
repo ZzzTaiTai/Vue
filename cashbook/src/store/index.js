@@ -22,8 +22,9 @@ export default new Vuex.Store({
       state.headerObj = newObj;
     },
     newDate(state,newObj){
+      // if(!newObj)return
       state.dateObj = newObj;
-      console.log(state)
+      // console.log(state.dateObj)
     }
   },
   getters: {
@@ -31,6 +32,7 @@ export default new Vuex.Store({
       return state.headerObj;
     },
     getDateObj(state) {
+      // console.log(state.dateObj)
       return state.dateObj;
     }
   },

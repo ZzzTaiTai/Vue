@@ -10,8 +10,8 @@
           <em class="num">{{getDateObj.month}}</em>
           <span class="unit">月<i class="tri"></i></span>
         </div>
-        <selectDate :showDate="showDate" :year="getDateObj.year" :month="getDateObj.month" v-show="showDate"></selectDate>
       </div>
+      <selectDate :showDate="showDate" :dateObj="getDateObj" v-show="showDate"></selectDate>
       <div class="info">
         <div class="infoL">
           <h2 class="title">{{getHeader.headLeftTitle}}</h2>
@@ -38,6 +38,8 @@ export default {
       showDate:false
     }
   },
+  created() {
+  },
   components:{
     selectDate
   },
@@ -50,6 +52,9 @@ export default {
   methods: {
     dateToggle() {
       this.showDate = !this.showDate
+    },
+    changeDate() {
+
     }
     
   },
