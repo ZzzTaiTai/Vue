@@ -5,12 +5,12 @@
           <div class="yearBox box">
             <a href="javascript:;" @click="addNum(curDateObj,'year')">+</a>
             <p class="yearValue">{{curDateObj.year}}</p>
-            <a href="javascript:;" @click="addNum(curDateObj,'year')">-</a>
+            <a href="javascript:;" @click="reduce(curDateObj,'year')">-</a>
           </div>
           <div class="dayBox box">
             <a href="javascript:;" @click="addNum(curDateObj,'month')" >+</a>
             <p class="monthValue" >{{curDateObj.month}}</p>
-            <a href="javascript:;" @click="addNum(curDateObj,'month')">-</a>
+            <a href="javascript:;" @click="reduce(curDateObj,'month')">-</a>
           </div>
       </div>
       <el-button-group>
@@ -58,23 +58,31 @@ export default {
     },
     addNum(obj,key){
       let maxNum = new Date().getFullYear() + 5,
-          minNum = new Date().getFullYear() - 5;
+          minNum = 0;
       if(key === this.month){
         maxNum = 12;
+        if(obj[key] == maxNum){
+          obj[key] = minNum;
+        }else if(obj[key] == minNum){
+          obj[key] = maxNum
+        }
+      }
+      if(obj[key] === maxNum)return
+      obj[key]++;
+    },
+    reduce(obj,key) {
+      let maxNum = 12,
+          minNum = new Date().getFullYear() - 5;
+      if(key === this.month){
         minNum = 0;
         if(obj[key] == maxNum){
           obj[key] = minNum;
         }else if(obj[key] == minNum){
           obj[key] = maxNum
         }
-        obj[key]++;
-        return
       }
-      if(obj[key] === maxNum)return
-      obj[key]++;
-    },
-    reduce(val) {
-      return --val;
+      if(obj[key] === minNum)return
+      obj[key]--;
     },
 
   },
