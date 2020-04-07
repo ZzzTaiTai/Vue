@@ -3,12 +3,12 @@
       <h3 class="title">选择月份</h3>
       <div class="date">
           <div class="yearBox box">
-            <a href="javascript:;" @click="addNum(curDateObj,'year')">+</a>
+            <a href="javascript:;" @click="add(curDateObj,'year')">+</a>
             <p class="yearValue">{{curDateObj.year}}</p>
             <a href="javascript:;" @click="reduce(curDateObj,'year')">-</a>
           </div>
           <div class="dayBox box">
-            <a href="javascript:;" @click="addNum(curDateObj,'month')" >+</a>
+            <a href="javascript:;" @click="add(curDateObj,'month')">+</a>
             <p class="monthValue" >{{curDateObj.month}}</p>
             <a href="javascript:;" @click="reduce(curDateObj,'month')">-</a>
           </div>
@@ -31,57 +31,56 @@ export default {
       curDateObj:{},
       year:"year",
       month:"month",
+     
     }
   },
   created() {
+    
   },
   watch: {
     dateObj: {
     deep: true,
      handler(val) {
-       this.curDateObj = JSON.parse(JSON.stringify(val));
+        this.curDateObj = JSON.parse(JSON.stringify(val));
      },
      immediate: true,
     }
   },
+  
   methods: {
     confirm() {
-
-
       this.hideSelect();
+      this.$store.commit("newDate",this.curDateObj)
     },
     cancel() {
       this.hideSelect();
+      this.curDateObj = JSON.parse(JSON.stringify(this.dateObj));
     },
     hideSelect() {
       this.$emit('dateToggle');
     },
-    addNum(obj,key){
-      let maxNum = new Date().getFullYear() + 5,
-          minNum = 0;
+    add(obj,key){
+      let maxNum = new Date().getFullYear() + 5;
       if(key === this.month){
-        maxNum = 12;
-        if(obj[key] == maxNum){
-          obj[key] = minNum;
-        }else if(obj[key] == minNum){
-          obj[key] = maxNum
+        maxNum = 12
+        if(obj[key] === maxNum){
+          obj[key] = 1;
+          return;
         }
       }
-      if(obj[key] === maxNum)return
+      if(obj[key] === maxNum)return;
       obj[key]++;
     },
     reduce(obj,key) {
-      let maxNum = 12,
-          minNum = new Date().getFullYear() - 5;
+      let minNum = new Date().getFullYear() - 5;
       if(key === this.month){
-        minNum = 0;
-        if(obj[key] == maxNum){
-          obj[key] = minNum;
-        }else if(obj[key] == minNum){
-          obj[key] = maxNum
+        minNum = 1
+        if(obj[key] === minNum){
+          obj[key] = 12;
+          return;
         }
       }
-      if(obj[key] === minNum)return
+      if(obj[key] === minNum)return;
       obj[key]--;
     },
 

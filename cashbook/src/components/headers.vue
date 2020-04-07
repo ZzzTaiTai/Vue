@@ -11,7 +11,7 @@
           <span class="unit">月<i class="tri"></i></span>
         </div>
       </div>
-      <selectDate :showDate="showDate" :dateObj="getDateObj" v-show="showDate"></selectDate>
+      <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
       <div class="info">
         <div class="infoL">
           <h2 class="title">{{getHeader.headLeftTitle}}</h2>
