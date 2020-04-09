@@ -10,7 +10,7 @@ export default new Vuex.Store({
       "headLeftValue":0,
       "headRightTitle":"",
       "headRightValue":0,
-    },
+    },   
     dateObj:{
       "year":new Date().getFullYear(),
       "month":new Date().getMonth()+1

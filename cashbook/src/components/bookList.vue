@@ -3,7 +3,8 @@
   v-loading="loading"
   element-loading-text="Loading..."
   >
-    <dl v-for="items in bookList.data" :key="items.id">
+    
+    <dl v-for="items in newList" :key="items.id" >
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
@@ -29,6 +30,7 @@ export default {
   data() {
     return {
       bookList: [],
+      newList: [],
       list: [],
       loading:false
     };
@@ -215,11 +217,6 @@ export default {
         }
       ]
     };
-    this.loading = true;
-    setTimeout(function(){
-      that.bookList = that.recombination(that.list);
-      that.loading = false;
-    },1000)
     this.classMap = [
       "fushi",
       "yundong",
@@ -231,6 +228,11 @@ export default {
       "xuexi",
       "qian"
     ];
+    this.loading = true;
+    setTimeout(function(){
+      that.bookList = that.recombination(that.list);
+      that.loading = false;
+    },1000)
     // this.$axios
     //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
     //   .then(response => {
@@ -241,8 +243,28 @@ export default {
     //     console.log(error);
     //   });
   },
+  computed: {
+    ...mapGetters([
+      'getDateObj'
+    ])
+  },
   watch: {
-    
+    getDateObj(curVal,oldVal){
+      this.satisfy(curVal,oldVal);
+      // let oldList = [];
+      // this.loading = true;
+      // oldList = this.bookList.data.filter(list => {
+      //   let year = curVal.year;
+      //   let month = curVal.month < 10 ? "0"+curVal.month : curVal.month;
+      //   return list.time.indexOf(year+'-'+month) >= 0;
+      // })
+      // setTimeout(() => {this.loading = false},500);
+      // if(oldList.length == 0 ) {
+      //    this.getDateObj = JSON.parse(JSON.stringify(oldVal));
+      //    return;
+      // }
+      // this.newList = oldList;
+    },
   },
   methods: {
     recombination(ary) {
@@ -306,7 +328,6 @@ export default {
           newMonth = parseInt(timeAry[1]),
           curDateObj = this.$store.getters.getDateObj,
           newDateObj = {}
-      // if(newYear == curDateObj.year && newMonth == curDateObj.month ) return false
       return newDateObj = {
         "year":newYear,
         "month":newMonth
@@ -315,12 +336,33 @@ export default {
     getTimeNum(timeValue,mark) {
       return timeValue.split(mark);
     },
-
     arraySort(a, b) {
       return (
         Date.parse(b.time.replace(/-/g, "/")) - Date.parse(a.time.replace(/-/g, "/"))
       );
-    }
+    },
+    //调用提示框
+    openNotifY(){
+      this.$notify({
+          title: '提示',
+          message: "当前选择的日期没有账单，请重新选择",
+        });
+    },
+    //过滤符合条件的账单，不满足则返回最新的账单
+    satisfy(newObj,oldObj) {
+      let year = newObj.year,
+        month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
+        list = this.bookList.data.filter(list => {
+          return list.time.indexOf(year + "-" + month) >= 0;
+        });
+      this.loading = true;
+      setTimeout(() => {this.loading = false},500);
+      if (list.length == 0) {
+        this.openNotifY();
+        this.$store.commit("newDate", oldObj);
+      }
+      this.newList = list;
+    },
   }
 };
 </script>

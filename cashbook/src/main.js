@@ -5,7 +5,7 @@ import store from './store'
 import axios from 'axios'
 import mainfilters from './common/js/filters.js'
 // import { showLoading, hideLoading } from './common/js/loading';
-import { Icon, DatePicker, Menu, MenuItem, Button, ButtonGroup, Loading } from 'element-ui'
+import { Icon, DatePicker, Menu, MenuItem, Button, ButtonGroup, Loading, Notification } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../src/common/css/iconfont.css'
 import '../src/common/css/iconfont.css'
@@ -14,8 +14,7 @@ Vue.config.productionTip = false
 
 Vue.use(Icon).use(DatePicker).use(Menu).use(MenuItem).use(Button).use(ButtonGroup).use(Loading);
 Vue.prototype.$axios = axios;
-// Vue.prototype.$showLoading = showLoading;
-// Vue.prototype.$hideLoading = hideLoading;
+Vue.prototype.$notify = Notification;
 for(let key in mainfilters){
   Vue.filter(key,mainfilters[key]);
 }
