@@ -4,17 +4,23 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import mainfilters from './common/js/filters.js'
+import 'vant/lib/index.css';
 // import { showLoading, hideLoading } from './common/js/loading';
-import { Icon, DatePicker, Menu, MenuItem, Button, ButtonGroup, Loading, Notification } from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import { Icon, Button, ButtonGroup, Message  } from 'element-ui'
+import { Tab, Tabs, Loading } from 'vant'
+
+// import 'element-ui/lib/theme-chalk/index.css'
+
+
 import '../src/common/css/iconfont.css'
 import '../src/common/css/iconfont.css'
 import '../src/common/js/rem'
 Vue.config.productionTip = false
 
-Vue.use(Icon).use(DatePicker).use(Menu).use(MenuItem).use(Button).use(ButtonGroup).use(Loading);
+Vue.use(Icon).use(Button).use(ButtonGroup)
+Vue.use(Tab).use(Tabs).use(Loading);
 Vue.prototype.$axios = axios;
-Vue.prototype.$notify = Notification;
+Vue.prototype.$message = Message;
 for(let key in mainfilters){
   Vue.filter(key,mainfilters[key]);
 }

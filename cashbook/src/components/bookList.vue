@@ -342,9 +342,10 @@ export default {
       );
     },
     //调用提示框
-    openNotifY(){
-      this.$notify({
-          title: '提示',
+    openMessage(){
+      this.$message({
+          type: 'warning',
+          duration:0,
           message: "当前选择的日期没有账单，请重新选择",
         });
     },
@@ -358,7 +359,7 @@ export default {
       this.loading = true;
       setTimeout(() => {this.loading = false},500);
       if (list.length == 0) {
-        this.openNotifY();
+        this.openMessage();
         this.$store.commit("newDate", oldObj);
       }
       this.newList = list;

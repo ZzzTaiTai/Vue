@@ -2,20 +2,14 @@
   <div id="app">
      <headers></headers>
     <div id="nav">
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#5B5E63"
-        text-color="#fff"
-        active-text-color="#000"
-      >
-        <el-menu-item index="1"><router-link :to="{name: 'home'}">明细</router-link></el-menu-item>
-        <el-menu-item index="2"><router-link :to="{name: 'about'}">类别报表</router-link></el-menu-item>
-      </el-menu>
+      <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
+        <van-tab title="明细" :to="{name: 'home'}"></van-tab>
+        <van-tab title="类别报表" :to="{name: 'about'}"></van-tab>
+        <van-tab title=""></van-tab>
+      </van-tabs>
+
     </div>
-    <router-view />
+    <router-view/>
     <addCash></addCash> 
   </div>
 </template>
@@ -26,7 +20,7 @@ import addCash from "./components/addCash";
 export default {
   data() {
     return {
-      activeIndex: '1',
+      active: '1',
     };
   },
   components: {
@@ -34,24 +28,15 @@ export default {
     addCash
   },
   methods: {
-     handleSelect(key, keyPath) {
-      }
+    //  handleSelect(key, keyPath) {
+    //   }
   }
 };
 </script>
 <style lang="scss">
 @import "./common/css/reset.scss";
-.el-menu--horizontal>.el-menu-item,.el-menu--horizontal>.el-menu-item.is-active,.el-menu.el-menu--horizontal{
-  border:0!important;
-  border-bottom-color:transparent!important;
-}
-.el-menu-item.is-active {
-  background-color: #fff!important;
-}
-.el-menu--horizontal>.el-menu-item{
-  height: 40px!important;
-  line-height: 40px!important;
-  width: 25%!important;
-  text-align: center;
-}
+  .van-tabs__nav--card,.van-tabs__nav--card .van-tab{
+    margin:0!important;
+    border:0!important;
+  }
 </style>
