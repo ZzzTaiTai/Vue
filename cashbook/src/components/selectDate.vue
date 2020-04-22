@@ -13,10 +13,8 @@
         <a href="javascript:;" @click="reduce(curDateObj,'month')">-</a>
       </div>
     </div>
-    <el-button-group>
-      <el-button type="info" @click="cancel">取消</el-button>
-      <el-button type="primary" @click="confirm">确认</el-button>
-    </el-button-group>
+      <van-button type="default" @click="cancel">取消</van-button>
+      <van-button type="info" @click="confirm">确认</van-button>
   </div>
 </template>
 
@@ -123,13 +121,9 @@ export default {
       }
     }
   }
-  .el-button-group {
-    display: block;
-    margin-top: 10px;
-    border-radius: 10px;
-    .el-button {
+    .van-button {
       width: 50%;
     }
-  }
+  
 }
 </style>

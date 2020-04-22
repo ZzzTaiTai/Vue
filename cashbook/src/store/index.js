@@ -5,21 +5,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    headerObj:{
+    headerText:{
       "headLeftTitle":"",
-      "headLeftValue":0,
       "headRightTitle":"",
+    }, 
+    headerVal:{
+      "headLeftValue":0,
       "headRightValue":0,
-    },   
+    },  
     dateObj:{
       "year":new Date().getFullYear(),
       "month":new Date().getMonth()+1
     }
-  
   },
   mutations: {
-    headChange(state,newObj) {
-      state.headerObj = newObj;
+    headTextChange(state,newObj) {
+      state.headerText = newObj;
+    },
+    headValChange(state,newObj) {
+      state.headerVal = newObj;
     },
     newDate(state,newObj){
       // if(!newObj)return
@@ -28,8 +32,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getHeader(state) {
-      return state.headerObj;
+    getHeaderText(state) {
+      return state.headerText;
+    },
+    getHeaderVal(state) {
+      return state.headerVal;
     },
     getDateObj(state) {
       // console.log(state.dateObj)

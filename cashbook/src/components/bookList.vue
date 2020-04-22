@@ -1,9 +1,6 @@
 <template>
-  <div class="book-List" 
-  v-loading="loading"
-  element-loading-text="Loading..."
-  >
-    
+  <div class="book-List" >
+    <Loading v-if="loading"></Loading>
     <dl v-for="items in newList" :key="items.id" >
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
@@ -25,198 +22,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Loading from './common/loading'
 export default {
   name: "bookList",
   data() {
     return {
-      bookList: [],
+      bookList: null,
       newList: [],
-      list: [],
+      // list: [],
       loading:false
     };
   },
+  props:["bookLists"],
+  components:{
+    Loading
+},
   created() {
     let that = this;
-    this.list = {
-      header: ["支出(元)", "收入(元)"],
-      data: [
-        {
-          id: 1,
-          name: "余额宝",
-          time: "2020-01-30 14:21:20",
-          money: 8432.64,
-          iconNum: 6
-        },
-        {
-          id: 14,
-          name: "余额宝",
-          time: "2020-01-31 14:30:20",
-          money: -2558.12,
-          iconNum: 8
-        },
-        {
-          id: 4,
-          name: "余额宝",
-          time: "2020-01-29 14:24:20",
-          money: 1222.48,
-          iconNum: 7
-        },
-        {
-          id: 15,
-          name: "余额宝",
-          time: "2020-01-31 13:22:20",
-          money: -697.98,
-          iconNum: 5
-        },
-        {
-          id: 5,
-          name: "余额宝",
-          time: "2020-01-30 10:20:22",
-          money: 2958.55,
-          iconNum: 1
-        },
-        {
-          id: 18,
-          name: "余额宝",
-          time: "2020-01-29 08:20:21",
-          money: -3449.04,
-          iconNum: 5
-        },
-        {
-          id: 7,
-          name: "余额宝",
-          time: "2020-01-31 09:20:21",
-          money: 8166.05,
-          iconNum: 2
-        },
-        {
-          id: 19,
-          name: "余额宝",
-          time: "2020-01-30 13:22:20",
-          money: 9212.26,
-          iconNum: 5
-        },
-        {
-          id: 10,
-          name: "余额宝",
-          time: "2020-01-29 5:24:20",
-          money: 4839.26,
-          iconNum: 4
-        },
-        {
-          id: 22,
-          name: "余额宝",
-          time: "2020-01-31 13:22:20",
-          money: 2723.04,
-          iconNum: 3
-        },
-        {
-          id: 11,
-          name: "余额宝",
-          time: "2020-01-30 23:24:20",
-          money: 8348.58,
-          iconNum: 4
-        },
-        {
-          id: 12,
-          name: "余额宝",
-          time: "2020-01-29 13:22:20",
-          money: 6718.55,
-          iconNum: 1
-        },
-        {
-          id: 23,
-          name: "余额宝",
-          time: "2020-01-31 20:24:20",
-          money: -1601.18,
-          iconNum: 3
-        },
-        {
-          id: 24,
-          name: "余额宝",
-          time: "2020-01-30 13:22:20",
-          money: 7546.81,
-          iconNum: 2
-        },
-        {
-          id: 14,
-          name: "余额宝",
-          time: "2020-01-29 15:24:20",
-          money: -2552.55,
-          iconNum: 5
-        },
-        {
-          id: 21,
-          name: "余额宝",
-          time: "2020-01-30 13:22:20",
-          money: 2958.55,
-          iconNum: 1
-        },
-        {
-          id: 9,
-          name: "余额宝",
-          time: "2020-02-29 16:24:20",
-          money: -3449.04,
-          iconNum: 5
-        },
-        {
-          id: 20,
-          name: "余额宝",
-          time: "2020-02-31 13:22:20",
-          money: 8166.05,
-          iconNum: 2
-        },
-        {
-          id: 8,
-          name: "余额宝",
-          time: "2020-02-30 14:23:20",
-          money: 9212.26,
-          iconNum: 5
-        },
-        {
-          id: 17,
-          name: "余额宝",
-          time: "2020-02-29 13:24:30",
-          money: 4839.26,
-          iconNum: 4
-        },
-        {
-          id: 6,
-          name: "余额宝",
-          time: "2020-02-31 13:25:24",
-          money: 2723.04,
-          iconNum: 3
-        },
-        {
-          id: 16,
-          name: "余额宝",
-          time: "2020-02-30 18:24:20",
-          money: 8348.58,
-          iconNum: 4
-        },
-        {
-          id: 3,
-          name: "余额宝",
-          time: "2020-02-29 13:22:27",
-          money: 6718.55,
-          iconNum: 1
-        },
-        {
-          id: 13,
-          name: "余额宝",
-          time: "2020-02-31 13:22:21",
-          money: -1601.18,
-          iconNum: 3
-        },
-        {
-          id: 2,
-          name: "余额宝",
-          time: "2020-02-30 13:22:20",
-          money: 7546.81,
-          iconNum: 2
-        }
-      ]
-    };
     this.classMap = [
       "fushi",
       "yundong",
@@ -230,9 +52,10 @@ export default {
     ];
     this.loading = true;
     setTimeout(function(){
-      that.bookList = that.recombination(that.list);
+      that.bookList = that.recombination(that.bookLists);
       that.loading = false;
     },1000)
+    this.$store.commit("headTextChange", this.headerText(this.bookLists.header));
     // this.$axios
     //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
     //   .then(response => {
@@ -251,20 +74,10 @@ export default {
   watch: {
     getDateObj(curVal,oldVal){
       this.satisfy(curVal,oldVal);
-      // let oldList = [];
-      // this.loading = true;
-      // oldList = this.bookList.data.filter(list => {
-      //   let year = curVal.year;
-      //   let month = curVal.month < 10 ? "0"+curVal.month : curVal.month;
-      //   return list.time.indexOf(year+'-'+month) >= 0;
-      // })
-      // setTimeout(() => {this.loading = false},500);
-      // if(oldList.length == 0 ) {
-      //    this.getDateObj = JSON.parse(JSON.stringify(oldVal));
-      //    return;
-      // }
-      // this.newList = oldList;
     },
+    bookList(curVal){
+      // this.$store.commit("headChange", this.headerObj(newAry, ary.header));
+    }
   },
   methods: {
     recombination(ary) {
@@ -299,28 +112,33 @@ export default {
           newAry.data[isNum].data.push(item);
         }
       });
-      this.$store.commit("headChange", this.headerObj(newAry, ary.header));
       newAry.header = ary.header;
       newAry.data.sort(this.arraySort);
       this.$store.commit("newDate",this.dateObj(newAry))
       return newAry;
     },
-    headerObj(ary, title) {
-      let headObj = {},
-        expenseTotal = 0,
-        icomeTotal = 0,
-        i = 0;
-      for (; i < ary.data.length - 1; i++) {
-        expenseTotal += ary.data[i].expenseTotal;
-        icomeTotal += ary.data[i].icomeTotal;
+    // headerObj(ary, title) {
+    //   let headObj = {},
+    //     expenseTotal = 0,
+    //     icomeTotal = 0,
+    //     i = 0;
+    //   for (; i < ary.data.length - 1; i++) {
+    //     expenseTotal += ary.data[i].expenseTotal;
+    //     icomeTotal += ary.data[i].icomeTotal;
+    //   }
+    //   headObj = {
+    //     headLeftTitle: title[0],
+    //     headLeftValue: expenseTotal,
+    //     headRightTitle: title[1],
+    //     headRightValue: icomeTotal
+    //   };
+    //   return headObj;
+    // },
+    headerText(ary) {
+      return {
+        headLeftTitle: ary[0],
+        headRightTitle: ary[1],
       }
-      headObj = {
-        headLeftTitle: title[0],
-        headLeftValue: expenseTotal,
-        headRightTitle: title[1],
-        headRightValue: icomeTotal
-      };
-      return headObj;
     },
     dateObj(ary) {
       let timeAry = this.getTimeNum(ary.data[0].time,'-'),
@@ -341,27 +159,22 @@ export default {
         Date.parse(b.time.replace(/-/g, "/")) - Date.parse(a.time.replace(/-/g, "/"))
       );
     },
-    //调用提示框
-    openMessage(){
-      this.$message({
-          type: 'warning',
-          duration:0,
-          message: "当前选择的日期没有账单，请重新选择",
-        });
-    },
     //过滤符合条件的账单，不满足则返回最新的账单
     satisfy(newObj,oldObj) {
       let year = newObj.year,
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
         list = this.bookList.data.filter(list => {
           return list.time.indexOf(year + "-" + month) >= 0;
-        });
-      this.loading = true;
-      setTimeout(() => {this.loading = false},500);
+        }); 
+       this.loading = true;
       if (list.length == 0) {
-        this.openMessage();
+        this.$toast.fail('当前选择的日期没有账单，请重新选择');
         this.$store.commit("newDate", oldObj);
       }
+      setTimeout(() => {
+        this.loading = false;
+        this.$toast.clear();
+      },1000);
       this.newList = list;
     },
   }
@@ -375,7 +188,6 @@ export default {
 .book-List {
   height: calc(100vh - 185px);
   min-height: 485px;
-
   overflow-y: auto;
   dl {
     margin: 0;
@@ -430,6 +242,7 @@ export default {
       .info {
         flex: 2;
         padding: 0 50px 0 10px;
+        font-size: 18px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

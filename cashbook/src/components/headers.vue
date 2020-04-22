@@ -14,12 +14,12 @@
       <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
       <div class="info">
         <div class="infoL">
-          <h2 class="title">{{getHeader.headLeftTitle}}</h2>
-          <p class="num" :class="{pay: isPay === getHeader.headLeftTitle}">{{ getHeader.headLeftValue | numFormat }}</p>
+          <h2 class="title">{{getHeaderText.headLeftTitle}}</h2>
+          <p class="num" :class="{pay: isPay === getHeaderText.headLeftTitle}">{{ getHeaderVal.headLeftValue | numFormat }}</p>
         </div>
         <div class="infoR">
-          <h2 class="title">{{getHeader.headRightTitle}}</h2>
-          <p class="num">{{getHeader.headRightValue | numFormat}}</p>
+          <h2 class="title">{{getHeaderText.headRightTitle}}</h2>
+          <p class="num">{{getHeaderVal.headRightValue | numFormat}}</p>
         </div>
       </div>
     </div>
@@ -45,7 +45,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getHeader',
+      'getHeaderText',
+      'getHeaderVal',
       'getDateObj'
     ])
   },

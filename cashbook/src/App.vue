@@ -1,14 +1,7 @@
 <template>
   <div id="app">
      <headers></headers>
-    <div id="nav">
-      <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
-        <van-tab title="明细" :to="{name: 'home'}"></van-tab>
-        <van-tab title="类别报表" :to="{name: 'about'}"></van-tab>
-        <van-tab title=""></van-tab>
-      </van-tabs>
 
-    </div>
     <router-view/>
     <addCash></addCash> 
   </div>
@@ -17,10 +10,11 @@
 <script>
 import headers from "./components/headers";
 import addCash from "./components/addCash";
+
 export default {
   data() {
     return {
-      active: '1',
+      
     };
   },
   components: {

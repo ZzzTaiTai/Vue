@@ -5,9 +5,9 @@ lintOnSave: true,
       postcss: {
         plugins: [
           require("postcss-pxtorem")({
-            rootValue: 16,
+            rootValue: 37.5,
             propList: ["*"],
-            selectorBlackList:["el-"]//忽略的选择器 
+            //selectorBlackList:[""]//忽略的选择器 
           })
         ]
       }
