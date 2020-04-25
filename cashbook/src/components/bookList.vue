@@ -117,23 +117,6 @@ export default {
       this.$store.commit("newDate",this.dateObj(newAry))
       return newAry;
     },
-    // headerObj(ary, title) {
-    //   let headObj = {},
-    //     expenseTotal = 0,
-    //     icomeTotal = 0,
-    //     i = 0;
-    //   for (; i < ary.data.length - 1; i++) {
-    //     expenseTotal += ary.data[i].expenseTotal;
-    //     icomeTotal += ary.data[i].icomeTotal;
-    //   }
-    //   headObj = {
-    //     headLeftTitle: title[0],
-    //     headLeftValue: expenseTotal,
-    //     headRightTitle: title[1],
-    //     headRightValue: icomeTotal
-    //   };
-    //   return headObj;
-    // },
     headerText(ary) {
       return {
         headLeftTitle: ary[0],

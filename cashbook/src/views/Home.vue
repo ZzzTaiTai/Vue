@@ -13,7 +13,9 @@
         <van-tab title="明细">
           <bookList :bookLists="bookLists"></bookList>
         </van-tab>
-        <van-tab title="类别报表"></van-tab>
+        <van-tab title="类别报表">
+          <categoryList :genreists="genreists"></categoryList>
+        </van-tab>
         <!-- <van-tab title="明细" :to="{name: 'home'}"></van-tab>
         <van-tab title="类别报表" :to="{name: 'about'}"></van-tab>-->
         <van-tab title></van-tab>
@@ -25,13 +27,13 @@
 <script>
 // @ is an alias to /src
 import bookList from "@/components/bookList.vue";
-
+import categoryList from "@/components/categoryList.vue";
 export default {
   name: "home",
   data() {
     return {
-      active: '1',
-    }
+      active: "1"
+    };
   },
   created() {
     this.bookLists = {
@@ -403,10 +405,10 @@ export default {
     //     console.log(error);
     //   });
   },
-  methods: {
-  },
+  methods: {},
   components: {
-    bookList
+    bookList,
+    categoryList
   }
 };
 </script>
