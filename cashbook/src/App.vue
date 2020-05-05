@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-     <headers></headers>
+     <!-- <headers></headers> -->
 
     <router-view/>
-    <addCash></addCash> 
+    <!-- <addCash></addCash>  -->
   </div>
 </template>
 
 <script>
-import headers from "./components/headers";
-import addCash from "./components/addCash";
+// import headers from "./components/headers";
+// import addCash from "./components/addCash";
 
 export default {
   data() {
@@ -18,8 +18,8 @@ export default {
     };
   },
   components: {
-    headers,
-    addCash
+    // headers,
+    // addCash
   },
   methods: {
     //  handleSelect(key, keyPath) {

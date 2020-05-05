@@ -1,7 +1,7 @@
 <template>
-  <div class="book-List" >
+  <div class="book-List" v-if="bookList" >
     <Loading v-if="loading"></Loading>
-    <dl v-for="items in newList" :key="items.id" >
+    <dl v-for="items in bookList.data" >
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
@@ -29,15 +29,16 @@ export default {
     return {
       bookList: null,
       newList: [],
-      // list: [],
-      loading:false
+      loading:false,
+      
     };
   },
-  props:["bookLists"],
+  props:["list"],
   components:{
     Loading
 },
   created() {
+
     let that = this;
     this.classMap = [
       "fushi",
@@ -50,12 +51,13 @@ export default {
       "xuexi",
       "qian"
     ];
+    // this.$emit('changeTit',this.headerTit[0],this.headerTit[1]);
     this.loading = true;
     setTimeout(function(){
-      that.bookList = that.recombination(that.bookLists);
+      that.bookList = that.recombination(that.list);
       that.loading = false;
     },1000)
-    this.$store.commit("headTextChange", this.headerText(this.bookLists.header));
+    // this.$store.commit("headTextChange", this.headerText(this.bookLists.header));
     // this.$axios
     //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
     //   .then(response => {
@@ -72,17 +74,10 @@ export default {
     ])
   },
   watch: {
-    getDateObj(curVal,oldVal){
-      this.satisfy(curVal,oldVal);
-    },
-    bookList(curVal){
-      // this.$store.commit("headChange", this.headerObj(newAry, ary.header));
-    }
   },
   methods: {
     recombination(ary) {
       let newAry = {
-          header: [],
           data: []
         },
         isExist = false,
@@ -91,7 +86,7 @@ export default {
         icomeTotal = 0,
         time,
         _self = this;
-      ary.data.forEach(function(item, index) {
+        ary.forEach(function(item, index) {
         time = _self.getTimeNum(item.time,' ')[0];
         isExist = newAry.data.find(newItem => newItem.time == time);
         if (!isExist) {
@@ -112,54 +107,11 @@ export default {
           newAry.data[isNum].data.push(item);
         }
       });
-      newAry.header = ary.header;
-      newAry.data.sort(this.arraySort);
-      this.$store.commit("newDate",this.dateObj(newAry))
       return newAry;
-    },
-    headerText(ary) {
-      return {
-        headLeftTitle: ary[0],
-        headRightTitle: ary[1],
-      }
-    },
-    dateObj(ary) {
-      let timeAry = this.getTimeNum(ary.data[0].time,'-'),
-          newYear = parseInt(timeAry[0]),
-          newMonth = parseInt(timeAry[1]),
-          curDateObj = this.$store.getters.getDateObj,
-          newDateObj = {}
-      return newDateObj = {
-        "year":newYear,
-        "month":newMonth
-      }
     },
     getTimeNum(timeValue,mark) {
       return timeValue.split(mark);
-    },
-    arraySort(a, b) {
-      return (
-        Date.parse(b.time.replace(/-/g, "/")) - Date.parse(a.time.replace(/-/g, "/"))
-      );
-    },
-    //过滤符合条件的账单，不满足则返回最新的账单
-    satisfy(newObj,oldObj) {
-      let year = newObj.year,
-        month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
-        list = this.bookList.data.filter(list => {
-          return list.time.indexOf(year + "-" + month) >= 0;
-        }); 
-       this.loading = true;
-      if (list.length == 0) {
-        this.$toast.fail('当前选择的日期没有账单，请重新选择');
-        this.$store.commit("newDate", oldObj);
-      }
-      setTimeout(() => {
-        this.loading = false;
-        this.$toast.clear();
-      },1000);
-      this.newList = list;
-    },
+    }
   }
 };
 </script>
@@ -170,7 +122,7 @@ export default {
 
 .book-List {
   height: calc(100vh - 185px);
-  min-height: 485px;
+  max-height: 485px;
   overflow-y: auto;
   dl {
     margin: 0;

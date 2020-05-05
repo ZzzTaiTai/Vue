@@ -14,12 +14,12 @@
       <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
       <div class="info">
         <div class="infoL">
-          <h2 class="title">{{getHeaderText.headLeftTitle}}</h2>
-          <p class="num" :class="{pay: isPay === getHeaderText.headLeftTitle}">{{ getHeaderVal.headLeftValue | numFormat }}</p>
+          <h2 class="title">{{headTit[0]}}</h2>
+          <p class="num" :class="{pay: isPay === headTit.headLeftTitle}">{{ headVal.headLeftValue | numFormat }}</p>
         </div>
         <div class="infoR">
-          <h2 class="title">{{getHeaderText.headRightTitle}}</h2>
-          <p class="num">{{getHeaderVal.headRightValue | numFormat}}</p>
+          <h2 class="title">{{headTit[1]}}</h2>
+          <p class="num">{{headVal.headRightValue | numFormat}}</p>
         </div>
       </div>
     </div>
@@ -38,7 +38,9 @@ export default {
       showDate:false
     }
   },
+  props:['headTit','headVal'],
   created() {
+    console.log(this.headTit)
   },
   components:{
     selectDate
@@ -48,7 +50,11 @@ export default {
       'getHeaderText',
       'getHeaderVal',
       'getDateObj'
-    ])
+    ]),
+    // head(){
+    //     this.headTit.headLeftTitle = this.headTit[0];
+    //     this.headTit.headRightTitle = this.headTit[0];
+    // }
   },
   methods: {
     dateToggle() {
