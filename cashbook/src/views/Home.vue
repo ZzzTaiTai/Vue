@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <headers :headTit="changeTitle" :headVal="headVal" ></headers>
+    <headers :headTit="changeTitle" :headVal="headerVal" ></headers>
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
-        <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
-        <van-tab title="类别报表" ><categoryList :list="newList" :lastList="lastList"></categoryList></van-tab>
+        <van-tab title="明细" ><bookList :list="newList" @changeVal="changeValue"></bookList></van-tab>
+        <van-tab title="类别报表" ><categoryList :list="newList" :lastList="lastList" ></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
     </div>
@@ -26,15 +26,11 @@ export default {
     return {
       active: '0',
       isChildren:false,
-      headTit:[],
-      headVal:{
-        "headLeftValue":0,
-        "headRightValue":0,
-      },
       bookList:[],
       newList:[],
       lastList:[],
-      headerTit:[]
+      headerTit:[],
+      headerVal:[]
     };
   },
   components:{
@@ -262,7 +258,7 @@ export default {
     this.bookList = this.list;
     this.bookList.data.sort(this.arraySort); 
     this.$store.commit("newDate",this.dateObj(this.bookList))
-        // this.$axios
+    // this.$axios
     //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
     //   .then(response => {
     //     // this.bookList = response.data.data.course_list;
@@ -275,9 +271,7 @@ export default {
     ...mapGetters([
       'getDateObj'
     ]),
-    changeTitle:function(){
-      console.log(this.active,this.headerTit)
-      // if(!this.active)return[];
+    changeTitle(){
       if(this.isChildren){
         return this.headerTit[this.active].children;
       }
@@ -286,7 +280,7 @@ export default {
   },
   watch: {
      getDateObj(curVal,oldVal){
-       let lastVal = this.getLastMonth(curVal);
+      let lastVal = this.getLastMonth(curVal);
       this.newList = this.satisfy(curVal,oldVal);
       this.lastList = this.satisfy(lastVal);
     },
@@ -294,9 +288,12 @@ export default {
   methods: {
     //过滤符合条件的账单，不满足则返回最新的账单
     satisfy(newObj,oldObj) {
+
       let year = newObj.year,
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
+        
         list = this.bookList.data.filter(list => {
+          console.log(list.time,list.id)
           return list.time.indexOf(year + "-" + month) >= 0;
         });
       if (list.length == 0 && oldObj) {
@@ -337,14 +334,9 @@ export default {
       lastDate.month = month;
       return lastDate;
     },
-    // changeTitle(left,right){
-    //     this.headTit.headLeftTitle = left;
-    //     this.headTit.headRightTitle = right;
-    // },
-    // changeValue(left,right){
-    //     this.headTit.headLeftValue = left;
-    //     this.headTit.headRightValue = right;
-    // }
+    changeValue(leftVal = 0,rightVal = 0){
+        this.headerVal = [...arguments]
+    }
   },
 }
 </script>

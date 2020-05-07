@@ -30,15 +30,15 @@ export default {
   data() {
     return {
       options: null,
-      header:["结余", "相比上月支出"],
-      headerTotal:["收入", "相比上月支出"]
+      // header:["结余", "相比上月支出"],
+      // headerTotal:["收入", "相比上月支出"]
     }
   },
   props:["list","lastList"],
   created() {
     let that = this;
     this.options = this.initPie([{name:"购物",y:2},{name:"一般",y:3}])
-    this.$emit('changeTit',this.header[0],this.header[1])
+    // this.$emit('changeTit',this.header[0],this.header[1])
   },
   mounted() {
 

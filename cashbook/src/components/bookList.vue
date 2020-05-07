@@ -69,11 +69,26 @@ export default {
     //   });
   },
   computed: {
-    ...mapGetters([
-      'getDateObj'
-    ])
+    
+
   },
   watch: {
+    list:{
+      handler(newValue){
+        this.bookList = this.recombination(newValue);
+      },
+      deep: true
+      
+    },
+    bookList(){
+      let expense = 0;
+      let income = 0;
+      this.bookList.data.forEach( item => {
+        expense += item.expenseTotal;
+        income += item.incomeTotal;
+      })
+      this.$emit("changeVal",expense,income);
+    },
   },
   methods: {
     recombination(ary) {
@@ -83,9 +98,10 @@ export default {
         isExist = false,
         isNum,
         expenseTotal = 0,
-        icomeTotal = 0,
+        incomeTotal = 0,
         time,
         _self = this;
+
         ary.forEach(function(item, index) {
         time = _self.getTimeNum(item.time,' ')[0];
         isExist = newAry.data.find(newItem => newItem.time == time);
@@ -93,7 +109,7 @@ export default {
           newAry.data.push({
             time: time,
             expenseTotal: expenseTotal,
-            icomeTotal: icomeTotal,
+            incomeTotal: incomeTotal,
             data: []
           });
         } else {
@@ -101,14 +117,15 @@ export default {
           if (item.money < 0) {
             newAry.data[isNum].expenseTotal += Math.abs(item.money);
           } else {
-            newAry.data[isNum].icomeTotal += parseInt(item.money);
+            newAry.data[isNum].incomeTotal += parseInt(item.money);
           }
-          delete item.time;
+          // delete item.time;
           newAry.data[isNum].data.push(item);
         }
       });
       return newAry;
     },
+
     getTimeNum(timeValue,mark) {
       return timeValue.split(mark);
     }

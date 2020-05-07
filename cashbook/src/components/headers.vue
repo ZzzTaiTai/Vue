@@ -12,14 +12,14 @@
         </div>
       </div>
       <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
-      <div class="info">
+      <div class="info" >
         <div class="infoL">
           <h2 class="title">{{headTit[0]}}</h2>
-          <p class="num" :class="{pay: isPay === headTit.headLeftTitle}">{{ headVal.headLeftValue | numFormat }}</p>
+          <p class="num" :class="{pay: isPay === headTit[0]}">{{ headVal[0] | numFormat }}</p>
         </div>
         <div class="infoR">
           <h2 class="title">{{headTit[1]}}</h2>
-          <p class="num">{{headVal.headRightValue | numFormat}}</p>
+          <p class="num">{{headVal[1] | numFormat}}</p>
         </div>
       </div>
     </div>
@@ -35,26 +35,22 @@ export default {
   data() {
     return {
       isPay:'支出(元)',//是否是显示支付
-      showDate:false
+      showDate:false,
     }
   },
   props:['headTit','headVal'],
   created() {
-    console.log(this.headTit)
   },
   components:{
     selectDate
   },
   computed: {
     ...mapGetters([
-      'getHeaderText',
-      'getHeaderVal',
       'getDateObj'
     ]),
-    // head(){
-    //     this.headTit.headLeftTitle = this.headTit[0];
-    //     this.headTit.headRightTitle = this.headTit[0];
-    // }
+    
+  },
+  watch: {
   },
   methods: {
     dateToggle() {
