@@ -13,14 +13,21 @@ export default {
       id:'pieChart'
     }
   },
-  props:['options'],
+  props:['options','update'],
   mounted() {
       this.chart = HighCharts.chart(this.id,this.options);
-      this.$emit('callBack', this.chart)
+      this.$emit('callBack', this.chart);
+      console.log(this.chart)
   },
   watch: {
     options:function(val){
       this.chart.series[0].update(val.series[0])
+    },
+    update:function(val){
+      if(val instanceof Object){
+        this.chart.update(val)
+      }
+      return false
     }
   },
   methods: {

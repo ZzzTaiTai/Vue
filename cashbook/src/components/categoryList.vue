@@ -1,7 +1,7 @@
 <template>
   <div class="category-List">
     <div class="pieContainer">
-      <chart :options="options" @callBack="changeAngle" ></chart>
+      <chart :options="options" @callBack="changeAngle" :update="update"></chart>
     </div>
     <!-- <dl v-for="items in newList" :key="items.id" >
       <dt>
@@ -30,85 +30,103 @@ export default {
   data() {
     return {
       options: null,
+      update:{},
       // header:["结余", "相比上月支出"],
       // headerTotal:["收入", "相比上月支出"]
-    }
+    };
   },
-  props:["list","lastList"],
+  props: ["list", "lastList"],
   created() {
     let that = this;
-    this.options = this.initPie([{name:"购物",y:2},{name:"一般",y:3}])
+    this.options = this.initPie([
+      { name: "购物", y: 2 },
+      { name: "一般", y: 3 }
+    ]);
     // this.$emit('changeTit',this.header[0],this.header[1])
   },
-  mounted() {
-
-  },
+  mounted() {},
   computed: {
     ...mapGetters(["getDateObj"]),
-    expenseTotal(){
+    expenseTotal() {
       let total = 0;
-      for(let i = 0;i<this.list.data.length;i++){
+      for (let i = 0; i < this.list.data.length; i++) {
         total += this.list.data.expenseTotal;
       }
-      return total
+      return total;
     },
-    icomeTotal(){
+    icomeTotal() {
       let total = 0;
-      for(let i = 0;i<this.list.data.length;i++){
+      for (let i = 0; i < this.list.data.length; i++) {
         total += this.list.data.icomeTotal;
       }
-      return total
+      return total;
     }
   },
   watch: {},
   methods: {
-    initAry(data){
+    initAry(data) {
       let ary = [],
         expenseTotal = 0,
         icomeTotal = 0;
-      data.forEach((item)=>{
-        item.y > 0 ? expenseTotal += item.y : icomeTotal += icomeTotal;
-      })
-      ary.push({})
+      data.forEach(item => {
+        item.y > 0 ? (expenseTotal += item.y) : (icomeTotal += icomeTotal);
+      });
+      ary.push({});
     },
-    initPie(objData,text) {
+    initPie(objData, text) {
+      let that = this;
       let obj = {
         chart: {
-          type: 'pie'
+          type: "pie"
         },
         title: {
-          floating:true,
-          text: '圆心显示的标题',
+          floating: true,
+          text: "圆心显示的标题",
           style: {
-            color: '#FF00FF',
+            color: "#FF00FF",
             fontSize: "18px"
           },
-          verticalAlign:'middle'
+          verticalAlign: "middle"
         },
         tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
         },
-        series: [{
-          data: objData,
-          innerSize: '55%',
-          startAngle: 180,
-        }]
-      }
-      return obj
+        plotOptions: {
+          pie: {
+            point: {
+              events: {
+                click: function(e) {
+                  debugger
+                  that.changeAngle(this);
+                }
+              }
+            }
+          }
+        },
+        series: [
+          {
+            data: objData,
+            innerSize: "55%",
+            startAngle: 0
+          }
+        ]
+      };
+      return obj;
     },
-    changeAngle(chart){
-      let newAngle = this.calculation(chart.series);
-      chart.update({
+    changeAngle(data){
+      let newAngle = this.calculation(data.y,data.total);
+      this.update = {
         series: [{
         startAngle: newAngle,
         }]
-      })
+      }
     },
-    calculation(data,curData){
+    calculation(y,total){
       const startAngle = 180,
         angle = 360;
-      let total = 0;
-      return 90
+      let newAngle = 0;
+      newAngle = startAngle - (y/total*angle)/2;//得出当前这一项圆饼在图表的占比的一半
+      return newAngle
     }
   },
   components: {
