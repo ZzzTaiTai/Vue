@@ -39,10 +39,9 @@ export default {
   created() {
     let that = this;
     this.options = this.initPie([
-      { name: "购物", y: 2 },
-      { name: "一般", y: 3 }
+      { name: "购物", y: 2 ,color:'#FFC547'},
+      { name: "一般", y: 3 ,color:'#FF9B39'},
     ]);
-    // this.$emit('changeTit',this.header[0],this.header[1])
   },
   mounted() {},
   computed: {
@@ -74,7 +73,9 @@ export default {
       ary.push({});
     },
     initPie(objData, text) {
-      let that = this;
+      let that = this,
+        newData = JSON.parse(JSON.stringify(objData)),
+        angle = 0;
       let obj = {
         chart: {
           type: "pie"
@@ -96,8 +97,7 @@ export default {
             point: {
               events: {
                 click: function(e) {
-                  debugger
-                  that.changeAngle(this);
+                 that.changeAngle(this)
                 }
               }
             }
@@ -114,20 +114,24 @@ export default {
       return obj;
     },
     changeAngle(data){
-      let newAngle = this.calculation(data.y,data.total);
+      let newAngle = this.calculation(data);
       this.update = {
         series: [{
         startAngle: newAngle,
         }]
       }
     },
-    calculation(y,total){
+    calculation(objData){
+      console.log(objData)
       const startAngle = 180,
         angle = 360;
-      let newAngle = 0;
-      newAngle = startAngle - (y/total*angle)/2;//得出当前这一项圆饼在图表的占比的一半
+      let percentage = objData.percentage,
+        newAngle = objData.index === 0 ? 1 : -1;
+        // if(percentage) percentage = objData.series[0]. 
+        newAngle = newAngle*(startAngle - (angle*percentage*0.01)/2);//得出当前这一项圆饼在图表的占比的一半
       return newAngle
-    }
+    },
+
   },
   components: {
     chart
