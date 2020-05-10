@@ -17,7 +17,6 @@ export default {
   mounted() {
       this.chart = HighCharts.chart(this.id,this.options);
       this.$emit('callBack', this.chart);
-      console.log(this.chart)
   },
   watch: {
     options:function(val){
@@ -26,15 +25,12 @@ export default {
     update:function(val){
       if(val instanceof Object){
         this.chart.update(val)
+        // console.log(this.chart);
       }
       return false
     }
   },
   methods: {
-    changeAngle(data){
-      const startAngle = 180;
-      const angle = 360;
-    }
   }
 };
 </script>

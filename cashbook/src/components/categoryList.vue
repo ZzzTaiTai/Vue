@@ -30,17 +30,15 @@ export default {
   data() {
     return {
       options: null,
-      update:{},
-      // header:["结余", "相比上月支出"],
-      // headerTotal:["收入", "相比上月支出"]
+      update:{}
     };
   },
   props: ["list", "lastList"],
   created() {
     let that = this;
     this.options = this.initPie([
-      { name: "购物", y: 2 ,color:'#FFC547'},
-      { name: "一般", y: 3 ,color:'#FF9B39'},
+      { name: "购物", y: 5 ,color:'#FFC547'},
+      { name: "一般", y: 7 ,color:'#FF9B39'}
     ]);
   },
   mounted() {},
@@ -109,11 +107,15 @@ export default {
             innerSize: "55%",
             startAngle: 0
           }
-        ]
+        ],
+        credits:{
+            enabled:false // 禁用版权信息
+        }
       };
       return obj;
     },
     changeAngle(data){
+      //update传递startAngle新的开始角度给图表
       let newAngle = this.calculation(data);
       this.update = {
         series: [{
@@ -122,13 +124,17 @@ export default {
       }
     },
     calculation(objData){
-      console.log(objData)
       const startAngle = 180,
         angle = 360;
       let percentage = objData.percentage,
         newAngle = objData.index === 0 ? 1 : -1;
-        // if(percentage) percentage = objData.series[0]. 
-        newAngle = newAngle*(startAngle - (angle*percentage*0.01)/2);//得出当前这一项圆饼在图表的占比的一半
+        //图表初始化回调传入的是charts
+      if(!percentage){
+        percentage = objData.series[0].data[0].percentage
+        newAngle = 1;
+      }
+        //得出当前这一项圆饼在图表的占比的一半,目前是支持两项
+        newAngle = newAngle*(startAngle - (angle*percentage*0.01)/2);
       return newAngle
     },
 
