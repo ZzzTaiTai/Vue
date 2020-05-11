@@ -1,6 +1,6 @@
 <template>
   <div class="chart" >
-    <div class="curChart" :id=id></div>
+    <div class="curChart" :id=id style="width:100vw;height:325px"></div>
   </div>
 </template>
 <script>
@@ -36,16 +36,15 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
 @import "../common/css/mixin.scss";
-
 .chart {
-  height: calc(100vh - 185px);
-  min-height: 485px;
+  height: 50vh;
   overflow-y: auto;
   .pieChart{
-    width: 100vw;
-    height: 40vh;
+  }
+  .iconfont{
+    font-size: 20px;
   }
 }
 </style>

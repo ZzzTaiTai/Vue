@@ -36,9 +36,14 @@ export default {
   props: ["list", "lastList"],
   created() {
     let that = this;
+    const dataLabelImg = {
+      yb:'qian',
+      gw:'gouwu',
+      qt:'13'
+    }
     this.options = this.initPie([
-      { name: "购物", y: 5 ,color:'#FFC547'},
-      { name: "一般", y: 7 ,color:'#FF9B39'}
+      { name: "购物", y: 5 ,color:'#FFC547',img:dataLabelImg.gw},
+      { name: "一般", y: 5,color:'#FF9B39',img:dataLabelImg.yb}
     ]);
   },
   mounted() {},
@@ -79,16 +84,16 @@ export default {
           type: "pie"
         },
         title: {
-          floating: true,
-          text: "圆心显示的标题",
+          // floating: true,
+          text: '圆心显示的标题',
           style: {
-            color: "#FF00FF",
-            fontSize: "18px"
+            color: '#FF00FF',
+            fontSize: '18px'
           },
-          verticalAlign: "middle"
+          verticalAlign: 'middle'
         },
         tooltip: {
-          pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
+          // pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
         },
         plotOptions: {
           pie: {
@@ -98,13 +103,24 @@ export default {
                  that.changeAngle(this)
                 }
               }
-            }
+            },
+            dataLabels: {
+              // enabled: true,
+              distance: '-19%',
+              useHTML:true,
+              style: {
+                color:"#ffffff"
+              },
+              formatter:function(){
+                return "<i class='iconfont icon-"+this.point.img+"'></i>"
+              }
+            },
           }
         },
         series: [
           {
             data: objData,
-            innerSize: "55%",
+            innerSize: "60%",
             startAngle: 0
           }
         ],
@@ -153,5 +169,7 @@ export default {
   height: calc(100vh - 185px);
   min-height: 485px;
   overflow-y: auto;
+
 }
+
 </style>
