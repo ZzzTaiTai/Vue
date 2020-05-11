@@ -1,6 +1,6 @@
 <template>
   <div class="chart" >
-    <div class="curChart" :id=id style="width:100vw;height:325px"></div>
+    <div class="curChart" :id=id style="width:100vw;height:300px"></div>
   </div>
 </template>
 <script>
@@ -39,7 +39,7 @@ export default {
 <style lang="scss">
 @import "../common/css/mixin.scss";
 .chart {
-  height: 50vh;
+  height: 45vh;
   overflow-y: auto;
   .pieChart{
   }

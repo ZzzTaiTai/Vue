@@ -3,7 +3,7 @@
     <div class="pieContainer">
       <chart :options="options" @callBack="changeAngle" :update="update"></chart>
     </div>
-    <!-- <dl v-for="items in newList" :key="items.id" >
+    <dl v-for="items in list" :key="items.id" >
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
@@ -18,7 +18,7 @@
         <span class="info">{{list.name}}--{{items.time}}</span>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
       </dd>
-    </dl>-->
+    </dl>
   </div>
 </template>
 <script>
@@ -30,7 +30,8 @@ export default {
   data() {
     return {
       options: null,
-      update:{}
+      update:{},
+      chart:null
     };
   },
   props: ["list", "lastList"],
@@ -42,8 +43,8 @@ export default {
       qt:'13'
     }
     this.options = this.initPie([
-      { name: "购物", y: 5 ,color:'#FFC547',img:dataLabelImg.gw},
-      { name: "一般", y: 5,color:'#FF9B39',img:dataLabelImg.yb}
+      { name: "购物", y: 7 ,color:'#FFC547',img:dataLabelImg.gw,selected:true,sliced:true},
+      { name: "一般", y: 3,color:'#FF9B39',img:dataLabelImg.yb}
     ]);
   },
   mounted() {},
@@ -81,22 +82,29 @@ export default {
         angle = 0;
       let obj = {
         chart: {
-          type: "pie"
+          type: "pie",
+          backgroundColor:'#f2f3f5',
         },
         title: {
-          // floating: true,
-          text: '圆心显示的标题',
+          useHTML:true,
+          text: '<div class="whiteBox" style="text-align:center"><p>总支出</p><p>3,500,74元</p><em></em></div>',
           style: {
             color: '#FF00FF',
             fontSize: '18px'
           },
-          verticalAlign: 'middle'
+          floating:'left',
+          verticalAlign: 'middle',
+          x:0,
+          y:19
+      
         },
         tooltip: {
           // pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
         },
         plotOptions: {
           pie: {
+            allowPointSelect: true,
+            slicedOffset:5,
             point: {
               events: {
                 click: function(e) {
@@ -105,7 +113,6 @@ export default {
               }
             },
             dataLabels: {
-              // enabled: true,
               distance: '-19%',
               useHTML:true,
               style: {
@@ -148,12 +155,15 @@ export default {
       if(!percentage){
         percentage = objData.series[0].data[0].percentage
         newAngle = 1;
+        // this.chart = objData;
       }
         //得出当前这一项圆饼在图表的占比的一半,目前是支持两项
         newAngle = newAngle*(startAngle - (angle*percentage*0.01)/2);
       return newAngle
     },
-
+    a(){
+      console.log(123)
+    }
   },
   components: {
     chart
@@ -162,14 +172,20 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style  lang="scss">
 @import "../common/css/mixin.scss";
 
 .category-List {
   height: calc(100vh - 185px);
   min-height: 485px;
   overflow-y: auto;
-
+  .whiteBox{
+    padding: 35px 0;
+    width: 155px;
+    height: 155px;
+    box-sizing: border-box;
+    border-radius: 50%;
+  }
 }
 
 </style>

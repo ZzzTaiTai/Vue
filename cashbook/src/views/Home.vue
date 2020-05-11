@@ -293,7 +293,6 @@ export default {
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
         
         list = this.bookList.data.filter(list => {
-          console.log(list.time,list.id)
           return list.time.indexOf(year + "-" + month) >= 0;
         });
       if (list.length == 0 && oldObj) {
