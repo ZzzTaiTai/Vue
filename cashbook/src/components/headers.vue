@@ -15,11 +15,11 @@
       <div class="info" >
         <div class="infoL">
           <h2 class="title">{{headTit[0]}}</h2>
-          <p class="num" :class="{pay: isPay === headTit[0]}">{{ headVal[0] | numFormat }}</p>
+          <p v-if="headVal" class="num" :class="{pay: isPay === headTit[0]}">{{ headVal[0] | numFormat }}</p>
         </div>
         <div class="infoR">
           <h2 class="title">{{headTit[1]}}</h2>
-          <p class="num">{{headVal[1] | numFormat}}</p>
+          <p  v-if="headVal" class="num">{{headVal[1] | numFormat}}</p>
         </div>
       </div>
     </div>
@@ -40,6 +40,8 @@ export default {
   },
   props:['headTit','headVal'],
   created() {
+  },
+  watch:{
   },
   components:{
     selectDate

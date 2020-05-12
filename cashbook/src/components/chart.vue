@@ -25,7 +25,6 @@ export default {
     update:function(val){
       if(val instanceof Object){
         this.chart.update(val)
-        // console.log(this.chart);
       }
       return false
     }

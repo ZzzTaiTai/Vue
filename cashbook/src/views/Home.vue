@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <headers :headTit="changeTitle" :headVal="headerVal" ></headers>
+    <headers :headTit="changeTitle" :headVal="headerVal[active]" ></headers>
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
         <van-tab title="明细" ><bookList :list="newList" @changeVal="changeValue"></bookList></van-tab>
@@ -30,7 +30,7 @@ export default {
       newList:[],
       lastList:[],
       headerTit:[],
-      headerVal:[]
+      headerVal:{}
     };
   },
   components:{
@@ -286,9 +286,42 @@ export default {
     },
   },
   methods: {
+    recombination(ary) {
+      let newAry = {
+          data: []
+        },
+        isExist = false,
+        isNum,
+        expenseTotal = 0,
+        incomeTotal = 0,
+        time,
+        _self = this;
+
+        ary.forEach(function(item, index) {
+        time = _self.getTimeNum(item.time,' ')[0];
+        isExist = newAry.data.find(newItem => newItem.time == time);
+        if (!isExist) {
+          newAry.data.push({
+            time: time,
+            expenseTotal: expenseTotal,
+            incomeTotal: incomeTotal,
+            data: []
+          });
+        } else {
+          isNum = newAry.data.findIndex(newItem => newItem.time == time);
+          if (item.money < 0) {
+            newAry.data[isNum].expenseTotal += Math.abs(item.money);
+          } else {
+            newAry.data[isNum].incomeTotal += parseInt(item.money);
+          }
+          // delete item.time;
+          newAry.data[isNum].data.push(item);
+        }
+      });
+      return newAry;
+    },
     //过滤符合条件的账单，不满足则返回最新的账单
     satisfy(newObj,oldObj) {
-
       let year = newObj.year,
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
         
@@ -299,7 +332,7 @@ export default {
         // this.openMessage();
         this.$store.commit("newDate", oldObj);
       }
-      return list;
+      return this.recombination(list);
     },
     dateObj(ary) {
       let timeAry = this.getTimeNum(ary.data[0].time,'-'),
@@ -334,7 +367,7 @@ export default {
       return lastDate;
     },
     changeValue(leftVal = 0,rightVal = 0){
-        this.headerVal = [...arguments]
+        this.$set(this.headerVal,this.active,[...arguments])
     }
   },
 }

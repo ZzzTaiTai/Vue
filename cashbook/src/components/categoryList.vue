@@ -30,8 +30,7 @@ export default {
   data() {
     return {
       options: null,
-      update:{},
-      chart:null
+      update:{}
     };
   },
   props: ["list", "lastList"],
@@ -42,10 +41,24 @@ export default {
       gw:'gouwu',
       qt:'13'
     }
-    this.options = this.initPie([
-      { name: "购物", y: 7 ,color:'#FFC547',img:dataLabelImg.gw,selected:true,sliced:true},
-      { name: "一般", y: 3,color:'#FF9B39',img:dataLabelImg.yb}
-    ]);
+   this.options = this.initPie([
+      {
+            name:'总支出',
+            data:[
+              { name: "购物", y: 5,color:'#FFC547',img:dataLabelImg.gw},
+              { name: "一般", y: 3,color:'#FF9B39',img:dataLabelImg.yb}
+            ],
+            innerSize: "60%"
+          },
+          // {
+          //   name:'总收入',
+          //   data:[
+          //     { name: "其他", y: 50,color:'#FFC547',img:dataLabelImg.qt},
+          //   ],
+          //   innerSize: "60%",
+          //   visible:false
+          // }
+    ])
   },
   mounted() {},
   computed: {
@@ -65,7 +78,9 @@ export default {
       return total;
     }
   },
-  watch: {},
+  watch: {
+    
+  },
   methods: {
     initAry(data) {
       let ary = [],
@@ -83,28 +98,29 @@ export default {
       let obj = {
         chart: {
           type: "pie",
-          backgroundColor:'#f2f3f5',
+          events: {
+            //点击圆饼中心空白处切换数据
+            click: function (event) {
+              if(event.target.nodeName !== 'rect'){
+              }
+            }
+          }
         },
         title: {
-          useHTML:true,
-          text: '<div class="whiteBox" style="text-align:center"><p>总支出</p><p>3,500,74元</p><em></em></div>',
+          floating: true,
+          text: '<div style="padding:15px 25px;border-radius:50%;>123</br>213</br>213</div>',
           style: {
             color: '#FF00FF',
             fontSize: '18px'
           },
-          floating:'left',
           verticalAlign: 'middle',
-          x:0,
-          y:19
-      
+          useHTML:true
         },
         tooltip: {
-          // pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
+          show:false
         },
         plotOptions: {
           pie: {
-            allowPointSelect: true,
-            slicedOffset:5,
             point: {
               events: {
                 click: function(e) {
@@ -121,16 +137,11 @@ export default {
               formatter:function(){
                 return "<i class='iconfont icon-"+this.point.img+"'></i>"
               }
-            },
+            }
           }
         },
-        series: [
-          {
-            data: objData,
-            innerSize: "60%",
-            startAngle: 0
-          }
-        ],
+        series: objData,
+        visible:false,  
         credits:{
             enabled:false // 禁用版权信息
         }
@@ -152,18 +163,17 @@ export default {
       let percentage = objData.percentage,
         newAngle = objData.index === 0 ? 1 : -1;
         //图表初始化回调传入的是charts
+      
       if(!percentage){
         percentage = objData.series[0].data[0].percentage
         newAngle = 1;
-        // this.chart = objData;
       }
         //得出当前这一项圆饼在图表的占比的一半,目前是支持两项
         newAngle = newAngle*(startAngle - (angle*percentage*0.01)/2);
       return newAngle
     },
-    a(){
-      console.log(123)
-    }
+    
+
   },
   components: {
     chart
@@ -172,20 +182,14 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style  lang="scss">
+<style scoped lang="scss">
 @import "../common/css/mixin.scss";
 
 .category-List {
   height: calc(100vh - 185px);
   min-height: 485px;
   overflow-y: auto;
-  .whiteBox{
-    padding: 35px 0;
-    width: 155px;
-    height: 155px;
-    box-sizing: border-box;
-    border-radius: 50%;
-  }
+
 }
 
 </style>
