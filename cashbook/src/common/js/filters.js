@@ -1,6 +1,7 @@
 const mainfilters ={
     numFormat:function(value){
-        if(!value){return '0.00'}
+        if(!value)return '0.00'
+        if(typeof value !== "number")return value
         //取数字整数部分
         let intPart =  Math.trunc(value);
         let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');

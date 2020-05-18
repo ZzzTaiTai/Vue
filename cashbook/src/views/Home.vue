@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <headers :headTit="changeTitle" :headVal="headerVal[active]" ></headers>
+    <headers :headTit="changeTitle" :headVal="changeValue" ></headers>
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
-        <van-tab title="明细" ><bookList :list="newList" @changeVal="changeValue"></bookList></van-tab>
+        <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
         <van-tab title="类别报表" ><categoryList :list="newList" :lastList="lastList" ></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
@@ -30,7 +30,7 @@ export default {
       newList:[],
       lastList:[],
       headerTit:[],
-      headerVal:{}
+
     };
   },
   components:{
@@ -271,12 +271,68 @@ export default {
     ...mapGetters([
       'getDateObj'
     ]),
+    //当月支出
+    expenseTotal(){
+      let expense = 0;
+      if(this.newList.data){
+        this.newList.data.forEach( item => {
+        expense += item.expenseTotal;
+      });
+      }
+      return expense
+    },
+    //当月收入
+    incomeTotal(){
+      let income = 0;
+       if(this.newList.data){
+          this.newList.data.forEach( item => {
+          income += item.incomeTotal;
+        })
+       }
+      
+      return income
+    },
+    //当月结余
+    balance(){
+     return this.incomeTotal - this.expenseTotal
+    },
+    //相比上月支出
+    lastExpense(){
+      let last = 0;
+      if(this.lastList.data){
+        this.lastList.data.forEach( item => {
+          last += item.expenseTotal;
+        })
+      }
+      return (this.expenseTotal - last)/this.expenseTotal+'%'
+    },
+    //相比上月支出
+    lastIncome(){
+      let last = 0;
+       if(this.lastList.data){
+        this.lastList.data.forEach( item => {
+          last += item.incomeTotal;
+        })
+       }
+      return (this.incomeTotal - last)/this.incomeTotal
+    },
+    headerVal(){
+      
+      return [{data:[this.expenseTotal,this.incomeTotal],children:[]},{data:[this.balance,this.lastExpense],children:[this.balance,this.lastIncome]},{data:[this.expenseTotal,this.incomeTotal],children:[]}]
+    },
     changeTitle(){
       if(this.isChildren){
         return this.headerTit[this.active].children;
       }
       return this.headerTit[this.active].data;
-    }
+    },
+    changeValue(){
+       if(this.isChildren){
+        return this.headerVal[this.active].children;
+      }
+      return this.headerVal[this.active].data;
+    },
+
   },
   watch: {
      getDateObj(curVal,oldVal){
@@ -366,9 +422,9 @@ export default {
       lastDate.month = month;
       return lastDate;
     },
-    changeValue(leftVal = 0,rightVal = 0){
-        this.$set(this.headerVal,this.active,[...arguments])
-    }
+    // changeValue(leftVal = 0,rightVal = 0){
+    //     this.$set(this.headerVal,this.active,[...arguments])
+    // }
   },
 }
 </script>

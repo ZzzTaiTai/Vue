@@ -24,7 +24,6 @@
 <script>
 import Highcharts from "highcharts";
 import chart from "@/components/chart";
-import { mapGetters } from "vuex";
 export default {
   name: "categoryList",
   data() {
@@ -62,7 +61,6 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapGetters(["getDateObj"]),
     expenseTotal() {
       let total = 0;
       for (let i = 0; i < this.list.data.length; i++) {
