@@ -24,24 +24,27 @@
 <script>
 import Highcharts from "highcharts";
 import chart from "@/components/chart";
+
+const dataLabelImg = {
+      yb:'qian',
+      gw:'gouwu',
+      qt:'13'
+    }
+
 export default {
   name: "categoryList",
   data() {
     return {
       options: null,
-      update:{}
+      update:{},
+      curIndex : 0//圆饼当前选中的序号
     };
   },
-  props: ["list", "lastList"],
+  props: ["list", "lastList",'expense','income'],
   created() {
     let that = this;
-    const dataLabelImg = {
-      yb:'qian',
-      gw:'gouwu',
-      qt:'13'
-    }
    this.options = this.initPie([
-      {
+          {
             name:'总支出',
             data:[
               { name: "购物", y: 5,color:'#FFC547',img:dataLabelImg.gw},
@@ -61,20 +64,20 @@ export default {
   },
   mounted() {},
   computed: {
-    expenseTotal() {
-      let total = 0;
-      for (let i = 0; i < this.list.data.length; i++) {
-        total += this.list.data.expenseTotal;
-      }
-      return total;
-    },
-    icomeTotal() {
-      let total = 0;
-      for (let i = 0; i < this.list.data.length; i++) {
-        total += this.list.data.icomeTotal;
-      }
-      return total;
-    }
+    // expenseTotal() {
+    //   let total = 0;
+    //   for (let i = 0; i < this.list.data.length; i++) {
+    //     total += this.list.data.expenseTotal;
+    //   }
+    //   return total;
+    // },
+    // icomeTotal() {
+    //   let total = 0;
+    //   for (let i = 0; i < this.list.data.length; i++) {
+    //     total += this.list.data.icomeTotal;
+    //   }
+    //   return total;
+    // }
   },
   watch: {
     
@@ -93,6 +96,7 @@ export default {
       let that = this,
         newData = JSON.parse(JSON.stringify(objData)),
         angle = 0;
+        
       let obj = {
         chart: {
           type: "pie",
@@ -100,13 +104,14 @@ export default {
             //点击圆饼中心空白处切换数据
             click: function (event) {
               if(event.target.nodeName !== 'rect'){
+                console.log(1)
               }
             }
           }
         },
         title: {
           floating: true,
-          text: '<div style="padding:15px 25px;border-radius:50%;>123</br>213</br>213</div>',
+          text: `<div style="padding:15px 30px;border-radius:50%;text-align:center">${objData[0].name}</br>${objData[0].data[this.curIndex].y}</br>213</div>`,
           style: {
             color: '#FF00FF',
             fontSize: '18px'
@@ -122,7 +127,8 @@ export default {
             point: {
               events: {
                 click: function(e) {
-                 that.changeAngle(this)
+                  this.curIndex = this.index;
+                  that.changeAngle(this)
                 }
               }
             },

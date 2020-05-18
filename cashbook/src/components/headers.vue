@@ -40,7 +40,6 @@ export default {
   },
   props:['headTit','headVal'],
   created() {
-    console.log(this.headVal)
   },
   watch:{
   },

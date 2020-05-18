@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <headers :headTit="changeTitle" :headVal="changeValue" ></headers>
+    <headers :headTit="changeTitle"  :headVal="changeValue"></headers>
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
         <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
-        <van-tab title="类别报表" ><categoryList :list="newList" :lastList="lastList" ></categoryList></van-tab>
+        <van-tab title="类别报表"  ><categoryList :list="newList" :lastList="lastList" :expense="expenseTotal" :income="incomeTotal"></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
     </div>
@@ -246,14 +246,14 @@ export default {
       ]
     };
     this.headerTit=[
-      {
-        data:["支出(元)", "收入(元)"],
-        children:[]
+        {
+          data:["支出(元)", "收入(元)"],
+          children:[]
         },
-      {
-        data:["结余", "相比上月支出"],
-        children:["收入", "相比上月支出"]
-      }
+        {
+          data:["结余", "相比上月支出"],
+          children:["结余", "相比上月收入"]
+        }
     ]
     this.bookList = this.list;
     this.bookList.data.sort(this.arraySort); 
@@ -281,6 +281,7 @@ export default {
       }
       return expense
     },
+
     //当月收入
     incomeTotal(){
       let income = 0;
@@ -289,47 +290,44 @@ export default {
           income += item.incomeTotal;
         })
        }
-      
       return income
     },
     //当月结余
     balance(){
      return this.incomeTotal - this.expenseTotal
     },
-    //相比上月支出
-    lastExpense(){
-      let last = 0;
+    //相比上月支出/收入
+    last(){
+      let lastE = 0,//支出
+       lastI = 0,//收入
+       newAry = [];
       if(this.lastList.data){
         this.lastList.data.forEach( item => {
-          last += item.expenseTotal;
+          lastE += item.expenseTotal;
+          lastI += item.incomeTotal;
         })
       }
-      return (this.expenseTotal - last)/this.expenseTotal+'%'
-    },
-    //相比上月支出
-    lastIncome(){
-      let last = 0;
-       if(this.lastList.data){
-        this.lastList.data.forEach( item => {
-          last += item.incomeTotal;
-        })
-       }
-      return (this.incomeTotal - last)/this.incomeTotal
+      if(!this.isChildren){
+        newAry = [this.balance,((this.expenseTotal - lastE)/this.expenseTotal).toFixed(2)+'%']
+      }else{
+        newAry = [this.balance,((this.incomeTotal - lastI)/this.incomeTotal).toFixed(2)+'%']
+      }
+      return newAry
     },
     headerVal(){
-      
-      return [{data:[this.expenseTotal,this.incomeTotal],children:[]},{data:[this.balance,this.lastExpense],children:[this.balance,this.lastIncome]},{data:[this.expenseTotal,this.incomeTotal],children:[]}]
+      return [
+        {data:[this.expenseTotal,this.incomeTotal]},
+        {data:this.last},
+        {data:[this.expenseTotal,this.incomeTotal]}
+      ]
     },
     changeTitle(){
-      if(this.isChildren){
+      if(this.isChildren && this.headerTit[this.active].children.length > 0){
         return this.headerTit[this.active].children;
       }
       return this.headerTit[this.active].data;
     },
     changeValue(){
-       if(this.isChildren){
-        return this.headerVal[this.active].children;
-      }
       return this.headerVal[this.active].data;
     },
 
