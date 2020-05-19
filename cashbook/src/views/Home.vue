@@ -4,7 +4,7 @@
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
         <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
-        <van-tab title="类别报表"  ><categoryList :list="newList" :lastList="lastList" :expense="expenseTotal" :income="incomeTotal"></categoryList></van-tab>
+        <van-tab title="类别报表"  ><categoryList :list="bookList" :expense="expenseTotal" :income="incomeTotal" @children="changeChildren"></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
     </div>
@@ -253,6 +253,10 @@ export default {
         {
           data:["结余", "相比上月支出"],
           children:["结余", "相比上月收入"]
+        },
+        {
+          data:["支出(元)", "收入(元)"],
+          children:[]
         }
     ]
     this.bookList = this.list;
@@ -314,13 +318,6 @@ export default {
       }
       return newAry
     },
-    headerVal(){
-      return [
-        {data:[this.expenseTotal,this.incomeTotal]},
-        {data:this.last},
-        {data:[this.expenseTotal,this.incomeTotal]}
-      ]
-    },
     changeTitle(){
       if(this.isChildren && this.headerTit[this.active].children.length > 0){
         return this.headerTit[this.active].children;
@@ -328,7 +325,13 @@ export default {
       return this.headerTit[this.active].data;
     },
     changeValue(){
-      return this.headerVal[this.active].data;
+      let ary = [];
+      ary = [
+        {data:[this.expenseTotal,this.incomeTotal]},
+        {data:this.last},
+        {data:[this.expenseTotal,this.incomeTotal]}
+      ]
+      return ary[this.active].data;
     },
 
   },
@@ -340,7 +343,7 @@ export default {
     },
   },
   methods: {
-    recombination(ary) {
+    _recombination(ary) {
       let newAry = {
           data: []
         },
@@ -386,7 +389,7 @@ export default {
         // this.openMessage();
         this.$store.commit("newDate", oldObj);
       }
-      return this.recombination(list);
+      return this._recombination(list);
     },
     dateObj(ary) {
       let timeAry = this.getTimeNum(ary.data[0].time,'-'),
@@ -399,9 +402,11 @@ export default {
         "month":newMonth
       }
     },
+
     getTimeNum(timeValue,mark) {
       return timeValue.split(mark);
     },
+    //数据时间排序
     arraySort(a, b) {
       return Date.parse(b.time.replace(/-/g, "/")) - Date.parse(a.time.replace(/-/g, "/"))
     },
@@ -420,9 +425,11 @@ export default {
       lastDate.month = month;
       return lastDate;
     },
-    // changeValue(leftVal = 0,rightVal = 0){
-    //     this.$set(this.headerVal,this.active,[...arguments])
-    // }
+    //切换有children的数据
+    changeChildren(){
+      if(this.headerTit[this.active].children.length === 0)return
+      this.isChildren = !this.isChildren
+    }
   },
 }
 </script>
@@ -430,7 +437,6 @@ export default {
   .van-tabs__nav--card,.van-tabs__nav--card .van-tab{
     margin:0!important;
     border:0!important;
-    
   }
 
 </style>

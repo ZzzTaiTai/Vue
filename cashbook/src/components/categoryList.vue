@@ -27,8 +27,9 @@ import chart from "@/components/chart";
 
 const dataLabelImg = {
       yb:'qian',
-      gw:'gouwu',
-      qt:'13'
+      '购物':'gouwu',
+      '一般':'13',
+      qh:'qiehuan'
     }
 
 export default {
@@ -37,12 +38,28 @@ export default {
     return {
       options: null,
       update:{},
-      curIndex : 0//圆饼当前选中的序号
+      curIndex : 0,//圆饼当前选中的序号
+      initArt:[
+        { 
+          name:'总支出',
+          data:[
+
+          ],
+          innerSize:'60%'
+        },
+        { 
+          name:'总收入',
+          data:[
+
+          ],
+        }
+      ]
     };
   },
-  props: ["list", "lastList",'expense','income'],
+  props: ["list",'expense','income'],
   created() {
     let that = this;
+    this.initData(this.list.data)
    this.options = this.initPie([
           {
             name:'总支出',
@@ -51,23 +68,13 @@ export default {
               { name: "一般", y: 3,color:'#FF9B39',img:dataLabelImg.yb}
             ],
             innerSize: "60%"
-          },
-          // {
-          //   name:'总收入',
-          //   data:[
-          //     { name: "其他", y: 50,color:'#FFC547',img:dataLabelImg.qt},
-          //   ],
-          //   innerSize: "60%",
-          //   visible:false
-          // }
+          }
     ])
   },
   mounted() {},
   computed: {
     // expenseTotal() {
     //   let total = 0;
-    //   for (let i = 0; i < this.list.data.length; i++) {
-    //     total += this.list.data.expenseTotal;
     //   }
     //   return total;
     // },
@@ -77,12 +84,32 @@ export default {
     //     total += this.list.data.icomeTotal;
     //   }
     //   return total;
-    // }
+    // }//   for (let i = 0; i < this.list.data.length; i++) {
+    //     total += this.list.data.expenseTotal;
+    
   },
   watch: {
     
   },
   methods: {
+    initData(data){
+      let ary = [],
+        isExist = false,
+        isNum = 0;
+      data.forEach((item,index)=>{
+        isExist = ary.find(newItem => newItem.typeName === item.typeName);
+        if(!isExist){
+          ary.push({
+            typeName:item.typeName,
+            data:[]
+            })
+        }
+        isNum = ary.findIndex(newItem => newItem.typeName === item.typeName);
+        ary[isNum].data.push(item)
+      })
+      console.log(ary)
+    },
+
     initAry(data) {
       let ary = [],
         expenseTotal = 0,
@@ -104,17 +131,17 @@ export default {
             //点击圆饼中心空白处切换数据
             click: function (event) {
               if(event.target.nodeName !== 'rect'){
-                console.log(1)
+                that.$emit('children')
               }
             }
           }
         },
         title: {
           floating: true,
-          text: `<div style="padding:15px 30px;border-radius:50%;text-align:center">${objData[0].name}</br>${objData[0].data[this.curIndex].y}</br>213</div>`,
+          text: `<div style="padding:10px 20px;border-radius:50%;text-align:center">${objData[0].name}</br>${objData[0].data[this.curIndex].y}</br><i style="font-size:30px;font-weight:700" class='icon iconfont icon-${dataLabelImg.qh}'></i></div>`,
           style: {
             color: '#FF00FF',
-            fontSize: '18px'
+            fontSize: '22px'
           },
           verticalAlign: 'middle',
           useHTML:true
