@@ -21,6 +21,7 @@ Vue.use(Icon)
 Vue.use(Tab).use(Tabs).use(Loading).use(Button);
 Vue.prototype.$axios = axios;
 Vue.prototype.$toast = Toast;
+Vue.prototype.$filters = mainfilters;
 for(let key in mainfilters){
   Vue.filter(key,mainfilters[key]);
 }

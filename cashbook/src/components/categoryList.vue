@@ -1,9 +1,9 @@
 <template>
   <div class="category-List">
     <div class="pieContainer">
-      <chart :options="options" @callBack="changeAngle" :update="update"></chart>
+      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal"></chart>
     </div>
-    <!-- <dl v-for="items in list" :key="items.id">
+    <dl v-for="items in list" :key="items.id">
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
@@ -18,7 +18,7 @@
         <span class="info">{{list.name}}--{{items.time}}</span>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
       </dd>
-    </dl> -->
+    </dl>
   </div>
 </template>
 <script>
@@ -38,31 +38,33 @@ export default {
       options: null,
       update: {},
       curIndex: 0, //圆饼当前选中的序号
-      fixedAry: []
-    };
+      fixedAry: [],
+    };           
   },
   props: ["list", "expense", "income","isChildren"],
   created() {
-    this.options = this.init();
+    this.fixedAry = this.addData(this.initData(this.list));
+    this.options = this.initPie(this.fixedAry);
   },
   mounted() {},
   computed: {
     pieTitleVal(){
-      return this.isChildren? this.income : this.expense
+      return this.isChildren ? this.$filters.numFormat(this.income) : this.$filters.numFormat(this.expense)
     }
   },
   watch: {
-    list(){
-      this.options = this.init();
+    list:{         
+      hanlder(){
+        this.fixedAry = this.addData(this.initData(this.list));
+        this.options = this.initPie(this.fixedAry);
+      },
+      deep:true
     },
     isChildren(){
-      this.options = this.init();
+      this.options = this.initPie(this.fixedAry);
     },
   },
-  methods: {
-    init(){
-      return this.initPie(this.initData(this.list.data))
-    },
+  methods: { 
     initData(data) {
       let ary = [],
         isExist = false,
@@ -73,27 +75,27 @@ export default {
           ary.push({
             name: item.typeName,
             y: 0,
-            // data:[],
             img: dataLabelImg[item.typeName],
+            data:[]
           });
         }
-
         isNum = ary.findIndex(newItem => newItem.name === item.typeName);
         ary[isNum].y += item.money;
-        // ary[isNum].data.push(item)
+        ary[isNum].data.push(item);
       });
-      return this.addData(ary)
+      console.log(ary)
+      return ary
     },
     addData(data) {
-      let num =  !this.isChildren ?  0 : 1, //0是支出,1是收入
+      let num =  !this.isChildren ?  1 : 0, //0是支出,1是收入
         ary = [
           {
-            name: "总支出",
+            name: "总收入",
             data: [],
             innerSize: "60%"
           },
           {
-            name: "总收入",
+            name: "总支出",
             data: [],
             innerSize: "60%"
           }]
@@ -105,21 +107,17 @@ export default {
           ary[1].data.push(item);
         }
       });
+      console.log(ary[num])
       return ary[num];
     },
-    initAry(data) {
-      let ary = [],
-        expenseTotal = 0,
-        icomeTotal = 0;
-      data.forEach(item => {
-        item.y > 0 ? (expenseTotal += item.y) : (icomeTotal += icomeTotal);
-      });
-      ary.push({});
-    },
+    // init(){
+    //   return this.initPie(this.addData(this.initData(this.list.data)))
+    // },
     initPie(objData) {
       let that = this,
         newData = JSON.parse(JSON.stringify(objData)),
         angle = 0;
+      const colorMap = ['#FFEC8B','#F4A460','#66CD00']
       let obj = {
         chart: {
           type: "pie",
@@ -134,17 +132,18 @@ export default {
         },
         title: {
           floating: true,
-          text: `<div style="padding:10px 20px;border-radius:50%;text-align:center">${objData.name}</br>${that.pieTitleVal}</br><i style="font-size:30px;font-weight:700" class='icon iconfont icon-${dataLabelImg.qh}'></i></div>`,
+          text: `<div class="pieTitle">${objData.name}</br><p>${that.pieTitleVal}</p><i style="font-size:30px;font-weight:700" class='icon iconfont icon-${dataLabelImg.qh}'></i></div>`,
           style: {
-            color: "#FF00FF",
+            color: "#666",
             fontSize: "22px"
           },
           verticalAlign: "middle",
           useHTML: true
         },
         tooltip: {
-          show: false
+          enabled: false
         },
+        colors:colorMap,
         plotOptions: {
           pie: {
             point: {
@@ -208,12 +207,19 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scope lang="scss">
 @import "../common/css/mixin.scss";
 
 .category-List {
   height: calc(100vh - 185px);
   min-height: 485px;
   overflow-y: auto;
+  .pieTitle{
+      padding:10px 20px;
+      border-radius:50%;
+      text-align:center;
+      cursor: pointer;
+      p{color:#000;}
+  }
 }
 </style>

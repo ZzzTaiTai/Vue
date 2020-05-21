@@ -4,7 +4,7 @@
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
         <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
-        <van-tab title="类别报表"  ><categoryList :list="bookList" :expense="expenseTotal" :income="incomeTotal" :isChildren="isChildren" @children="changeChildren"></categoryList></van-tab>
+        <van-tab title="类别报表"  ><categoryList :list="categoryList" :expense="expenseTotal" :income="incomeTotal" :isChildren="isChildren" @children="changeChildren"></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
     </div>
@@ -30,7 +30,7 @@ export default {
       newList:[],
       lastList:[],
       headerTit:[],
-
+      categoryList:[]
     };
   },
   components:{
@@ -298,6 +298,7 @@ export default {
     },
     //当月结余
     balance(){
+      console.log(this.incomeTotal,this.expenseTotal)
      return this.incomeTotal - this.expenseTotal
     },
     //相比上月支出/收入
@@ -337,9 +338,11 @@ export default {
   },
   watch: {
      getDateObj(curVal,oldVal){
+       debugger
       let lastVal = this.getLastMonth(curVal);
-      this.newList = this.satisfy(curVal,oldVal);
-      this.lastList = this.satisfy(lastVal);
+      this.newList = this._recombination(this.satisfy(curVal,oldVal));
+      this.lastList = this._recombination(this.satisfy(lastVal));
+      this.categoryList = this.satisfy(curVal,oldVal)
     },
   },
   methods: {
@@ -389,7 +392,7 @@ export default {
         // this.openMessage();
         this.$store.commit("newDate", oldObj);
       }
-      return this._recombination(list);
+      return list;
     },
     dateObj(ary) {
       let timeAry = this.getTimeNum(ary.data[0].time,'-'),

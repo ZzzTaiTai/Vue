@@ -13,19 +13,19 @@ export default {
       id:'pieChart'
     }
   },
-  props:['options','update'],
+  props:['options','update','titleVal'],
   mounted() {
       this.chart = HighCharts.chart(this.id,this.options);
       this.$emit('callBack', this.chart);
   },
   watch: {
-    options:function(val){
-      let titleVal = 0;
-      val.series[0].data.forEach((item) => titleVal += item.y)
-      titleVal = titleVal.toFixed(2)
-      this.chart.series[0].update(val.series[0]);
-      this.$emit('callBack', this.chart);
-      this.chart.setTitle({text:`<div style="padding:10px 20px;border-radius:50%;text-align:center">${val.name}</br>${titleVal}</br><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})
+    options:{
+      handler(val){
+        this.chart.series[0].update(val.series[0]);
+        this.$emit('callBack', this.chart);
+        this.chart.setTitle({text:`<div class="pieTitle">${val.series[0].name}</br><p>${this.titleVal}</p><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})
+      },
+      immediate:true
     },
     update:function(val){
       if(val instanceof Object){
@@ -47,6 +47,7 @@ export default {
   height: 45vh;
   overflow-y: auto;
   .pieChart{
+    
   }
   .iconfont{
     font-size: 20px;
