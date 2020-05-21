@@ -20,14 +20,20 @@ export default {
   },
   watch: {
     options:function(val){
-      this.chart.series[0].update(val.series[0])
+      let titleVal = 0;
+      val.series[0].data.forEach((item) => titleVal += item.y)
+      titleVal = titleVal.toFixed(2)
+      this.chart.series[0].update(val.series[0]);
+      this.$emit('callBack', this.chart);
+      this.chart.setTitle({text:`<div style="padding:10px 20px;border-radius:50%;text-align:center">${val.name}</br>${titleVal}</br><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})
     },
     update:function(val){
       if(val instanceof Object){
         this.chart.update(val)
       }
       return false
-    }
+    },
+
   },
   methods: {
   }

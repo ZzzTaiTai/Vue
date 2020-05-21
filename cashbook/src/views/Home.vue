@@ -4,7 +4,7 @@
     <div id="nav">
       <van-tabs v-model="active" type="card" boder  color='#ffffff' background='#5B5E63' title-active-color='#000000' title-inactive-color="#ffffff">
         <van-tab title="明细" ><bookList :list="newList"></bookList></van-tab>
-        <van-tab title="类别报表"  ><categoryList :list="bookList" :expense="expenseTotal" :income="incomeTotal" @children="changeChildren"></categoryList></van-tab>
+        <van-tab title="类别报表"  ><categoryList :list="bookList" :expense="expenseTotal" :income="incomeTotal" :isChildren="isChildren" @children="changeChildren"></categoryList></van-tab>
         <van-tab title=""></van-tab>
       </van-tabs>
     </div>
