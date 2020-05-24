@@ -1,35 +1,53 @@
 <template>
   <div class="category-List">
     <div class="pieContainer">
-      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal"></chart>
+      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal" :fixedAry='fixedAry'></chart>
     </div>
-    <dl v-for="items in list" :key="items.id">
+    <div class="itemsBox">
+      <h2 class="itemTotal">
+        <span class="iconBox">
+          <i class="iconfont"  :class="fixedAry.data[curIndex].img"></i>
+        </span>
+        <span class="tag">
+          {{ fixedAry.data[curIndex].name }}
+          {{ curScale }}
+        </span>
+        <span class="valTotal" v-if="isChildren">{{fixedAry.data[curIndex].y | numTo2}}</span>
+        <span class="valTotal" v-else>-{{fixedAry.data[curIndex].y | numTo2 }}</span>
+      </h2>
+      <h3 class="itemInfo">购物消费排行榜</h3>
+      <div class="items">
+        <ul>
+          <li v-for="(item,index) in fixedAry.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i>{{item.name}} <span class="itemMoney">{{item.money}}</span></li>
+        </ul>
+      </div>
+    </div>
+    <!-- <dl v-for="items in fixedAry.data[curIndex].data" :key="items.id">
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
-          支出:{{ items.expenseTotal }}元
-          <span class>收入:{{ items.icomeTotal }}元</span>
+          支出:{{ items.money }}元
+      
         </span>
-      </dt>
-      <dd v-for="list in items.data" :key="list.id">
+      </dt> -->
+      <!-- <dd v-for="list in items.data" :key="list.id">
         <span class="iconBox">
           <i class="iconfont" :class="'icon-' + classMap[list.iconNum]"></i>
         </span>
         <span class="info">{{list.name}}--{{items.time}}</span>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
-      </dd>
+      </dd> -->
     </dl>
   </div>
 </template>
 <script>
 import Highcharts from "highcharts";
 import chart from "@/components/chart";
-
 const dataLabelImg = {
-  其他: "qian",
-  购物: "gouwu",
-  一般: "13",
-  qh: "qiehuan"
+  其他: "icon-qian",
+  购物: "icon-gouwu",
+  一般: "icon-13",
+  qh: "icon-qiehuan"
 };
 export default {
   name: "categoryList",
@@ -46,22 +64,26 @@ export default {
     this.fixedAry = this.addData(this.initData(this.list));
     this.options = this.initPie(this.fixedAry);
   },
-  mounted() {},
   computed: {
     pieTitleVal(){
       return this.isChildren ? this.$filters.numFormat(this.income) : this.$filters.numFormat(this.expense)
+    },
+    curScale(){
+      let total = 0;
+      this.fixedAry.data.forEach((item)=>{total += item.y})
+      return (this.fixedAry.data[this.curIndex].y / total).toFixed(1)+"%"
     }
   },
   watch: {
     list:{         
       hanlder(){
         this.fixedAry = this.addData(this.initData(this.list));
-        this.options = this.initPie(this.fixedAry);
       },
       deep:true
     },
     isChildren(){
-      this.options = this.initPie(this.fixedAry);
+      this.curIndex = 0;
+      this.fixedAry = this.addData(this.initData(this.list));
     },
   },
   methods: { 
@@ -76,14 +98,14 @@ export default {
             name: item.typeName,
             y: 0,
             img: dataLabelImg[item.typeName],
-            data:[]
+            data:[],
+            sliced:true,
           });
         }
         isNum = ary.findIndex(newItem => newItem.name === item.typeName);
         ary[isNum].y += item.money;
         ary[isNum].data.push(item);
       });
-      console.log(ary)
       return ary
     },
     addData(data) {
@@ -107,15 +129,10 @@ export default {
           ary[1].data.push(item);
         }
       });
-      console.log(ary[num])
       return ary[num];
     },
-    // init(){
-    //   return this.initPie(this.addData(this.initData(this.list.data)))
-    // },
     initPie(objData) {
       let that = this,
-        newData = JSON.parse(JSON.stringify(objData)),
         angle = 0;
       const colorMap = ['#FFEC8B','#F4A460','#66CD00']
       let obj = {
@@ -132,7 +149,7 @@ export default {
         },
         title: {
           floating: true,
-          text: `<div class="pieTitle">${objData.name}</br><p>${that.pieTitleVal}</p><i style="font-size:30px;font-weight:700" class='icon iconfont icon-${dataLabelImg.qh}'></i></div>`,
+          text: `<div class="pieTitle">${objData.name}</br><p>${that.pieTitleVal}</p><i style="font-size:30px;font-weight:700" class='icon iconfont ${dataLabelImg.qh}'></i></div>`,
           style: {
             color: "#666",
             fontSize: "22px"
@@ -149,11 +166,12 @@ export default {
             point: {
               events: {
                 click: function(e) {
-                  this.curIndex = this.index;
+                  that.curIndex = this.index;
                   that.changeAngle(this);
                 }
               }
             },
+            slicedOffset: 2,
             dataLabels: {
               distance: "-19%",
               useHTML: true,
@@ -214,12 +232,65 @@ export default {
   height: calc(100vh - 185px);
   min-height: 485px;
   overflow-y: auto;
-  .pieTitle{
+  .pieContainer{
+    .pieTitle{
       padding:10px 20px;
       border-radius:50%;
       text-align:center;
       cursor: pointer;
       p{color:#000;}
+    }
   }
+  .itemsBox{
+    
+    .itemTotal{
+      display: flex;
+      height: 50px;
+      margin-left:10px;
+      padding:0 10px;
+      font-size: 18px;
+      color: rgba(0,0,0,.8);
+      align-items: center;
+      justify-content: center;
+      @include border-1px(#8a8a8a);
+      .iconBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #8cc94d;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        .iconfont {
+          color: #fff;
+          font-size: 24px;
+        }
+    }
+    .tag{
+      flex:1;
+      padding:0 10px;
+    }
+    .valTotal{
+      color: rgba(0,0,0,.6);
+      text-align: right;
+    }
+    .itemInfo{
+      font-size: 16px;
+    }
+    .items{
+      li{
+        display: flex;
+        @include border-1px(#8a8a8a);
+        .itemMoney{
+          text-align: right;
+        }
+      }
+    }
+    }
+    
+  }
+  
+      
+  
 }
 </style>

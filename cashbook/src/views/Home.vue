@@ -338,7 +338,6 @@ export default {
   },
   watch: {
      getDateObj(curVal,oldVal){
-       debugger
       let lastVal = this.getLastMonth(curVal);
       this.newList = this._recombination(this.satisfy(curVal,oldVal));
       this.lastList = this._recombination(this.satisfy(lastVal));
@@ -384,7 +383,6 @@ export default {
     satisfy(newObj,oldObj) {
       let year = newObj.year,
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
-        
         list = this.bookList.data.filter(list => {
           return list.time.indexOf(year + "-" + month) >= 0;
         });
@@ -434,13 +432,15 @@ export default {
       this.isChildren = !this.isChildren
     }
   },
+  mounted() {
+  },
 }
 </script>
 <style lang="scss" scope>
   .van-tabs__nav--card,.van-tabs__nav--card .van-tab{
     margin:0!important;
     border:0!important;
-  }
+  } 
 
 </style>
   

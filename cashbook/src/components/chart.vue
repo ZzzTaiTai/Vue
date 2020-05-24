@@ -13,19 +13,16 @@ export default {
       id:'pieChart'
     }
   },
-  props:['options','update','titleVal'],
+  props:['options','update','titleVal','fixedAry'],
   mounted() {
       this.chart = HighCharts.chart(this.id,this.options);
       this.$emit('callBack', this.chart);
   },
   watch: {
-    options:{
-      handler(val){
-        this.chart.series[0].update(val.series[0]);
-        this.$emit('callBack', this.chart);
-        this.chart.setTitle({text:`<div class="pieTitle">${val.series[0].name}</br><p>${this.titleVal}</p><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})
-      },
-      immediate:true
+    fixedAry:function(val){
+      this.chart.series[0].update(val);
+      this.$emit('callBack', this.chart);
+      this.chart.setTitle({text:`<div class="pieTitle">${val.name}</br><p>${this.titleVal}</p><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})
     },
     update:function(val){
       if(val instanceof Object){

@@ -27,6 +27,9 @@ const mainfilters ={
     IntegerFormat:function(value){
         if(value <= 0)return value;
         return "+"+value
+    },
+    numTo2:function(value){
+        return value.toFixed(2);
     }
 }
 export default mainfilters
