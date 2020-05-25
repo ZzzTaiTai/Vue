@@ -5,8 +5,8 @@
       <dt>
         <span class="time">{{ items.time | dateFormat }}</span>
         <span>
-          支出:{{ items.expenseTotal }}元
-          <span class>收入:{{ items.incomeTotal }}元</span>
+          支出:{{ items.expenseTotal }}
+          <span class>收入:{{ items.incomeTotal }}</span>
         </span>
       </dt>
       <dd v-for="list in items.data" :key="list.id">
@@ -135,8 +135,8 @@ export default {
         align-items: center;
         justify-content: center;
         background: #8cc94d;
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         .iconfont {
           color: #fff;
@@ -154,7 +154,7 @@ export default {
       .info {
         flex: 2;
         padding: 0 50px 0 10px;
-        font-size: 18px;
+        font-size: 16px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

@@ -12,13 +12,14 @@
           {{ fixedAry.data[curIndex].name }}
           {{ curScale }}
         </span>
-        <span class="valTotal" v-if="isChildren">{{fixedAry.data[curIndex].y | numTo2}}</span>
+        <span class="valTotal" v-if="isChildren">{{fixedAry.data[curIndex].y | numTo2 | IntegerFormat}}</span>
         <span class="valTotal" v-else>-{{fixedAry.data[curIndex].y | numTo2 }}</span>
       </h2>
-      <h3 class="itemInfo">购物消费排行榜</h3>
+      <h3 class="itemInfo"  v-if="isChildren">{{fixedAry.data[curIndex].name}}收入排行榜</h3>
+      <h3 class="itemInfo" v-else>{{fixedAry.data[curIndex].name}}消费排行榜</h3>
       <div class="items">
         <ul>
-          <li v-for="(item,index) in fixedAry.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i>{{item.name}} <span class="itemMoney">{{item.money}}</span></li>
+          <li v-for="(item,index) in fixedAry.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i><span class="itemName">{{item.name}}</span><span class="itemMoney">{{item.money | IntegerFormat}}</span></li>
         </ul>
       </div>
     </div>
@@ -49,6 +50,7 @@ const dataLabelImg = {
   一般: "icon-13",
   qh: "icon-qiehuan"
 };
+const colorMap = ['#F4A460','#FFEC8B','#66CD00']
 export default {
   name: "categoryList",
   data() {
@@ -134,12 +136,11 @@ export default {
     initPie(objData) {
       let that = this,
         angle = 0;
-      const colorMap = ['#FFEC8B','#F4A460','#66CD00']
+      
       let obj = {
         chart: {
           type: "pie",
           events: {
-            //点击圆饼中心空白处切换数据
             click: function(event) {
               if (event.target.nodeName !== "rect") {
                 that.$emit("children");  
@@ -179,7 +180,7 @@ export default {
                 color: "#ffffff"
               },
               formatter: function() {
-                return "<i class='iconfont icon-" + this.point.img + "'></i>";
+                return "<i class='iconfont " + this.point.img + "'></i>";
               }
             }
           }
@@ -242,17 +243,16 @@ export default {
     }
   }
   .itemsBox{
-    
+    padding:0 10px;
     .itemTotal{
       display: flex;
-      height: 50px;
-      margin-left:10px;
-      padding:0 10px;
+      height: 60px;
+      padding:0 5px;
       font-size: 18px;
       color: rgba(0,0,0,.8);
       align-items: center;
       justify-content: center;
-      @include border-1px(#8a8a8a);
+      @include border-1px(#a0a0a0);
       .iconBox {
         display: flex;
         align-items: center;
@@ -265,27 +265,44 @@ export default {
           color: #fff;
           font-size: 24px;
         }
-    }
-    .tag{
+      }
+      .tag{
       flex:1;
       padding:0 10px;
-    }
-    .valTotal{
-      color: rgba(0,0,0,.6);
-      text-align: right;
-    }
-    .itemInfo{
+      }
+      .valTotal{
+        color: rgba(0,0,0,.6);
+        text-align: right;
+      }
+  }
+  .itemInfo{
+      padding:20px 0 10px;
+      color:#8a8a8a;
       font-size: 16px;
     }
     .items{
       li{
         display: flex;
-        @include border-1px(#8a8a8a);
+        font-size: 18px;
+        height: 60px;
+        align-items:center;
+        @include border-1px(#a0a0a0);
+        .itemName{
+          flex:1;
+          padding:0 50px 0 5px;
+          @include oneEllipsis;
+        }
         .itemMoney{
+          font-size: 12px;
+          color:#a0a0a0;
           text-align: right;
         }
+        &:nth-child(-n+3){
+          .num{
+            color:#F4A460;
+          }
+        }
       }
-    }
     }
     
   }

@@ -15,6 +15,7 @@ export default {
   },
   props:['options','update','titleVal','fixedAry'],
   mounted() {
+    // console.log(HighCharts)
       this.chart = HighCharts.chart(this.id,this.options);
       this.$emit('callBack', this.chart);
   },
