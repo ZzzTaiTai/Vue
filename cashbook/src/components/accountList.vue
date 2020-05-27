@@ -1,17 +1,20 @@
 <template>
   <div class="account-List">
     <div class="itemsBox">
-      <div class="items">
         <ul>
-          <li v-for="(item,index) in fixedAry.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i><span class="itemName">{{item.name}}</span><span class="itemMoney">{{item.money | IntegerFormat}}</span></li>
+          <li v-for="item in newList">
+           <em class="icoBox"><i class="iconfont icon-gsyh"></i></em>
+          <span class="itemName">{{item.name}}</span>
+          <span class="itemMoney">
+            <p>-{{item.expenseTotal}}</p>
+            <p>{{item.incomeTotal | IntegerFormat}}</p>
+          </span>
+          </li>
         </ul>
-      </div>
     </div>
   </div>
 </template>
 <script>
-import Highcharts from "highcharts";
-import chart from "@/components/chart";
 const dataLabelImg = {
   其他: "icon-qian",
   购物: "icon-gouwu",
@@ -19,22 +22,54 @@ const dataLabelImg = {
   qh: "icon-qiehuan"
 };
 export default {
-  name: "categoryList",
+  name: "accountList",
   data() {
     return {
+      newList:[]
     };           
   },
-  props: [],
+  props: ['list'],
   created() {
-  
+    this.newList = this._recombination(this.list);
   },
   computed: {
     
   },
   watch: {
-   
+    list(){
+      this.newList = this._recombination(this.list);
+    }
   },
   methods: { 
+    _recombination(data){
+      let ary = [];
+      data.forEach((item)=>{
+        let num = ary.findIndex((newItem) => newItem.name === item.account.name);
+        if(num === -1){
+            let  expenseTotal = 0,
+                    incomeTotal = 0;
+            if (item.money < 0) {
+              expenseTotal += Math.abs(item.money);
+            } else {
+              incomeTotal += parseInt(item.money);
+            }
+          ary.push({
+            name:item.account.name,
+            data:[item],
+            expenseTotal: expenseTotal,
+            incomeTotal: incomeTotal,
+            })
+        }else{
+          if (item.money < 0) {
+              ary[num].expenseTotal += Math.abs(item.money);
+            } else {
+              ary[num].incomeTotal += parseInt(item.money);
+            }
+          ary[num].data.push(item)
+        }
+      })
+      return ary
+    }
   }
 };
 </script>
@@ -43,82 +78,67 @@ export default {
 <style scope lang="scss">
 @import "../common/css/mixin.scss";
 
-.category-List {
-  height: calc(100vh - 185px);
-  min-height: 485px;
-  overflow-y: auto;
-  .pieContainer{
-    .pieTitle{
-      padding:10px 20px;
-      border-radius:50%;
-      text-align:center;
-      cursor: pointer;
-      p{color:#000;}
-    }
-  }
+.account-List {
   .itemsBox{
     padding:0 10px;
-    .itemTotal{
-      display: flex;
-      height: 60px;
-      padding:0 5px;
-      font-size: 18px;
-      color: rgba(0,0,0,.8);
-      align-items: center;
-      justify-content: center;
-      @include border-1px(#a0a0a0);
-      .iconBox {
+      li{
+        display: flex;
+        height: 100px;
+        font-size: 18px;
+        color: rgba(0,0,0,.8);
+        align-items: center;
+        @include border-1px(#a0a0a0);
+      }
+     
+      .icoBox {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #8cc94d;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        .iconfont {
-          color: #fff;
-          font-size: 24px;
+        background: rgb(17,142,234);
+        width: 65px;
+        height: 65px;
+        &.jsyh{
+          i{
+
+          }
         }
-      }
-      .tag{
-      flex:1;
-      padding:0 10px;
-      }
-      .valTotal{
-        color: rgba(0,0,0,.6);
-        text-align: right;
-      }
-  }
-  .itemInfo{
-      padding:20px 0 10px;
-      color:#8a8a8a;
-      font-size: 16px;
-    }
-    .items{
-      li{
-        display: flex;
-        font-size: 18px;
-        height: 60px;
-        align-items:center;
-        @include border-1px(#a0a0a0);
-        .itemName{
-          flex:1;
-          padding:0 50px 0 5px;
-          @include oneEllipsis;
-        }
-        .itemMoney{
-          font-size: 12px;
-          color:#a0a0a0;
-          text-align: right;
-        }
-        &:nth-child(-n+3){
-          .num{
-            color:#F4A460;
+        &.gsyh{
+           i{
+              color:rgb(221,14,28)
+           }
+          }
+        i{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width:35px;
+          height:35px;
+          background: #fff;
+          border-radius:50%;
+          font-size:24px;
+          &.icon-gsyh{
+            // color:rgb(221,14,28)
+          }
+          &.icon-jsyh{
+
           }
         }
       }
-    }
-    
+      .itemName{
+        flex:1;
+        padding:0 10px;
+      }
+      .itemMoney{
+        color: rgba(0,0,0,.6);
+        text-align: right;
+        p{
+          margin-top:10px;
+          overflow: hidden;
+          &:first-child{
+            color: rgba(0,0,0,.9);
+          }
+        }
+      }
   }
   
       
