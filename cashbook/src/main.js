@@ -6,8 +6,8 @@ import axios from 'axios'
 import mainfilters from './common/js/filters.js'
 import 'vant/lib/index.css';
 // import { showLoading, hideLoading } from './common/js/loading';
-import { Icon} from 'element-ui'
-import { Tab, Tabs, Loading, Toast, Button} from 'vant'
+// import { Icon} from 'element-ui'
+import { Tab, Tabs, Loading, Toast, Button, Form, Icon, Field } from 'vant'
 
 // import 'element-ui/lib/theme-chalk/index.css'
 
@@ -17,11 +17,12 @@ import '../src/common/css/iconfont.css'
 import '../src/common/js/rem'
 Vue.config.productionTip = false
 
-Vue.use(Icon)
-Vue.use(Tab).use(Tabs).use(Loading).use(Button);
+// Vue.use(Icon)
+Vue.use(Tab).use(Tabs).use(Loading).use(Button).use(Form).use(Icon).use(Field);
 Vue.prototype.$axios = axios;
 Vue.prototype.$toast = Toast;
 Vue.prototype.$filters = mainfilters;
+
 for(let key in mainfilters){
   Vue.filter(key,mainfilters[key]);
 }
