@@ -73,6 +73,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -87,6 +88,7 @@ export default {
           typeName: "购物",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -101,6 +103,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -115,6 +118,7 @@ export default {
           typeName: "一般",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -129,6 +133,7 @@ export default {
           typeName: "其他",
           account: {
             name: "中国工商银行",
+            bankType:"ICBC",
             isBank: true,
             info: "储蓄卡",
             bankNum: "2541"
@@ -143,6 +148,7 @@ export default {
           typeName: "购物",
           account: {
             name: "中国工商银行",
+            bankType:"ICBC",
             isBank: true,
             info: "储蓄卡",
             bankNum: "2541"
@@ -157,6 +163,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -171,6 +178,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -185,6 +193,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -199,6 +208,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -213,6 +223,7 @@ export default {
           typeName: "购物",
           account: {
             name: "中国银行",
+            bankType:"BOC",
             isBank: true,
             info: "信用卡",
             bankNum: "7222"
@@ -227,6 +238,7 @@ export default {
           typeName: "购物",
           account: {
             name: "中国银行",
+            bankType:"BOC",
             isBank: true,
             info: "信用卡",
             bankNum: "7222"
@@ -241,6 +253,7 @@ export default {
           typeName: "一般",
           account: {
             name: "中国银行",
+            bankType:"BOC",
             isBank: true,
             info: "信用卡",
             bankNum: "7222"
@@ -255,6 +268,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -269,6 +283,7 @@ export default {
           typeName: "购物",
           account: {
             name: "花呗",
+            bankType:"HB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -283,6 +298,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额宝",
+            bankType:"YEB",
             isBank: false,
             info: "",
             bankNum: ""
@@ -296,7 +312,8 @@ export default {
           iconNum: 5,
           typeName: "一般",
           account: {
-            name: "建设银行",
+            name: "中国建设银行",
+            bankType:"CCB",
             isBank: false,
             info: "信用卡",
             bankNum: "2555"
@@ -311,6 +328,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -325,6 +343,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -339,6 +358,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -352,7 +372,8 @@ export default {
           iconNum: 3,
           typeName: "购物",
           account: {
-            name: "建设银行",
+            name: "中国建设银行",
+            bankType:"CCB",
             isBank: true,
             info: "信用卡",
             bankNum: "2555"
@@ -367,6 +388,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -381,6 +403,7 @@ export default {
           typeName: "其他",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -395,6 +418,7 @@ export default {
           typeName: "购物",
           account: {
             name: "余额",
+            bankType:"YE",
             isBank: false,
             info: "",
             bankNum: ""
@@ -409,6 +433,7 @@ export default {
           typeName: "购物",
           account: {
             name: "花呗",
+            bankType:"HB",
             isBank: false,
             info: "",
             bankNum: ""

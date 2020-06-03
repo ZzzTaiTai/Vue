@@ -3,7 +3,7 @@
     <div class="itemsBox">
         <ul>
           <li v-for="item in newList">
-           <em class="icoBox"><i class="iconfont icon-gsyh"></i></em>
+           <em class="icoBox"><i class="iconfont"  :class="dataImg[item.data[0].account.bankType].icon" :style="dataImg[item.data[0].account.bankType]"></i></em>
           <span class="itemName">{{item.name}}</span>
           <span class="itemMoney">
             <p>-{{item.expenseTotal}}</p>
@@ -15,18 +15,46 @@
   </div>
 </template>
 <script>
-const dataLabelImg = {
-  其他: "icon-qian",
-  购物: "icon-gouwu",
-  一般: "icon-13",
-  qh: "icon-qiehuan"
-};
 export default {
   name: "accountList",
   data() {
     return {
-      newList:[]
-    };           
+      newList:[],
+      dataImg:{
+        "ICBC": {
+          icon:"icon-gsyh",
+          color:"#e64343"
+        },
+        "CCB": {
+          icon:"icon-jsyh",
+          color:"#1e2e8c"
+        },
+        "ABC": {
+          icon:"icon-nyyh",
+          color:"#060"
+        },
+        "BOC": {
+          icon:"icon-zgyh",
+          color:"#e64343"
+        },
+        "CMB": {
+          icon:"icon-zsyh",
+          color:"#e64343"
+        },
+        "HB": {
+          icon:"icon-zhifubao",
+          color:"#1296db"
+        },
+        "YEB": {
+          icon:"icon-zhifubao",
+          color:"#1296db"
+        },
+        "YE": {
+          icon:"icon-zhifubao",
+          color:"#1296db"
+        }
+      }           
+    }
   },
   props: ['list'],
   created() {
