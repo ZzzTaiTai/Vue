@@ -78,7 +78,7 @@ export default {
   },
   watch: {
     list:{         
-      hanlder(){
+      handler(){
         this.fixedAry = this.addData(this.initData(this.list));
       },
       deep:true
