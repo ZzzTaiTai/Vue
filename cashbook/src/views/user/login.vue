@@ -55,8 +55,18 @@ export default {
 <style lang="scss" scope>
     .login{
         .loginBox{
-            padding:50px;
+            position: relative;
+            height: calc(100vh - 50px);
+            .van-form{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -60%);
+                width: 80%;
+            }
             .infos{
+                margin-top: 10px;
+                text-align: right;
                 font-size: 12px;
                 color: rgba(0,0,0,.5);
             }

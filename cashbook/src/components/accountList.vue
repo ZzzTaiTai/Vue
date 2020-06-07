@@ -117,7 +117,6 @@ export default {
         align-items: center;
         @include border-1px(#a0a0a0);
       }
-     
       .icoBox {
         display: flex;
         align-items: center;
@@ -125,16 +124,6 @@ export default {
         background: rgb(17,142,234);
         width: 65px;
         height: 65px;
-        &.jsyh{
-          i{
-
-          }
-        }
-        &.gsyh{
-           i{
-              color:rgb(221,14,28)
-           }
-          }
         i{
           display: flex;
           align-items: center;
@@ -144,12 +133,6 @@ export default {
           background: #fff;
           border-radius:50%;
           font-size:24px;
-          &.icon-gsyh{
-            // color:rgb(221,14,28)
-          }
-          &.icon-jsyh{
-
-          }
         }
       }
       .itemName{
