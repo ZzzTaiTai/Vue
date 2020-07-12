@@ -15,6 +15,8 @@ import { Tab, Tabs, Loading, Toast, Button, Form, Icon, Field } from 'vant'
 import '../src/common/css/iconfont.css'
 import '../src/common/css/iconfont.css'
 import '../src/common/js/rem'
+
+if (process.env.NODE_ENV !== 'production') require('./common/mock/user')
 Vue.config.productionTip = false
 
 // Vue.use(Icon)

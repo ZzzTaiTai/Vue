@@ -50,7 +50,7 @@ export default {
       "xuexi",
       "qian"
     ];
-    this.submitVal();
+    // this.submitVal();
     // this.$emit('changeTit',this.headerTit[0],this.headerTit[1]);
     // this.loading = true;
     // setTimeout(function(){
@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     submitVal(){
+      
       let expense = 0;
       let income = 0;
       this.list.data.forEach( item => {

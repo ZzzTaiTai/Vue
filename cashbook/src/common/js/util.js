@@ -1,63 +1,23 @@
 import Vue from 'vue';
-export function cartAdd(food){
-    if(!food.count){
-        Vue.set(food, 'count', 1);
-      }else{
-        food.count++;
-      }
+function rangedate(min,max) {
+  var min = min,
+    max = max,
+    days = (new Date(max) - new Date(min))/1000/60/60/24,
+    i = 0,
+    len = Math.floor(days),
+    dates = [];
+  for(;i<len;i++){
+    dates.push(format(new Date(min).getTime()+1000*60*60*24*i));
+  } 
+  return dates[Math.floor(Math.random()*len)]; 
 }
 
-export function cartDecrease(food){
-    food.count--;
+function format(date) {
+  var dateString = new Date(date),
+      month = (dateString.getMonth()+1)<10 ? '0'+(dateString.getMonth()+1): (dateString.getMonth()+1),
+      day = dateString.getDate()<10 ? '0'+dateString.getDate() : dateString.getDate();
+  return dateString.getFullYear()+'-'+month+'-'+day
 }
-
-
-/**
- * 存储收藏
- * @return String
-**/
-export function saveToLocal(id, key, value) {
-  let seller = window.localStorage.seller;
-  if(!seller){
-    seller = {};
-    seller[id] = {};
-  }else{
-    seller = JSON.parse(seller);
-    if(!seller[id]){
-      seller[id] = {};
-    }
-  }
-  seller[id][key] = value;
-  window.localStorage.setItem(key,seller);
-}
-
-/**
- * 读取存储收藏
- * @return String
-**/
-export function loadFromlLocal(id, key, define) {
-  let seller = window.localStorage.seller;
-  let sellerId = JSON.parse(seller)[id]
-  if(!seller && !sellerId){
-    return define
-  }
-  let ref = sellerId[key];
-  return ref
-}
-
-/**
- * 解析url参数
- * @return String
-**/
-export function urlParse(variable){
-  let url =window.location.search;
-  let query = url.substring(1);
-  let vars = query.split("&");
-       for (let i=0;i<vars.length;i++) {
-              let pair = vars[i].split("=");
-              if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
-}
+export { rangedate } 
 
  

@@ -62,6 +62,7 @@ export default {
     accountList
   },
   created() {
+    let that = this;
     this.list = {
       data: [
         {
@@ -455,9 +456,16 @@ export default {
         children: []
       }
     ];
-    this.bookList = this.list;
-    this.bookList.data.sort(this.arraySort);
-    this.$store.commit("newDate", this.dateObj(this.bookList));
+    this.$axios
+      .get('/data/getData')
+      .then( res => {
+        that.bookList = res.data
+        that.bookList.data.sort(this.arraySort);
+        that.$store.commit("newDate", that.dateObj(that.bookList));
+      })
+    // this.bookList = this.list;
+    // this.bookList.data.sort(this.arraySort);
+    // this.$store.commit("newDate", this.dateObj(this.bookList));
     // this.$axios
     //   .get("https://easy-mock.com/mock/5e33d958efe660215074f675/cash/bookLists")
     //   .then(response => {
@@ -466,6 +474,7 @@ export default {
     //   .catch(error => {
     //     console.log(error);
     //   });
+
   },
   computed: {
     ...mapGetters(["getDateObj"]),

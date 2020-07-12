@@ -19,7 +19,7 @@
                     :rules="[{ required: true, message: '请填写密码' }]"
                 />
                 <div style="margin: 16px;">
-                    <van-button round block type="info" native-type="submit">
+                    <van-button round block type="info" native-type="submit" @click="onSubmit">
                     登录
                     </van-button>
                     <p class="infos">没有账号?请点击<router-link to="regist">注册</router-link></p>
@@ -46,7 +46,15 @@ export default {
     },
     methods: {
         onSubmit(values) {
-            console.log('submit', values);
+            let data = {
+                username:this.username,
+                password:this.password
+            }
+           this.$axios
+           .post('/user/login',data)
+           .then( res => {
+            //    if(res)
+           })
         },
     },
 }
