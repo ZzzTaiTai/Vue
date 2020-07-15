@@ -25,7 +25,7 @@
     </div>
     <!-- <dl v-for="items in fixedAry.data[curIndex].data" :key="items.id">
       <dt>
-        <span class="time">{{ items.time | dateFormat }}</span>
+        <span class="time">{{ items.time | weekFormat }}</span>
         <span>
           支出:{{ items.money }}元
       
@@ -37,17 +37,17 @@
         </span>
         <span class="info">{{list.name}}--{{items.time}}</span>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
-      </dd> -->
-    </dl>
+      </dd> 
+     </dl> -->
   </div>
 </template>
 <script>
 import Highcharts from "highcharts";
 import chart from "@/components/chart";
 const dataLabelImg = {
-  其他: "icon-qian",
+  其他: "icon-gongzi",
   购物: "icon-gouwu",
-  一般: "icon-13",
+  一般: "icon-licai",
   qh: "icon-qiehuan"
 };
 const colorMap = ['#F4A460','#FFEC8B','#66CD00']
@@ -205,17 +205,25 @@ export default {
       };
     },
     calculation(objData) {
+      // console.log(objData)
       const startAngle = 180,
         angle = 360;
       let percentage = objData.percentage,
-        newAngle = objData.index === 0 ? 1 : -1;
-      //图表初始化回调传入的是charts
+      newAngle = null,
+      frontView = 0;
+        //图表初始化回调传入的是charts
       if (!percentage) {
         percentage = objData.series[0].data[0].percentage;
-        newAngle = 1;
       }
-      //得出当前这一项圆饼在图表的占比的一半,目前是支持两项
-      newAngle = newAngle * (startAngle - (angle * percentage * 0.01) / 2);
+      //当选择的选项不是第一项则需要添加前面选项的角度占比
+      if(objData.index !== 0){
+        let seriesData = objData.series.data;
+        for(let i =0;i<objData.index;i++){
+          frontView += seriesData[i].percentage * angle * 0.01;
+        }
+      }
+      //得出当前这一项圆饼在图表的占比的一半
+      newAngle = startAngle - (angle * percentage * 0.01) / 2  - frontView
       return newAngle;
     }
   },

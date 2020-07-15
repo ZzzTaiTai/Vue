@@ -12,5 +12,13 @@ lintOnSave: true,
         ]
       }
     }
-  }
+  },
+  devServer: {
+    host: '127.0.0.1',
+    // proxy:{
+    //   '/':{
+    //     target:'http://localhost:3001',
+    //   }
+    // }
+  } 
 };

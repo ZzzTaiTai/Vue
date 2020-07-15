@@ -28,7 +28,14 @@
         </van-tab>
       </van-tabs>
     </div>
-    <addCash></addCash>
+    <div class="addBtn">
+      <a href="javascript:;" class="add-btn"  @click="showCash()">
+        <i class="el-icon-plus"></i>
+        <h1 class="title">记一笔</h1>
+    </a>
+    </div>
+    <addCash :isAdd="isAdd" @showAdd="showCash()"></addCash>
+    
   </div>
 </template>
 
@@ -47,6 +54,7 @@ export default {
     return {
       active: "0",
       isChildren: false,
+      isAdd:false,
       bookList: [],
       newList: [],
       lastList: [],
@@ -70,7 +78,7 @@ export default {
           name: "余额宝",
           time: "2020-01-30 14:21:20",
           money: 8432.64,
-          iconNum: 6,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额宝",
@@ -85,7 +93,7 @@ export default {
           name: "付款给我的朋友",
           time: "2020-01-31 14:30:20",
           money: -2558.12,
-          iconNum: 8,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "余额",
@@ -100,7 +108,7 @@ export default {
           name: "一个朋友向你转账",
           time: "2020-01-29 14:24:20",
           money: 222.48,
-          iconNum: 7,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额",
@@ -145,7 +153,7 @@ export default {
           name: "京东购物海尔洗衣机",
           time: "2020-01-29 08:20:21",
           money: -3449.04,
-          iconNum: 5,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "中国工商银行",
@@ -160,7 +168,7 @@ export default {
           name: "余额宝",
           time: "2020-01-31 09:20:21",
           money: 1166.05,
-          iconNum: 2,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额宝",
@@ -175,7 +183,7 @@ export default {
           name: "余额宝",
           time: "2020-01-30 13:22:20",
           money: 1212.26,
-          iconNum: 5,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额宝",
@@ -205,7 +213,7 @@ export default {
           name: "余额宝",
           time: "2020-02-01 13:22:20",
           money: 2723.04,
-          iconNum: 3,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额宝",
@@ -220,7 +228,7 @@ export default {
           name: "购买了一台电脑",
           time: "2020-01-30 23:24:20",
           money: -3348,
-          iconNum: 4,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "中国银行",
@@ -235,7 +243,7 @@ export default {
           name: "购买了一台手机",
           time: "2020-01-29 13:22:20",
           money: -6718.55,
-          iconNum: 1,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "中国银行",
@@ -265,7 +273,7 @@ export default {
           name: "余额宝",
           time: "2020-01-30 13:22:20",
           money: 7546.81,
-          iconNum: 2,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额宝",
@@ -280,7 +288,7 @@ export default {
           name: "余额宝",
           time: "2020-01-29 15:24:20",
           money: -2552.55,
-          iconNum: 5,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "花呗",
@@ -310,7 +318,7 @@ export default {
           name: "购物了一台电视",
           time: "2020-02-03 16:24:20",
           money: -3449,
-          iconNum: 5,
+          iconNum: 3,
           typeName: "一般",
           account: {
             name: "中国建设银行",
@@ -325,7 +333,7 @@ export default {
           name: "余额",
           time: "2020-02-02 13:22:20",
           money: 8166,
-          iconNum: 2,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额",
@@ -340,7 +348,7 @@ export default {
           name: "余额",
           time: "2020-02-02 14:23:20",
           money: 9212.26,
-          iconNum: 5,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额",
@@ -355,7 +363,7 @@ export default {
           name: "余额",
           time: "2020-02-03 13:24:30",
           money: 4839.26,
-          iconNum: 4,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额",
@@ -370,7 +378,7 @@ export default {
           name: "余额宝",
           time: "2020-02-02 13:25:24",
           money: -2723.04,
-          iconNum: 3,
+          iconNum: 1,
           typeName: "购物",
           account: {
             name: "中国建设银行",
@@ -385,7 +393,7 @@ export default {
           name: "余额",
           time: "2020-02-02 18:24:20",
           money: 8348.58,
-          iconNum: 4,
+          iconNum: 1,
           typeName: "其他",
           account: {
             name: "余额",
@@ -415,7 +423,7 @@ export default {
           name: "吃了一顿饭",
           time: "2020-02-02 13:22:21",
           money: -160,
-          iconNum: 3,
+          iconNum: 2,
           typeName: "购物",
           account: {
             name: "余额",
@@ -430,7 +438,7 @@ export default {
           name: "淘宝购物",
           time: "2020-02-01 13:22:20",
           money: -546.81,
-          iconNum: 2,
+          iconNum: 3,
           typeName: "购物",
           account: {
             name: "花呗",
@@ -589,6 +597,7 @@ export default {
       let year = newObj.year,
         month = newObj.month < 10 ? "0" + newObj.month : newObj.month,
         list = this.bookList.data.filter(list => {
+         
           return list.time.indexOf(year + "-" + month) >= 0;
         });
       if (list.length == 0 && oldObj) {
@@ -638,6 +647,12 @@ export default {
     changeChildren() {
       if (this.headerTit[this.active].children.length === 0) return;
       this.isChildren = !this.isChildren;
+    },
+    showCash(cur) {
+      this.isAdd = !this.isAdd;
+    },
+    addCash(){
+      // this.
     }
   },
   mounted() {}
@@ -648,6 +663,23 @@ export default {
 .van-tabs__nav--card .van-tab {
   margin: 0 !important;
   border: 0 !important;
+}
+.addBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  background: #ffffff;
+  .title {
+    display: inline-block;
+    font-size: 16px;
+    color: #409eff;
+  }
+  i {
+    display: inline-block;
+    color: #409eff;
+  }
 }
 </style>
   

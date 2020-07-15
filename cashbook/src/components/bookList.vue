@@ -3,7 +3,7 @@
     <Loading v-if="loading"></Loading>
     <dl v-for="items in list.data" >
       <dt>
-        <span class="time">{{ items.time | dateFormat }}</span>
+        <span class="time">{{ items.time | weekFormat }}</span>
         <span>
           支出:{{ items.expenseTotal }}
           <span class>收入:{{ items.incomeTotal }}</span>
@@ -11,7 +11,7 @@
       </dt>
       <dd v-for="list in items.data" :key="list.id">
         <span class="iconBox">
-          <i class="iconfont" :class="'icon-' + classMap[list.iconNum]"></i>
+          <i class="iconfont" :class="'icon-' + classMap[list.iconNum].className"></i>
         </span>
         <span class="info">{{list.name}}--{{items.time}}</span>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
@@ -40,15 +40,31 @@ export default {
   created() {
     let that = this;
     this.classMap = [
-      "fushi",
-      "yundong",
-      "13",
-      "gouwu",
-      "chifancopy-",
-      "meirong",
-      "yiliao",
-      "xuexi",
-      "qian"
+      {"className":"gongzi","name":"一般",},
+      {"className":"canyin","name":"餐饮",},
+      {"className":"gouwu","name":"购物",},
+      {"className":"fushi","name":"服饰",},
+      {"className":"jiaotong","name":"交通",},
+      {"className":"yule","name":"娱乐",},
+      {"className":"shejiao","name":"社交",},
+      {"className":"jujia","name":"居家",},
+      {"className":"tongxun","name":"通讯",},
+      {"className":"lingshi","name":"零食",},
+      {"className":"meirong","name":"美容",},
+      {"className":"yundong","name":"运动",},
+      {"className":"lvxing","name":"旅行",},
+      {"className":"shuma","name":"数码",},
+      {"className":"xuexi","name":"学习",},
+      {"className":"yiliao","name":"医疗",},
+      {"className":"shuji","name":"书籍",},
+      {"className":"chongwu","name":"宠物",},
+      {"className":"caipiao","name":"彩票",},
+      {"className":"qiche","name":"汽车",},
+      {"className":"bangong","name":"办公",},
+      {"className":"zhufang","name":"住房",},
+      {"className":"liwu","name":"礼物",},
+      {"className":"lijin","name":"礼金",},
+      {"className":"licai","name":"理财",}
     ];
     // this.submitVal();
     // this.$emit('changeTit',this.headerTit[0],this.headerTit[1]);

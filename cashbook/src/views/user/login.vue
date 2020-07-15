@@ -2,12 +2,12 @@
     <div class="login">
         <headerNav :title="title"></headerNav>
         <div class="loginBox">
-            <van-form @submit="onSubmit">
+            <van-form  @submit="onSubmit"  @failed="onFailed">
                 <van-field
                     v-model="username"
                     name="用户名"
                     label="用户名"
-                    placeholder="用户名"
+                    placeholder="admin"
                     :rules="[{ required: true, message: '请填写用户名' }]"
                 />
                 <van-field
@@ -15,11 +15,11 @@
                     type="password"
                     name="密码"
                     label="密码"
-                    placeholder="密码"
+                    placeholder="123456"
                     :rules="[{ required: true, message: '请填写密码' }]"
                 />
                 <div style="margin: 16px;">
-                    <van-button round block type="info" native-type="submit" @click="onSubmit">
+                    <van-button round block type="info" native-type="submit">
                     登录
                     </van-button>
                     <p class="infos">没有账号?请点击<router-link to="regist">注册</router-link></p>
@@ -32,6 +32,7 @@
 
 <script>
 import headerNav from "@/components/common/headerNav"
+import { setlocalStorage } from "@/common/js/util"
 export default {
     name:'login',
     data() {
@@ -50,12 +51,22 @@ export default {
                 username:this.username,
                 password:this.password
             }
-           this.$axios
-           .post('/user/login',data)
-           .then( res => {
-            //    if(res)
-           })
+            this.$axios
+            .post('/user/login',data)
+            .then( res => {
+                if(!res.data.success){
+                    this.$toast.fail('密码不正确');
+                }else{
+                    this.$toast.success('登录成功');
+                    setlocalStorage('token',res.data.token);
+                    setlocalStorage('userId',res.data.userId);
+                    this.$router.push(this.$route.query.redirect);
+                }
+            })
         },
+        onFailed(errorInfo) {
+            this.$toast.fail(`${errorInfo.errors[0].message}\n重新登录`);
+        }
     },
 }
 </script>

@@ -13,7 +13,8 @@ const mainfilters ={
             return intPartFormat+floatPart
         }
     },
-    dateFormat:function(value){
+    //转换为2日-星期四
+    weekFormat:function(value){
         let valueDate = new Date(value);
         let weekNum = "日一二三四五六"
         let weekDate = "星期"+weekNum.charAt(valueDate.getDay());
@@ -23,6 +24,12 @@ const mainfilters ={
             return value;
         }
         return valueDay+"-"+weekDate;
+    },
+    //转换为mm-dd
+    pickerFormat:function(value){
+        let month = value.getMonth() + 1;
+        let days = value.getDate();
+        return `${month}-${days}`
     },
     IntegerFormat:function(value){
         if(value <= 0)return value;

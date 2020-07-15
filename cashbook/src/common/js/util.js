@@ -18,6 +18,19 @@ function format(date) {
       day = dateString.getDate()<10 ? '0'+dateString.getDate() : dateString.getDate();
   return dateString.getFullYear()+'-'+month+'-'+day
 }
-export { rangedate } 
+
+function setlocalStorage(name,token) {
+  return localStorage.setItem(name,token)
+}
+
+// function getlocalStorage() {
+//   return localStorage.getItem(name)
+// }
+
+// function removelocalStorage() {
+//   return localStorage.setItem(name,null)
+// }
+
+export { rangedate, setlocalStorage } 
 
  

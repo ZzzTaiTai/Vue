@@ -1,21 +1,29 @@
-import Mock from 'mockjs'
+import Mock, {Random} from 'mockjs'
 import { rangedate } from '../js/util'
 let userInfo = [
-    {id:1,username: 'admin',password: '123456',token:'2020060140101'}
+    {id:1,username: 'admin',password: '123456',token:''}
     // {id:2,username: 'user',password: '123123'}
 ]
+//mock的Random继承随机生成区间时间
+//因直接在mock调用只生成同一天的数据
+Random.extend({
+  randomDate:rangedate
+})
+
 Mock.mock('/data/getData','get',{ //输出数据
        "data|60":[
         {
           // 属性 id 是一个自增数，起始值为 3，每次增 1
         'id|+1': 1,
         'name|1':["余额宝","付款给我的朋友","一个朋友向你转账","某人向你转账","京东购物海尔洗衣机","购买了一台电脑","购买了一台手机"],
-        "time": rangedate('2020-01-01','2020-03-01'),
+        // "time": rangedate('2020-01-01','2020-03-01'),
+        "time":'@randomDate("2020-01-01","2020-03-01")',
         "money|-5000-5000":1,
         "iconNum|1-8": 1,
         "typeName|1": ["其他","购物","一般"],
         "account|1": [
           {
+            cardId:1,
             name: "中国建设银行",
             bankType:"CCB",
             isBank: true,
@@ -23,6 +31,7 @@ Mock.mock('/data/getData','get',{ //输出数据
             bankNum: "2555"
           },
           {
+            cardId:2,
             name: "中国银行",
             bankType:"BOC",
             isBank: true,
@@ -30,6 +39,7 @@ Mock.mock('/data/getData','get',{ //输出数据
             bankNum: "7222"
           },
           {
+            cardId:3,
             name: "中国工商银行",
             bankType:"ICBC",
             isBank: true,
@@ -37,6 +47,7 @@ Mock.mock('/data/getData','get',{ //输出数据
             bankNum: "2541"
           },
           {
+            cardId:4,
             name: "余额",
             bankType:"YE",
             isBank: false,
@@ -44,6 +55,7 @@ Mock.mock('/data/getData','get',{ //输出数据
             bankNum: ""
           }, 
           {
+            cardId:5,
             name: "花呗",
             bankType:"HB",
             isBank: false,
@@ -61,12 +73,18 @@ Mock.mock('/user/login', 'post', (req) => {
   if (username === 'admin' && password === '123456') {
     return {
       success: true,
-      token:userInfo[0].token
+      token:Random.word(10),
+      userId:1
     }
   } else {
     return {
       success: false
     }
   }
+});
+Mock.mock('/user/regist', 'post', (req) => {
+  // eslint-disable-next-line standard/object-curly-even-spacing
+  const { username,password,configPaw } = JSON.parse(req.body)
+  console,log(username,password,configPaw)
 });
   

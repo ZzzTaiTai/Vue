@@ -7,7 +7,7 @@ import mainfilters from './common/js/filters.js'
 import 'vant/lib/index.css';
 // import { showLoading, hideLoading } from './common/js/loading';
 // import { Icon} from 'element-ui'
-import { Tab, Tabs, Loading, Toast, Button, Form, Icon, Field } from 'vant'
+import { Tab, Tabs, Loading, Toast, Button, Form, Icon, Field, Popup, DropdownMenu, DropdownItem, DatetimePicker, Swipe, SwipeItem, NumberKeyboard, Cell, CellGroup  } from 'vant'
 
 // import 'element-ui/lib/theme-chalk/index.css'
 
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') require('./common/mock/user')
 Vue.config.productionTip = false
 
 // Vue.use(Icon)
-Vue.use(Tab).use(Tabs).use(Loading).use(Button).use(Form).use(Icon).use(Field);
+Vue.use(Tab).use(Tabs).use(Loading).use(Button).use(Form).use(Icon).use(Field).use(Popup).use(DropdownMenu).use(DropdownItem).use(DatetimePicker).use(Swipe).use(SwipeItem).use(NumberKeyboard).use(Cell).use(CellGroup);
 Vue.prototype.$axios = axios;
 Vue.prototype.$toast = Toast;
 Vue.prototype.$filters = mainfilters;
@@ -40,7 +40,7 @@ for(let key in mainfilters){
 //   }else{
 //     return intPartFormat+floatPart
 //   }
-// })
+// }
 new Vue({
   router,
   store,
