@@ -13,14 +13,14 @@ export default {
       id:'pieChart'
     }
   },
-  props:['options','update','titleVal','fixedAry'],
+  props:['options','update','titleVal','showList'],
   mounted() {
     // console.log(HighCharts)
       this.chart = HighCharts.chart(this.id,this.options);
       this.$emit('callBack', this.chart);
   },
   watch: {
-    fixedAry:function(val){
+    showList:function(val){
       this.chart.series[0].update(val);
       this.$emit('callBack', this.chart);
       this.chart.setTitle({text:`<div class="pieTitle">${val.name}</br><p>${this.titleVal}</p><i style="font-size:30px;font-weight:700" class="iconfont icon-qiehuan"></i></div>`})

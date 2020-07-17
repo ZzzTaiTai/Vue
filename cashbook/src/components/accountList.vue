@@ -2,9 +2,15 @@
   <div class="account-List">
     <div class="itemsBox">
         <ul>
-          <li v-for="item in newList">
-           <em class="icoBox"><i class="iconfont"  :class="dataImg[item.data[0].account.bankType].icon" :style="dataImg[item.data[0].account.bankType]"></i></em>
-          <span class="itemName">{{item.name}}</span>
+          <li v-for="item in newList" :key="item.id">
+          <div class="infoBox" v-if="item.data[0].account.bankType">
+              <em class="icoBox"><i class="iconfont"  :class="dataImg[item.data[0].account.bankType].icon" :style="dataImg[item.data[0].account.bankType]"></i></em>
+              <span class="itemName">{{item.name}}</span>
+          </div>
+          <div class="infoBox" v-else>
+              <em class="icoBox"><i class="iconfont icon-gongzi"></i></em>
+              <span class="itemName">未分类</span>
+          </div>
           <span class="itemMoney">
             <p>-{{item.expenseTotal}}</p>
             <p>{{item.incomeTotal | IntegerFormat}}</p>
@@ -111,13 +117,17 @@ export default {
     padding:0 10px;
       li{
         display: flex;
+        align-items: center;
+        justify-content: space-between;
         height: 100px;
         font-size: 18px;
         color: rgba(0,0,0,.8);
-        align-items: center;
         @include border-1px(#a0a0a0);
       }
-      .icoBox {
+      .infoBox{
+        display: flex;
+        align-items: center;
+        .icoBox {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -133,6 +143,7 @@ export default {
           background: #fff;
           border-radius:50%;
           font-size:24px;
+          }
         }
       }
       .itemName{

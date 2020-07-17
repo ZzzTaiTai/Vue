@@ -1,25 +1,25 @@
 <template>
   <div class="category-List">
     <div class="pieContainer">
-      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal" :fixedAry='fixedAry'></chart>
+      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal" :showList='showList'></chart>
     </div>
     <div class="itemsBox">
       <h2 class="itemTotal">
         <span class="iconBox">
-          <i class="iconfont"  :class="fixedAry.data[curIndex].img"></i>
+          <i class="iconfont"  :class="showList.data[curIndex].img"></i>
         </span>
         <span class="tag">
-          {{ fixedAry.data[curIndex].name }}
+          {{ showList.data[curIndex].name }}
           {{ curScale }}
         </span>
-        <span class="valTotal" v-if="isChildren">{{fixedAry.data[curIndex].y | numTo2 | IntegerFormat}}</span>
-        <span class="valTotal" v-else>-{{fixedAry.data[curIndex].y | numTo2 }}</span>
+        <span class="valTotal" v-if="isChildren">{{showList.data[curIndex].y | numTo2 | IntegerFormat}}</span>
+        <span class="valTotal" v-else>-{{showList.data[curIndex].y | numTo2 }}</span>
       </h2>
-      <h3 class="itemInfo"  v-if="isChildren">{{fixedAry.data[curIndex].name}}收入排行榜</h3>
-      <h3 class="itemInfo" v-else>{{fixedAry.data[curIndex].name}}消费排行榜</h3>
+      <h3 class="itemInfo"  v-if="isChildren">{{showList.data[curIndex].name}}收入排行榜</h3>
+      <h3 class="itemInfo" v-else>{{showList.data[curIndex].name}}消费排行榜</h3>
       <div class="items">
         <ul>
-          <li v-for="(item,index) in fixedAry.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i><span class="itemName">{{item.name}}</span><span class="itemMoney">{{item.money | IntegerFormat}}</span></li>
+          <li v-for="(item,index) in showList.data[curIndex].data" :key="item.id"><i class="num">{{index+1}}</i><span class="itemName">{{item.name}}</span><span class="itemMoney">{{item.money | IntegerFormat}}</span></li>
         </ul>
       </div>
     </div>
@@ -48,7 +48,6 @@ const dataLabelImg = {
   其他: "icon-gongzi",
   购物: "icon-gouwu",
   一般: "icon-licai",
-  qh: "icon-qiehuan"
 };
 const colorMap = ['#F4A460','#FFEC8B','#66CD00']
 export default {
@@ -64,7 +63,7 @@ export default {
   props: ["list", "expense", "income","isChildren"],
   created() {
     this.fixedAry = this.addData(this.initData(this.list));
-    this.options = this.initPie(this.fixedAry);
+    this.options = this.initPie(this.showList);
   },
   computed: {
     pieTitleVal(){
@@ -72,8 +71,12 @@ export default {
     },
     curScale(){
       let total = 0;
-      this.fixedAry.data.forEach((item)=>{total += item.y})
-      return (this.fixedAry.data[this.curIndex].y / total).toFixed(1)+"%"
+      this.showList.data.forEach((item)=>{total += item.y})
+      return (this.showList.data[this.curIndex].y / total).toFixed(1)+"%"
+    },
+    showList(){
+      this.curIndex = !this.isChildren ?  1 : 0;
+      return this.fixedAry[this.curIndex] //0是支出,1是收入
     }
   },
   watch: {
@@ -82,11 +85,7 @@ export default {
         this.fixedAry = this.addData(this.initData(this.list));
       },
       deep:true
-    },
-    isChildren(){
-      this.curIndex = 0;
-      this.fixedAry = this.addData(this.initData(this.list));
-    },
+    }
   },
   methods: { 
     initData(data) {
@@ -111,8 +110,8 @@ export default {
       return ary
     },
     addData(data) {
-      let num =  !this.isChildren ?  1 : 0, //0是支出,1是收入
-        ary = [
+      // let num =  !this.isChildren ?  1 : 0, 
+        let ary = [
           {
             name: "总收入",
             data: [],
@@ -122,8 +121,9 @@ export default {
             name: "总支出",
             data: [],
             innerSize: "60%"
-          }]
+          }];
       data.forEach(item => {
+        
         if (item.y > 0) {
           ary[0].data.push(item);
         } else {
@@ -131,7 +131,7 @@ export default {
           ary[1].data.push(item);
         }
       });
-      return ary[num];
+      return ary;
     },
     initPie(objData) {
       let that = this,
@@ -214,9 +214,8 @@ export default {
         //图表初始化回调传入的是charts
       if (!percentage) {
         percentage = objData.series[0].data[0].percentage;
-      }
-      //当选择的选项不是第一项则需要添加前面选项的角度占比
-      if(objData.index !== 0){
+      }else if(objData.index !== 0){
+        //当选择的选项不是第一项则需要添加前面选项的角度占比
         let seriesData = objData.series.data;
         for(let i =0;i<objData.index;i++){
           frontView += seriesData[i].percentage * angle * 0.01;

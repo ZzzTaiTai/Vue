@@ -11,7 +11,9 @@
           <span class="unit">月<i class="tri"></i></span>
         </div>
       </div>
-      <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
+      <transition  name="fade" mode="out-in">
+        <selectDate :showDate="showDate" :dateObj="getDateObj" @dateToggle="dateToggle" v-show="showDate"></selectDate>
+      </transition>
       <div class="info" >
         <div class="infoL">
           <h2 class="title">{{headTit[0]}}</h2>
@@ -69,9 +71,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .headers{
+    position: relative;
     background: rgb(38,44,60);
     font-size: 16px;
     color: #ffffff;
+    z-index: 10;
     .head{line-height: 35px;padding:0 15px;}
     .headBox{
     display: flex;
@@ -130,5 +134,10 @@ export default {
     }
   }
 }
-  
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

@@ -1,20 +1,23 @@
 <template>
-  <div class="dateBox">
-    <h3 class="title">选择月份</h3>
-    <div class="date">
-      <div class="yearBox box">
-        <a href="javascript:;" @click="add(curDateObj,'year')">+</a>
-        <p class="yearValue">{{curDateObj.year}}</p>
-        <a href="javascript:;" @click="reduce(curDateObj,'year')">-</a>
+  <div class="date">
+    <div class="dateBox">
+      <h3 class="title">选择月份</h3>
+      <div class="date">
+        <div class="yearBox box">
+          <a href="javascript:;" @click="add(curDateObj,'year')">+</a>
+          <p class="yearValue">{{curDateObj.year}}</p>
+          <a href="javascript:;" @click="reduce(curDateObj,'year')">-</a>
+        </div>
+        <div class="dayBox box">
+          <a href="javascript:;" @click="add(curDateObj,'month')">+</a>
+          <p class="monthValue">{{curDateObj.month}}</p>
+          <a href="javascript:;" @click="reduce(curDateObj,'month')">-</a>
+        </div>
       </div>
-      <div class="dayBox box">
-        <a href="javascript:;" @click="add(curDateObj,'month')">+</a>
-        <p class="monthValue">{{curDateObj.month}}</p>
-        <a href="javascript:;" @click="reduce(curDateObj,'month')">-</a>
-      </div>
-    </div>
       <van-button type="default" @click="cancel">取消</van-button>
       <van-button type="info" @click="confirm">确认</van-button>
+    </div>
+    <div class="maskBg" @click="hideSelect()"></div>
   </div>
 </template>
 
@@ -46,6 +49,7 @@ export default {
     confirm() {
       this.hideSelect();
       this.$store.commit("newDate", this.curDateObj);
+      this.curDateObj = JSON.parse(JSON.stringify(this.dateObj));
     },
     cancel() {
       this.hideSelect();
@@ -84,7 +88,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.dateBox {
+.date{
+  .dateBox {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -121,9 +126,19 @@ export default {
       }
     }
   }
-    .van-button {
-      width: 50%;
-    }
+  .van-button {
+    width: 50%;
+  }
   
+}
+.maskBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 9998;
+  }
 }
 </style>

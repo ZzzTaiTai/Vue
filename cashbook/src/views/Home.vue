@@ -34,7 +34,7 @@
         <h1 class="title">记一笔</h1>
     </a>
     </div>
-    <addCash :isAdd="isAdd" @showAdd="showCash()"></addCash>
+    <addCash :isAdd="isAdd" @showAdd="showCash()" @addCash="addCash"></addCash>
     
   </div>
 </template>
@@ -70,7 +70,7 @@ export default {
     accountList
   },
   created() {
-    let that = this;
+    // let that = this;
     this.list = {
       data: [
         {
@@ -464,13 +464,14 @@ export default {
         children: []
       }
     ];
-    this.$axios
-      .get('/data/getData')
-      .then( res => {
-        that.bookList = res.data
-        that.bookList.data.sort(this.arraySort);
-        that.$store.commit("newDate", that.dateObj(that.bookList));
-      })
+    this.initData();
+    // this.$axios
+    //   .get('/data/getData')
+    //   .then( res => {
+    //     that.bookList = res.data;
+    //     that.bookList.data.sort(this.arraySort);
+    //     that.$store.commit("newDate", that.dateObj(that.bookList));
+    //   })
     // this.bookList = this.list;
     // this.bookList.data.sort(this.arraySort);
     // this.$store.commit("newDate", this.dateObj(this.bookList));
@@ -554,13 +555,32 @@ export default {
   },
   watch: {
     getDateObj(curVal, oldVal) {
-      let lastVal = this.getLastMonth(curVal);
+      // let lastVal = this.getLastMonth(curVal);
       this.newList = this._recombination(this.satisfy(curVal, oldVal));
       // this.lastList = this._recombination(this.satisfy(lastVal));
       this.categoryList = this.satisfy(curVal, oldVal);
+    },
+    bookList:{
+      handler() {
+        this.newList = this._recombination(this.satisfy(this.$store.getters.getDateObj));
+        this.categoryList = this.satisfy(this.$store.getters.getDateObj);
+      },
+      deep:true
     }
   },
   methods: {
+    //请求数据接口
+    initData() {
+      let that = this;
+      this.$axios
+      .get('/data/getData')
+      .then( res => {
+        that.bookList = res.data;
+        that.bookList.data.sort(this.arraySort);
+        that.$store.commit("newDate", that.dateObj(that.bookList));
+      })
+    },
+    //处理请求的数据
     _recombination(ary) {
       let newAry = {
           data: []
@@ -601,7 +621,6 @@ export default {
           return list.time.indexOf(year + "-" + month) >= 0;
         });
       if (list.length == 0 && oldObj) {
-        // this.openMessage();
         this.$store.commit("newDate", oldObj);
       }
       return list;
@@ -651,8 +670,11 @@ export default {
     showCash(cur) {
       this.isAdd = !this.isAdd;
     },
-    addCash(){
-      // this.
+    addCash(obj){
+      this.$toast.success('添加成功');
+      // this.initData();//调用添加接口后重新请求最新的数据
+      this.bookList.data.push(obj)
+      this.bookList.data.sort(this.arraySort);
     }
   },
   mounted() {}
@@ -681,5 +703,6 @@ export default {
     color: #409eff;
   }
 }
+
 </style>
   

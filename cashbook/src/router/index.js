@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+
 import { setlocalStorage } from '../common/js/util'
 Vue.use(VueRouter)
 
@@ -22,6 +23,12 @@ const routes = [
     path: '/regist',
     name: 'regist',
     component: () => import(/* webpackChunkName: "about" */'../views/user/regist.vue')
+  },
+  {
+    path: '/addCash/:id',
+    name: 'addCash',
+    props: (route) => ({ id : route.params.id }),
+    component: () => import(/* webpackChunkName: "addCash" */'../components/addCash.vue')
   }
 ]
 
