@@ -1,5 +1,5 @@
 <template>
-  <div class="account-List">
+  <div class="account-list">
     <div class="itemsBox">
         <ul>
           <li v-for="item in newList" :key="item.id">
@@ -12,7 +12,8 @@
               <span class="itemName">未分类</span>
           </div>
           <span class="itemMoney">
-            <p>-{{item.expenseTotal}}</p>
+            <p v-if="item.expenseTotal === 0">0</p>
+            <p v-else>-{{item.expenseTotal }}</p>
             <p>{{item.incomeTotal | IntegerFormat}}</p>
           </span>
           </li>
@@ -21,45 +22,13 @@
   </div>
 </template>
 <script>
+
 export default {
   name: "accountList",
   data() {
     return {
-      newList:[],
-      dataImg:{
-        "ICBC": {
-          icon:"icon-gsyh",
-          color:"#e64343"
-        },
-        "CCB": {
-          icon:"icon-jsyh",
-          color:"#1e2e8c"
-        },
-        "ABC": {
-          icon:"icon-nyyh",
-          color:"#060"
-        },
-        "BOC": {
-          icon:"icon-zgyh",
-          color:"#e64343"
-        },
-        "CMB": {
-          icon:"icon-zsyh",
-          color:"#e64343"
-        },
-        "HB": {
-          icon:"icon-zhifubao",
-          color:"#1296db"
-        },
-        "YEB": {
-          icon:"icon-zhifubao",
-          color:"#1296db"
-        },
-        "YE": {
-          icon:"icon-zhifubao",
-          color:"#1296db"
-        }
-      }           
+      newList:[],   
+      dataImg : this.$icon.dataImg
     }
   },
   props: ['list'],
@@ -112,7 +81,7 @@ export default {
 <style scope lang="scss">
 @import "../common/css/mixin.scss";
 
-.account-List {
+.account-list {
   .itemsBox{
     padding:0 10px;
       li{

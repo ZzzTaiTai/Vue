@@ -13,6 +13,12 @@
       >
         <van-tab title="明细">
           <bookList :list="newList"></bookList>
+          <div class="addBtn">
+            <a href="javascript:;" class="add-btn"  @click="showCash()">
+              <i class="el-icon-plus"></i>
+              <h1 class="title">记一笔</h1>
+          </a>
+          </div>
         </van-tab>
         <van-tab title="类别报表">
           <categoryList
@@ -21,6 +27,7 @@
             :income="incomeTotal"
             :isChildren="isChildren"
             @children="changeChildren"
+            :curActive="active"
           ></categoryList>
         </van-tab>
         <van-tab title="账户">
@@ -28,13 +35,8 @@
         </van-tab>
       </van-tabs>
     </div>
-    <div class="addBtn">
-      <a href="javascript:;" class="add-btn"  @click="showCash()">
-        <i class="el-icon-plus"></i>
-        <h1 class="title">记一笔</h1>
-    </a>
-    </div>
-    <addCash :isAdd="isAdd" @showAdd="showCash()" @addCash="addCash"></addCash>
+    
+    <addCash :isShow="isAdd" @showAdd="showCash()" @addCash="addCash"></addCash>
     
   </div>
 </template>
@@ -71,6 +73,7 @@ export default {
   },
   created() {
     // let that = this;
+
     this.list = {
       data: [
         {
@@ -527,12 +530,12 @@ export default {
       if (!this.isChildren) {
         newAry = [
           this.balance,
-          ((this.expenseTotal - lastE) / this.expenseTotal).toFixed(2) + "%"
+          ((this.expenseTotal - lastE) / this.expenseTotal * 100).toFixed(2) + "%"
         ];
       } else {
         newAry = [
           this.balance,
-          ((this.incomeTotal - lastI) / this.incomeTotal).toFixed(2) + "%"
+          ((this.incomeTotal - lastI) / this.incomeTotal * 100).toFixed(2) + "%"
         ];
       }
       return newAry;
@@ -555,14 +558,17 @@ export default {
   },
   watch: {
     getDateObj(curVal, oldVal) {
-      // let lastVal = this.getLastMonth(curVal);
+      let lastVal = this.getLastMonth(curVal);
       this.newList = this._recombination(this.satisfy(curVal, oldVal));
-      // this.lastList = this._recombination(this.satisfy(lastVal));
+      this.lastList = this._recombination(this.satisfy(lastVal));
       this.categoryList = this.satisfy(curVal, oldVal);
     },
+    //监控数据添加后，重新渲染数据，如重新请求接口可以省略
     bookList:{
       handler() {
+        let lastVal = this.getLastMonth(this.$store.getters.getDateObj);
         this.newList = this._recombination(this.satisfy(this.$store.getters.getDateObj));
+        this.lastList = this._recombination(this.satisfy(lastVal));
         this.categoryList = this.satisfy(this.$store.getters.getDateObj);
       },
       deep:true
@@ -572,13 +578,17 @@ export default {
     //请求数据接口
     initData() {
       let that = this;
+      // if(localStorage.getItem('data')) {
+      //   that.bookList.data = JSON.parse(localStorage.getItem('data'));
+      // }
       this.$axios
       .get('/data/getData')
       .then( res => {
         that.bookList = res.data;
         that.bookList.data.sort(this.arraySort);
         that.$store.commit("newDate", that.dateObj(that.bookList));
-      })
+        localStorage.setItem('data',JSON.stringify(that.bookList))
+      });
     },
     //处理请求的数据
     _recombination(ary) {
@@ -667,17 +677,16 @@ export default {
       if (this.headerTit[this.active].children.length === 0) return;
       this.isChildren = !this.isChildren;
     },
-    showCash(cur) {
+    showCash() {
       this.isAdd = !this.isAdd;
     },
     addCash(obj){
       this.$toast.success('添加成功');
-      // this.initData();//调用添加接口后重新请求最新的数据
+      // this.initData();//调用添加接口后重新请求最新的数据，以下两步可以省略
       this.bookList.data.push(obj)
       this.bookList.data.sort(this.arraySort);
     }
   },
-  mounted() {}
 };
 </script>
 <style lang="scss" scope>
@@ -687,11 +696,9 @@ export default {
   border: 0 !important;
 }
 .addBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
+  height: 100%;
   width: 100%;
+  text-align: center;
   background: #ffffff;
   .title {
     display: inline-block;

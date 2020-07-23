@@ -1,5 +1,5 @@
 module.exports = {
-lintOnSave: true,
+  lintOnSave: true,
   css: {
     loaderOptions: {
       postcss: {
@@ -20,5 +20,7 @@ lintOnSave: true,
     //     target:'http://localhost:3001',
     //   }
     // }
-  } 
+  },
+  publicPath:'./',
+
 };

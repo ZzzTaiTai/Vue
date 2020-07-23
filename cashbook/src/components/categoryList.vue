@@ -1,12 +1,12 @@
 <template>
   <div class="category-List">
     <div class="pieContainer">
-      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal" :showList='showList'></chart>
+      <chart :options="options" @callBack="changeAngle" :update="update" :titleVal="pieTitleVal" :showList='showList' ref="chart"></chart>
     </div>
-    <div class="itemsBox">
+    <div class="itemsBox"  v-if="showList.data[curIndex]"> 
       <h2 class="itemTotal">
         <span class="iconBox">
-          <i class="iconfont"  :class="showList.data[curIndex].img"></i>
+          <i class="iconfont " :class="'icon-'+showList.data[curIndex].img"></i>
         </span>
         <span class="tag">
           {{ showList.data[curIndex].name }}
@@ -23,60 +23,46 @@
         </ul>
       </div>
     </div>
-    <!-- <dl v-for="items in fixedAry.data[curIndex].data" :key="items.id">
-      <dt>
-        <span class="time">{{ items.time | weekFormat }}</span>
-        <span>
-          支出:{{ items.money }}元
-      
-        </span>
-      </dt> -->
-      <!-- <dd v-for="list in items.data" :key="list.id">
-        <span class="iconBox">
-          <i class="iconfont" :class="'icon-' + classMap[list.iconNum]"></i>
-        </span>
-        <span class="info">{{list.name}}--{{items.time}}</span>
-        <em class="num">{{ list.money | IntegerFormat }}元</em>
-      </dd> 
-     </dl> -->
   </div>
 </template>
 <script>
 import Highcharts from "highcharts";
 import chart from "@/components/chart";
-const dataLabelImg = {
-  其他: "icon-gongzi",
-  购物: "icon-gouwu",
-  一般: "icon-licai",
-};
 const colorMap = ['#F4A460','#FFEC8B','#66CD00']
 export default {
   name: "categoryList",
   data() {
     return {
+      curIndex: 0, //圆饼当前选中的序号
+      curTab:1,
       options: null,
       update: {},
-      curIndex: 0, //圆饼当前选中的序号
       fixedAry: [],
+      dataLabelImg:this.$icon.iconMap
     };           
   },
-  props: ["list", "expense", "income","isChildren"],
+  props: ["list", "expense", "income","isChildren","curActive"],
   created() {
     this.fixedAry = this.addData(this.initData(this.list));
     this.options = this.initPie(this.showList);
   },
   computed: {
+    //圆饼标题的数值
     pieTitleVal(){
-      return this.isChildren ? this.$filters.numFormat(this.income) : this.$filters.numFormat(this.expense)
+      return !this.isChildren ? this.$filters.numFormat(this.expense) : this.$filters.numFormat(this.income)
     },
+    //当前圆饼选择的模板占比
     curScale(){
-      let total = 0;
-      this.showList.data.forEach((item)=>{total += item.y})
-      return (this.showList.data[this.curIndex].y / total).toFixed(1)+"%"
+      let total = 0,
+        scale = null;
+      this.showList.data.forEach((item)=>{total += item.y});
+      scale = (this.showList.data[this.curIndex].y / total * 100).toFixed(1)+"%";
+      return scale
     },
+    //渲染数据
     showList(){
-      this.curIndex = !this.isChildren ?  1 : 0;
-      return this.fixedAry[this.curIndex] //0是支出,1是收入
+      let index = !this.isChildren ?  1 : 0;
+      return this.fixedAry[index] //0是收入,1是支出
     }
   },
   watch: {
@@ -85,9 +71,14 @@ export default {
         this.fixedAry = this.addData(this.initData(this.list));
       },
       deep:true
+    },
+    curActive(val){
+      if(val !== this.curTab) return
+      this.$refs.chart.updateTitle()
     }
   },
   methods: { 
+    //初始化数据
     initData(data) {
       let ary = [],
         isExist = false,
@@ -95,10 +86,10 @@ export default {
       data.forEach((item, index) => {
         isExist = ary.find(newItem => newItem.name === item.typeName);
         if (!isExist) {
-          ary.push({
+            ary.push({
             name: item.typeName,
             y: 0,
-            img: dataLabelImg[item.typeName],
+            img: this.dataLabelImg[item.iconNum].className,
             data:[],
             sliced:true,
           });
@@ -109,9 +100,10 @@ export default {
       });
       return ary
     },
+    //添加数据
     addData(data) {
       // let num =  !this.isChildren ?  1 : 0, 
-        let ary = [
+      let ary = [
           {
             name: "总收入",
             data: [],
@@ -123,8 +115,8 @@ export default {
             innerSize: "60%"
           }];
       data.forEach(item => {
-        
         if (item.y > 0) {
+          ary.push()
           ary[0].data.push(item);
         } else {
           item.y = Math.abs(item.y);
@@ -133,6 +125,7 @@ export default {
       });
       return ary;
     },
+    //初始化圆饼
     initPie(objData) {
       let that = this,
         angle = 0;
@@ -143,14 +136,20 @@ export default {
           events: {
             click: function(event) {
               if (event.target.nodeName !== "rect") {
-                that.$emit("children");  
+                // that.$toast.success('添加成功');
+                if(that.fixedAry[!that.isChildren ? 0 : 1].data.length !== 0){
+                  that.curIndex = 0;
+                  that.$emit("children");  
+                }else{
+                  that.$toast.fail('暂无数据')
+                }
               }
             }
           }
         },
         title: {
           floating: true,
-          text: `<div class="pieTitle">${objData.name}</br><p>${that.pieTitleVal}</p><i style="font-size:30px;font-weight:700" class='icon iconfont ${dataLabelImg.qh}'></i></div>`,
+          text: `<div class="pieTitle">${objData.name}</br><p>${that.pieTitleVal}</p><i style="font-size:30px;font-weight:700" class='iconfont icon-qiehuan'></i></div>`,
           style: {
             color: "#666",
             fontSize: "22px"
@@ -180,7 +179,8 @@ export default {
                 color: "#ffffff"
               },
               formatter: function() {
-                return "<i class='iconfont " + this.point.img + "'></i>";
+                if(!this.point.img) return
+                return "<i class='iconfont icon-" + this.point.img + "'></i>";
               }
             }
           }
@@ -193,6 +193,7 @@ export default {
       }
       return obj;
     },
+    //改变圆饼角度
     changeAngle(data) {
       //update传递startAngle新的开始角度给图表
       let newAngle = this.calculation(data);
@@ -204,6 +205,7 @@ export default {
         ]
       };
     },
+    //计算旋转的角度
     calculation(objData) {
       // console.log(objData)
       const startAngle = 180,
@@ -237,9 +239,9 @@ export default {
 @import "../common/css/mixin.scss";
 
 .category-List {
-  height: calc(100vh - 185px);
-  min-height: 485px;
-  overflow-y: auto;
+  // height: calc(100vh - 185px);
+  // min-height: 485px;
+  // overflow-y: auto;
   .pieContainer{
     .pieTitle{
       padding:10px 20px;

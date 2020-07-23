@@ -27,12 +27,19 @@ const routes = [
   {
     path: '/addCash/:id',
     name: 'addCash',
-    props: (route) => ({ id : route.params.id }),
+    props: (route) => ({ id : route.params.id, pMoneny : route.query.moneny, pCurrentDate : route.query.cDate, pAccountIndex : route.query.index, pValue : route.query.value,noInfo : true}),
     component: () => import(/* webpackChunkName: "addCash" */'../components/addCash.vue')
+  },
+  {
+    path: '/infos/:id',
+    name: 'infos',
+    props: (route) => ({ id : route.params.id}),
+    component: () => import(/* webpackChunkName: "infos" */'../components/infos.vue')
   }
 ]
 
 const router = new VueRouter({
+  // mode:'history',
   routes
 })
 router.beforeEach((to,from,next) =>{

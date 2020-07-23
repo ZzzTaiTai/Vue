@@ -13,7 +13,9 @@
         <span class="iconBox">
           <i class="iconfont" :class="'icon-' + classMap[list.iconNum].className"></i>
         </span>
-        <span class="info">{{list.name}}--{{items.time}}</span>
+       <transition name="fade">
+         <router-link :to="{ name: 'infos', params: { id: list.id }}"><span class="info">{{list.name}}--{{items.time}}</span></router-link> 
+        </transition>
         <em class="num">{{ list.money | IntegerFormat }}元</em>
       </dd>
     </dl>
@@ -30,42 +32,15 @@ export default {
       bookList: null,
       newList: [],
       loading:false,
-      
+      classMap:this.$icon.iconMap
     };
   },
   props:["list"],
   components:{
     Loading
-},
+  },
   created() {
     let that = this;
-    this.classMap = [
-      {"className":"gongzi","name":"一般",},
-      {"className":"canyin","name":"餐饮",},
-      {"className":"gouwu","name":"购物",},
-      {"className":"fushi","name":"服饰",},
-      {"className":"jiaotong","name":"交通",},
-      {"className":"yule","name":"娱乐",},
-      {"className":"shejiao","name":"社交",},
-      {"className":"jujia","name":"居家",},
-      {"className":"tongxun","name":"通讯",},
-      {"className":"lingshi","name":"零食",},
-      {"className":"meirong","name":"美容",},
-      {"className":"yundong","name":"运动",},
-      {"className":"lvxing","name":"旅行",},
-      {"className":"shuma","name":"数码",},
-      {"className":"xuexi","name":"学习",},
-      {"className":"yiliao","name":"医疗",},
-      {"className":"shuji","name":"书籍",},
-      {"className":"chongwu","name":"宠物",},
-      {"className":"caipiao","name":"彩票",},
-      {"className":"qiche","name":"汽车",},
-      {"className":"bangong","name":"办公",},
-      {"className":"zhufang","name":"住房",},
-      {"className":"liwu","name":"礼物",},
-      {"className":"lijin","name":"礼金",},
-      {"className":"licai","name":"理财",}
-    ];
     // this.submitVal();
     // this.$emit('changeTit',this.headerTit[0],this.headerTit[1]);
     // this.loading = true;
@@ -94,7 +69,6 @@ export default {
   },
   methods: {
     submitVal(){
-      
       let expense = 0;
       let income = 0;
       this.list.data.forEach( item => {
@@ -113,9 +87,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../common/css/mixin.scss";
-
+.fade-enter-active, .fade-leave-avtive {
+    transition: opacity 1s
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0
+}
 .book-List {
-  height: calc(100vh - 185px);
+  height: calc(100vh - 170px);
   max-height: 485px;
   overflow-y: auto;
   dl {
@@ -168,13 +147,14 @@ export default {
       &:last-child {
         border: 0;
       }
-      .info {
+      a {
         flex: 2;
         padding: 0 50px 0 10px;
         font-size: 16px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #333333;
       }
       .num {
         font-size: 12px;

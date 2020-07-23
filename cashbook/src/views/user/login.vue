@@ -2,7 +2,10 @@
     <div class="login">
         <headerNav :title="title"></headerNav>
         <div class="loginBox">
+            
             <van-form  @submit="onSubmit"  @failed="onFailed">
+                <h1 class="title">记账本</h1>
+                <h2 class="tips">请直接使用账号：admin，密码123456登录页面</h2>
                 <van-field
                     v-model="username"
                     name="用户名"
@@ -76,6 +79,15 @@ export default {
         .loginBox{
             position: relative;
             height: calc(100vh - 50px);
+            .tips{
+                font-size: 14px;
+                text-align: center;
+                color: #646566;
+            }
+            .title{
+                text-align: center;
+                margin-bottom: 50px;
+            }
             .van-form{
                 position: absolute;
                 left: 50%;
