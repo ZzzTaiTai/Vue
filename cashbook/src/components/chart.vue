@@ -4,7 +4,8 @@
   </div>
 </template>
 <script>
-import HighCharts from 'highcharts'
+import HighCharts from 'highcharts/highcharts'
+
 export default {
   name: "chart",
   data() {

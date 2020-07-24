@@ -68,7 +68,7 @@ Mock.mock('/data/getData','get',() =>{
     ],
     'userId':1,
    }
-    for(let i =0;i<100;i++){
+    for(let i =0;i<500;i++){
       let list = Mock.mock(mockdata);
       dataList.data.push(list);
     }
